@@ -9,6 +9,7 @@
 --line: #1b2b38;
 --accent: #ffffff;
 --accent2: #bfcbd4;
+--blue: #249dd8;
 }
 
 * {
@@ -36,9 +37,9 @@ width: min(1160px, 92%);
 margin: auto;
 }
 
-/* ============================= */
-/* HEADER */
-/* ============================= */
+/* =============================
+HEADER
+============================= */
 
 .site-header {
 position: sticky;
@@ -82,7 +83,6 @@ height: 100%;
 object-fit: contain;
 display: block;
 }
-
 
 .brand-text {
 display: flex;
@@ -129,9 +129,9 @@ font-size: 26px;
 cursor: pointer;
 }
 
-/* ============================= */
-/* HERO */
-/* ============================= */
+/* =============================
+HERO
+============================= */
 
 .hero {
 min-height: 530px;
@@ -223,9 +223,9 @@ letter-spacing: 2px;
 color: var(--muted);
 }
 
-/* ============================= */
-/* SECCIONES */
-/* ============================= */
+/* =============================
+SECCIONES
+============================= */
 
 .section {
 padding: 55px 0;
@@ -251,9 +251,9 @@ color: var(--muted);
 font-weight: 700;
 }
 
-/* ============================= */
-/* NOTICIAS */
-/* ============================= */
+/* =============================
+NOTICIAS
+============================= */
 
 .news-grid {
 display: grid;
@@ -324,9 +324,9 @@ text-transform: uppercase;
 color: #b9c4cb;
 }
 
-/* ============================= */
-/* RESULTADOS */
-/* ============================= */
+/* =============================
+RESULTADOS
+============================= */
 
 .scoreboard {
 border: 1px solid var(--line);
@@ -409,7 +409,7 @@ font-weight: 600;
 
 .resultado-hora {
 font-weight: 700;
-color: #249dd8;
+color: var(--blue);
 }
 
 .resultado-partido {
@@ -499,143 +499,130 @@ margin-bottom: 10px;
 color: #6b7280;
 }
 
-/* ============================= */
-/* TABLA */
-/* ============================= */
+/* =============================
+TABLAS
+BASE PARA LAS DOS TABLAS
+============================= */
 
-.table-wrap {
-border: 1px solid var(--line);
-border-radius: 15px;
-overflow: auto;
-background: var(--panel);
-}
-
-table {
-width: 100%;
-border-collapse: collapse;
-min-width: 600px;
-}
-
-th,
-td {
-padding: 15px 17px;
-border-bottom: 1px solid var(--line);
-text-align: left;
-font-size: 12px;
-}
-
-th {
-font-size: 9px;
-letter-spacing: 1.5px;
-color: var(--muted);
-text-transform: uppercase;
-}
-
-tr:last-child td {
-border-bottom: 0;
-}
-
-td:first-child {
-color: var(--muted);
-font-weight: 800;
-}
-
-/* ============================= */
-/* POSICIONES */
-/* ============================= */
-
-.posiciones-wrap {
+.tabla-wrap {
 width: 100%;
 overflow-x: auto;
 background: #ffffff;
-border-radius: 0;
-box-shadow: none;
+border-radius: 15px;
+border: 1px solid #e1e5e9;
+box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+-webkit-overflow-scrolling: touch;
 }
 
-.tabla-posiciones {
+.tabla {
 width: 100%;
-min-width: 1050px;
 border-collapse: collapse;
 background: #ffffff;
 color: #111827;
 }
 
-.tabla-posiciones thead {
+.tabla thead {
 background: #101722;
 color: #ffffff;
 }
 
-.tabla-posiciones th {
-padding: 14px 10px;
-font-size: 16px;
-font-weight: 600;
+.tabla th {
+height: 52px;
+padding: 14px 16px;
+font-size: 12px;
+font-weight: 700;
 text-align: center;
 white-space: nowrap;
+text-transform: uppercase;
+letter-spacing: 0.8px;
 }
 
-.tabla-posiciones th:first-child {
+.tabla th:first-child {
 text-align: left;
-padding-left: 22px;
 }
 
-.tabla-posiciones td {
+.tabla td {
 height: 72px;
-padding: 10px;
+padding: 10px 16px;
 border-bottom: 1px solid #dfe3e8;
 text-align: center;
-font-size: 17px;
+font-size: 15px;
 white-space: nowrap;
 }
 
-.tabla-posiciones tbody tr:hover {
+.tabla tbody tr:last-child td {
+border-bottom: none;
+}
+
+.tabla tbody tr:hover {
 background: #f8fafc;
 }
 
-.club-cell {
+/* =============================
+TABLA DE POSICIONES
+============================= */
+
+.tabla-posiciones {
+min-width: 1050px;
+}
+
+.tabla-posiciones th:first-child {
+padding-left: 22px;
+}
+
+.tabla-posiciones .club-cell {
 display: flex;
 align-items: center;
 gap: 12px;
 min-width: 300px;
-text-align: left !important;
-padding-left: 22px !important;
+text-align: left;
+padding-left: 22px;
 }
 
-.posicion {
+.tabla-posiciones .posicion {
 width: 22px;
+min-width: 22px;
 font-size: 18px;
+font-weight: 700;
 color: #111827;
 text-align: center;
 }
 
-.tabla-logo {
+.tabla-posiciones .tabla-logo {
 width: 42px;
 height: 42px;
 object-fit: contain;
 flex-shrink: 0;
 }
 
-.club-cell strong {
+.tabla-posiciones .club-cell strong {
 font-size: 16px;
-font-weight: 500;
+font-weight: 600;
 color: #111827;
 }
 
-.puntos {
-font-weight: 700;
-font-size: 18px !important;
+.tabla-posiciones .puntos {
+font-weight: 800;
+font-size: 18px;
 }
 
-.ultimos {
+.tabla-posiciones .ultimos {
 display: flex;
 justify-content: center;
 align-items: center;
 gap: 8px;
+min-width: 120px;
 }
+
+/* =============================
+RESULTADOS DE POSICIONES
+============================= */
 
 .resultado {
 display: inline-block;
 width: 15px;
 height: 15px;
+min-width: 15px;
 border-radius: 50%;
 }
 
@@ -651,9 +638,77 @@ background: #f39a3d;
 background: #d93636;
 }
 
-/* ============================= */
-/* TORNEOS ANTERIORES */
-/* ============================= */
+/* =============================
+TABLA DE GOLEADORES
+============================= */
+
+.tabla-goleadores {
+width: 100%;
+min-width: 700px;
+}
+
+.tabla-goleadores th:first-child {
+width: 70px;
+text-align: center;
+}
+
+.tabla-goleadores .goleador-posicion {
+width: 70px;
+font-size: 18px;
+font-weight: 700;
+color: #111827;
+text-align: center;
+}
+
+.tabla-goleadores .goleador-info {
+display: flex;
+align-items: center;
+gap: 14px;
+min-width: 300px;
+text-align: left;
+}
+
+.tabla-goleadores .goleador-foto {
+width: 46px;
+height: 46px;
+object-fit: contain;
+flex-shrink: 0;
+}
+
+.tabla-goleadores .goleador-nombre {
+font-size: 15px;
+font-weight: 700;
+line-height: 1.25;
+color: #17212b;
+white-space: normal;
+}
+
+.tabla-goleadores .goleador-equipo {
+font-size: 12px;
+color: #777f87;
+margin-top: 4px;
+font-weight: 500;
+}
+
+.tabla-goleadores .goleador-goles {
+width: 110px;
+font-size: 22px;
+font-weight: 800;
+color: #17212b;
+text-align: center;
+}
+
+.tabla-goleadores .goleador-promedio {
+width: 110px;
+font-size: 14px;
+font-style: italic;
+color: #69717a;
+text-align: center;
+}
+
+/* =============================
+TORNEOS ANTERIORES
+============================= */
 
 .torneos-container {
 max-width: 900px;
@@ -670,7 +725,7 @@ overflow: hidden;
 width: 100%;
 border: none;
 padding: 20px 24px;
-background: #249dd8;
+background: var(--blue);
 color: white;
 display: flex;
 justify-content: space-between;
@@ -702,9 +757,9 @@ display: block;
 margin-bottom: 16px;
 }
 
-/* ============================= */
-/* INSTAGRAM */
-/* ============================= */
+/* =============================
+INSTAGRAM
+============================= */
 
 .instagram-cta {
 margin-bottom: 70px;
@@ -738,6 +793,9 @@ height: 19px;
 flex-shrink: 0;
 }
 
+/* =============================
+SELECTOR DE JORNADA
+============================= */
 
 .jornada-selector {
 display: flex;
@@ -793,12 +851,12 @@ transition: all 0.2s ease;
 }
 
 .jornada-select-wrapper select:hover {
-border-color: #249dd8;
+border-color: var(--blue);
 background: #ffffff;
 }
 
 .jornada-select-wrapper select:focus {
-border-color: #249dd8;
+border-color: var(--blue);
 box-shadow: 0 0 0 3px rgba(36, 157, 216, 0.12);
 background: #ffffff;
 }
@@ -814,16 +872,9 @@ line-height: 1;
 color: #555555;
 }
 
-@media (max-width: 600px) {
-.jornada-selector {
-flex-direction: column;
-align-items: stretch;
-}
-
-.jornada-select-wrapper {
-width: 100%;
-}
-}
+/* =============================
+RESULTADOS HOME
+============================= */
 
 .resultados-home {
 gap: 12px;
@@ -859,10 +910,9 @@ font-size: 20px;
 font-size: 10px;
 }
 
-
-/* ============================= */
-/* FOOTER */
-/* ============================= */
+/* =============================
+FOOTER
+============================= */
 
 .site-footer {
 border-top: 1px solid var(--line);
@@ -886,9 +936,9 @@ letter-spacing: 2px;
 margin: 7px 0;
 }
 
-/* ============================= */
-/* PAGE HERO */
-/* ============================= */
+/* =============================
+PAGE HERO
+============================= */
 
 .page-hero {
 padding: 90px 0 25px;
@@ -903,11 +953,12 @@ margin-bottom: 10px;
 color: var(--muted);
 }
 
-/* ============================= */
-/* RESPONSIVE */
-/* ============================= */
+/* =============================
+RESPONSIVE 850px
+============================= */
 
 @media (max-width: 850px) {
+
 .main-nav {
 display: none;
 }
@@ -957,7 +1008,12 @@ flex-direction: column;
 }
 }
 
+/* =============================
+RESPONSIVE 700px
+============================= */
+
 @media (max-width: 700px) {
+
 .resultado-card {
 padding: 18px 14px;
 }
@@ -995,9 +1051,616 @@ font-size: 23px;
 padding: 16px;
 font-size: 17px;
 }
+
+/* Tablas */
+
+.tabla-wrap {
+border-radius: 12px;
 }
 
+.tabla th {
+height: 48px;
+font-size: 10px;
+padding: 10px 12px;
+}
+
+.tabla td {
+height: 65px;
+font-size: 13px;
+padding: 8px 12px;
+}
+
+/* Posiciones */
+
+.tabla-posiciones {
+min-width: 950px;
+}
+
+.tabla-posiciones .club-cell {
+min-width: 270px;
+padding-left: 16px;
+}
+
+.tabla-posiciones .tabla-logo {
+width: 36px;
+height: 36px;
+}
+
+.tabla-posiciones .club-cell strong {
+font-size: 14px;
+}
+
+.tabla-posiciones .posicion {
+font-size: 16px;
+}
+
+/* Goleadores */
+
+.tabla-goleadores {
+min-width: 650px;
+}
+
+.tabla-goleadores .goleador-info {
+min-width: 280px;
+}
+
+.tabla-goleadores .goleador-foto {
+width: 38px;
+height: 38px;
+}
+
+.tabla-goleadores .goleador-nombre {
+font-size: 14px;
+}
+
+.tabla-goleadores .goleador-equipo {
+font-size: 11px;
+}
+
+.tabla-goleadores .goleador-goles {
+font-size: 20px;
+}
+}
+
+/* =============================
+RESPONSIVE 600px
+============================= */
+
+@media (max-width: 600px) {
+
+.jornada-selector {
+flex-direction: column;
+align-items: stretch;
+}
+
+.jornada-select-wrapper {
+width: 100%;
+}
+
+.tabla-wrap {
+margin-left: 0;
+margin-right: 0;
+}
+}
+
+/* =============================
+CONTENEDOR DE LAS 2 TABLAS
+============================= */
+
+.tabla-wrap {
+width: 100%;
+overflow-x: auto;
+background: #ffffff;
+border-radius: 15px;
+border: 1px solid #e1e5e9;
+box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* =============================
+TABLAS BASE
+============================= */
+
+.tabla {
+width: 100%;
+border-collapse: collapse;
+background: #ffffff;
+color: #111827;
+}
+
+/* Encabezado */
+
+.tabla thead {
+background: #101722;
+color: #ffffff;
+}
+
+.tabla th {
+padding: 15px 16px;
+font-size: 12px;
+font-weight: 700;
+text-align: center;
+white-space: nowrap;
+text-transform: uppercase;
+letter-spacing: 0.8px;
+}
+
+.tabla th:first-child {
+text-align: left;
+}
+
+/* Filas */
+
+.tabla tbody tr {
+background: #ffffff;
+transition: background-color 0.18s ease;
+}
+
+/* Efecto al pasar el mouse */
+
+.tabla tbody tr:hover {
+background: #eef7fc;
+}
+
+/* Celdas */
+
+.tabla td {
+height: 72px;
+padding: 10px 16px;
+border-bottom: 1px solid #e1e5e9;
+text-align: center;
+font-size: 15px;
+white-space: nowrap;
+background: transparent;
+}
+
+.tabla tbody tr:last-child td {
+border-bottom: none;
+}
+
+/* =============================
+TABLA DE POSICIONES
+============================= */
+
+.tabla-posiciones {
+min-width: 1050px;
+}
+
+.tabla-posiciones .club-cell {
+display: flex;
+align-items: center;
+gap: 12px;
+min-width: 300px;
+text-align: left;
+padding-left: 22px;
+}
+
+.tabla-posiciones .posicion {
+width: 22px;
+font-size: 18px;
+font-weight: 600;
+color: #111827;
+text-align: center;
+}
+
+.tabla-posiciones .tabla-logo {
+width: 42px;
+height: 42px;
+object-fit: contain;
+flex-shrink: 0;
+}
+
+.tabla-posiciones .club-cell strong {
+font-size: 16px;
+font-weight: 600;
+color: #111827;
+}
+
+.tabla-posiciones .puntos {
+font-weight: 800;
+font-size: 18px;
+color: #111827;
+}
+
+.tabla-posiciones .ultimos {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 8px;
+}
+/* =============================
+TABLA DE GOLEADORES
+============================= */
+
+.goleadores-wrap {
+width: 100%;
+max-width: 900px;
+margin: 0 auto;
+overflow-x: auto;
+background: #ffffff;
+border: 1px solid #e1e5e9;
+border-radius: 15px;
+}
+
+.tabla-goleadores {
+width: 100%;
+min-width: 650px;
+background: #ffffff;
+color: #111827;
+}
+
+/* Encabezado */
+
+.tabla-goleadores thead {
+background: #101722;
+color: #ffffff;
+}
+
+.tabla-goleadores th {
+padding: 15px 16px;
+font-size: 12px;
+font-weight: 700;
+text-align: center;
+text-transform: uppercase;
+letter-spacing: 0.8px;
+white-space: nowrap;
+}
+
+.tabla-goleadores th:nth-child(2) {
+text-align: left;
+}
+
+/* Filas */
+
+.tabla-goleadores td {
+height: 72px;
+padding: 10px 16px;
+border-bottom: 1px solid #dfe3e8;
+background: #ffffff;
+color: #111827;
+text-align: center;
+font-size: 15px;
+white-space: nowrap;
+}
+
+.tabla-goleadores tbody tr:last-child td {
+border-bottom: none;
+}
+
+/* Efecto al pasar el mouse */
+
+.tabla-goleadores tbody tr:hover td {
+background: #f8fafc;
+}
+
+/* Posición */
+
+.tabla-goleadores .goleador-posicion {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 28px;
+font-size: 18px;
+font-weight: 700;
+color: #111827;
+}
+
+/* Jugador */
+
+.tabla-goleadores .goleador-info {
+display: flex;
+align-items: center;
+gap: 14px;
+min-width: 330px;
+text-align: left;
+}
+
+.tabla-goleadores .goleador-foto {
+width: 44px;
+height: 44px;
+object-fit: contain;
+flex-shrink: 0;
+}
+
+.tabla-goleadores .goleador-nombre {
+font-size: 15px;
+font-weight: 700;
+line-height: 1.25;
+color: #17212b;
+white-space: normal;
+}
+
+.tabla-goleadores .goleador-equipo {
+margin-top: 4px;
+font-size: 12px;
+color: #777f87;
+white-space: normal;
+}
+
+/* Goles */
+
+.tabla-goleadores .goleador-goles {
+min-width: 100px;
+font-size: 22px;
+font-weight: 800;
+color: #17212b;
+}
+
+/* Promedio */
+
+.tabla-goleadores .goleador-promedio {
+min-width: 100px;
+font-size: 15px;
+font-weight: 600;
+color: #69717a;
+}
+
+/* =============================
+RESPONSIVE GOLEADORES
+============================= */
+
+@media (max-width: 700px) {
+.goleadores-wrap {
+border-radius: 12px;
+}
+
+.tabla-goleadores {
+min-width: 600px;
+}
+
+.tabla-goleadores th {
+padding: 12px;
+font-size: 11px;
+}
+
+.tabla-goleadores td {
+padding: 10px 12px;
+font-size: 14px;
+}
+
+.tabla-goleadores .goleador-info {
+min-width: 280px;
+gap: 10px;
+}
+
+.tabla-goleadores .goleador-foto {
+width: 38px;
+height: 38px;
+}
+
+.tabla-goleadores .goleador-nombre {
+font-size: 14px;
+}
+
+.tabla-goleadores .goleador-equipo {
+font-size: 11px;
+}
+
+.tabla-goleadores .goleador-goles {
+font-size: 20px;
+}
+
+.tabla-goleadores .goleador-promedio {
+font-size: 14px;
+}
+}
+
+/* =============================
+TABLA DE POSICIONES - HOME
+============================= */
+
+.standings-home-wrap {
+width: 100%;
+overflow-x: auto;
+background: #ffffff;
+border: 1px solid #e1e5e9;
+border-radius: 15px;
+}
+
+.standings-home {
+width: 100%;
+min-width: 650px;
+background: #ffffff;
+color: #111827;
+}
+
+/* Encabezado */
+
+.standings-home thead {
+background: #101722;
+color: #ffffff;
+}
+
+.standings-home th {
+padding: 14px 16px;
+font-size: 12px;
+font-weight: 700;
+text-align: center;
+text-transform: uppercase;
+letter-spacing: 0.8px;
+white-space: nowrap;
+}
+
+.standings-home th:nth-child(2) {
+text-align: left;
+}
+
+/* Filas */
+
+.standings-home td {
+height: 64px;
+padding: 10px 16px;
+border-bottom: 1px solid #dfe3e8;
+background: #ffffff;
+color: #111827;
+text-align: center;
+font-size: 14px;
+white-space: nowrap;
+}
+
+.standings-home tbody tr:last-child td {
+border-bottom: none;
+}
+
+/* Hover */
+
+.standings-home tbody tr:hover td {
+background: #f8fafc;
+}
+
+/* Posición */
+
+.standings-home .posicion {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 28px;
+font-size: 17px;
+font-weight: 700;
+color: #111827;
+}
+
+/* Equipo */
+
+.standings-home .club-cell {
+display: flex;
+align-items: center;
+gap: 12px;
+min-width: 280px;
+text-align: left;
+}
+
+.standings-home .tabla-logo {
+width: 36px;
+height: 36px;
+object-fit: contain;
+flex-shrink: 0;
+}
+
+.standings-home .club-cell strong {
+font-size: 14px;
+font-weight: 600;
+color: #111827;
+}
+
+/* Puntos */
+
+.standings-home .puntos {
+font-size: 17px;
+font-weight: 800;
+color: #111827;
+}
+
+/* =============================
+RESPONSIVE HOME
+============================= */
+
+@media (max-width: 700px) {
+.standings-home {
+min-width: 600px;
+}
+
+.standings-home th {
+padding: 12px;
+font-size: 11px;
+}
+
+.standings-home td {
+padding: 10px 12px;
+font-size: 13px;
+}
+
+.standings-home .club-cell {
+min-width: 240px;
+gap: 9px;
+}
+
+.standings-home .tabla-logo {
+width: 32px;
+height: 32px;
+}
+
+.standings-home .club-cell strong {
+font-size: 13px;
+}
+}
+
+/* =============================
+ÚLTIMOS 3 RESULTADOS
+============================= */
+
+.resultado {
+display: inline-block;
+width: 15px;
+height: 15px;
+border-radius: 50%;
+flex-shrink: 0;
+}
+
+.resultado-verde {
+background: #35c84a;
+}
+
+.resultado-naranja {
+background: #f39a3d;
+}
+
+.resultado-rojo {
+background: #d93636;
+}
+
+/* =============================
+RESPONSIVE TABLAS
+============================= */
+
+@media (max-width: 900px) {
+
+.tabla-posiciones {
+min-width: 1050px;
+}
+
+}
+
+@media (max-width: 700px) {
+
+.tabla-wrap {
+border-radius: 12px;
+}
+
+.tabla th {
+font-size: 11px;
+padding: 12px;
+}
+
+.tabla td {
+font-size: 14px;
+}
+
+.tabla-goleadores {
+min-width: 650px;
+}
+
+.tabla-goleadores .goleador-foto {
+width: 38px;
+height: 38px;
+}
+
+.tabla-goleadores .goleador-nombre {
+font-size: 14px;
+}
+
+.tabla-goleadores .goleador-goles {
+font-size: 20px;
+}
+
+}
+
+
+/* =============================
+RESPONSIVE 500px
+============================= */
+
 @media (max-width: 500px) {
+
 .brand-text small {
 display: none;
 }
@@ -1024,20 +1687,12 @@ padding: 16px 12px;
 .score {
 font-size: 18px;
 }
-}
-
-@media (max-width: 900px) {
-.posiciones-wrap {
-overflow-x: auto;
-}
 
 .tabla-posiciones {
-min-width: 1050px;
-}
+min-width: 900px;
 }
 
-.standings-logo {
-width: 24px;
-height: 24px;
-object-fit: contain;
+.tabla-goleadores {
+min-width: 620px;
+}
 }
