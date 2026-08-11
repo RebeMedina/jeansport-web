@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Resultados from "./pages/Resultados";
 import Posiciones from "./pages/Posiciones";
 import Goleadores from "./pages/Goleadores";
+import Noticias from "./pages/Noticias";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/resultados" element={<Resultados />} />{" "}
           <Route path="/posiciones" element={<Posiciones />} />{" "}
           <Route path="/goleadores" element={<Goleadores />} />{" "}
+          <Route path="/noticias" element={<Noticias />} />{" "}
         </Route>{" "}
       </Routes>{" "}
     </BrowserRouter>

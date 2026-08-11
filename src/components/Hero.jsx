@@ -1,4 +1,8 @@
+import { obtenerLogo } from "../data/equipos";
+
 function Hero() {
+  const logoPuntarenas = obtenerLogo("Puntarenas F.C.");
+
   return (
     <section className="hero container">
       {" "}
@@ -24,10 +28,29 @@ function Hero() {
           </a>
         </div>
       </div>
-      <div className="hero-card">
-        <div className="ball">⚽</div>
-        <p>FÚTBOL · NOTICIAS · RESULTADOS</p>
-      </div>
+      <a
+        href="/noticias"
+        className="hero-card hero-news-card"
+        aria-label="Ver noticia de Puntarenas FC"
+      >
+      
+        {logoPuntarenas && (
+          <img
+            src={logoPuntarenas}
+            alt="Escudo de Puntarenas F.C."
+            className="hero-news-logo"
+          />
+        )}
+
+        <h2>Comunicado oficial UNAFUT</h2>
+
+        <p>
+          El Comité de Competición concluyó que Puntarenas FC no logró demostrar
+          lo interpuesto con el jugador Walter Cortés.
+        </p>
+
+        <span className="hero-news-link">Ver noticia →</span>
+      </a>
     </section>
   );
 }
