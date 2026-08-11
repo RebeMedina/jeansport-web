@@ -1035,3 +1035,9 @@ overflow-x: auto;
 min-width: 1050px;
 }
 }
+
+.standings-logo {
+width: 24px;
+height: 24px;
+object-fit: contain;
+}
