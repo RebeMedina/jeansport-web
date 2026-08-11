@@ -1,0 +1,906 @@
+export const partidos = [
+  // =========================
+  // JORNADA 1
+  // =========================
+
+  {
+    id: 1,
+    fecha: "2026-07-23",
+    jornada: 1,
+    local: "herediano",
+    golesLocal: 1,
+    visitante: "puntarenas",
+    golesVisitante: 1,
+    estado: "finalizado",
+  },
+  {
+    id: 2,
+    fecha: "2026-07-24",
+    jornada: 1,
+    local: "saprissa",
+    golesLocal: 5,
+    visitante: "perez-zeledon",
+    golesVisitante: 1,
+    estado: "finalizado",
+  },
+  {
+    id: 3,
+    fecha: "2026-07-25",
+    jornada: 1,
+    local: "cartagines",
+    golesLocal: 3,
+    visitante: "inter-sc",
+    golesVisitante: 1,
+    estado: "finalizado",
+  },
+  {
+    id: 4,
+    fecha: "2026-07-25",
+    jornada: 1,
+    local: "sporting",
+    golesLocal: 1,
+    visitante: "alajuelense",
+    golesVisitante: 1,
+    estado: "finalizado",
+  },
+
+  // =========================
+  // JORNADA 2
+  // =========================
+
+  {
+    id: 5,
+    fecha: "2026-08-01",
+    jornada: 2,
+    local: "puntarenas",
+    golesLocal: 1,
+    visitante: "sporting",
+    golesVisitante: 1,
+    estado: "finalizado",
+  },
+  {
+    id: 6,
+    fecha: "2026-08-01",
+    jornada: 2,
+    local: "alajuelense",
+    golesLocal: 2,
+    visitante: "escorpiones",
+    golesVisitante: 1,
+    estado: "finalizado",
+  },
+  {
+    id: 7,
+    fecha: "2026-08-02",
+    jornada: 2,
+    local: "saprissa",
+    golesLocal: 2,
+    visitante: "san-carlos",
+    golesVisitante: 1,
+    estado: "finalizado",
+  },
+  {
+    id: 8,
+    fecha: "2026-08-02",
+    jornada: 2,
+    local: "inter-sc",
+    golesLocal: 1,
+    visitante: "herediano",
+    golesVisitante: 1,
+    estado: "finalizado",
+  },
+  {
+    id: 9,
+    fecha: "2026-08-03",
+    jornada: 2,
+    local: "perez-zeledon",
+    golesLocal: 1,
+    visitante: "cartagines",
+    golesVisitante: 0,
+    estado: "finalizado",
+  },
+
+  // =========================
+  // JORNADA 3
+  // =========================
+
+  {
+    id: 10,
+    fecha: "2026-08-07",
+    jornada: 3,
+    local: "cartagines",
+    golesLocal: 2,
+    visitante: "sporting",
+    golesVisitante: 1,
+    estado: "finalizado",
+  },
+  {
+    id: 11,
+    fecha: "2026-08-08",
+    jornada: 3,
+    local: "escorpiones",
+    golesLocal: 0,
+    visitante: "perez-zeledon",
+    golesVisitante: 0,
+    estado: "finalizado",
+  },
+  {
+    id: 12,
+    fecha: "2026-08-08",
+    jornada: 3,
+    local: "puntarenas",
+    golesLocal: 0,
+    visitante: "saprissa",
+    golesVisitante: 2,
+    estado: "finalizado",
+  },
+  {
+    id: 13,
+    fecha: "2026-08-09",
+    jornada: 3,
+    local: "inter-sc",
+    golesLocal: 2,
+    visitante: "san-carlos",
+    golesVisitante: 0,
+    estado: "finalizado",
+  },
+  {
+    id: 14,
+    fecha: "2026-08-09",
+    jornada: 3,
+    local: "herediano",
+    golesLocal: 0,
+    visitante: "alajuelense",
+    golesVisitante: 3,
+    estado: "finalizado",
+  },
+
+  // =========================
+  // JORNADA 4
+  // =========================
+
+  {
+    id: 15,
+    fecha: "2026-08-14",
+    jornada: 4,
+    local: "san-carlos",
+    visitante: "herediano",
+    hora: "20:00",
+    estado: "proximo",
+  },
+  {
+    id: 16,
+    fecha: "2026-08-15",
+    jornada: 4,
+    local: "alajuelense",
+    visitante: "puntarenas",
+    hora: "16:00",
+    estado: "proximo",
+  },
+  {
+    id: 17,
+    fecha: "2026-08-15",
+    jornada: 4,
+    local: "saprissa",
+    visitante: "cartagines",
+    hora: "20:00",
+    estado: "proximo",
+  },
+  {
+    id: 18,
+    fecha: "2026-08-16",
+    jornada: 4,
+    local: "perez-zeledon",
+    visitante: "inter-sc",
+    hora: "16:00",
+    estado: "proximo",
+  },
+  {
+    id: 19,
+    fecha: "2026-08-17",
+    jornada: 4,
+    local: "sporting",
+    visitante: "escorpiones",
+    hora: "20:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 5
+  // =========================
+
+  {
+    id: 20,
+    fecha: "2026-08-21",
+    jornada: 5,
+    local: "puntarenas",
+    visitante: "perez-zeledon",
+    hora: "19:00",
+    estado: "proximo",
+  },
+  {
+    id: 21,
+    fecha: "2026-08-22",
+    jornada: 5,
+    local: "escorpiones",
+    visitante: "cartagines",
+    hora: "17:00",
+    estado: "proximo",
+  },
+  {
+    id: 22,
+    fecha: "2026-08-22",
+    jornada: 5,
+    local: "herediano",
+    visitante: "sporting",
+    hora: "20:00",
+    estado: "proximo",
+  },
+  {
+    id: 23,
+    fecha: "2026-08-23",
+    jornada: 5,
+    local: "inter-sc",
+    visitante: "saprissa",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 24,
+    fecha: "2026-08-23",
+    jornada: 5,
+    local: "alajuelense",
+    visitante: "san-carlos",
+    hora: "18:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 6
+  // =========================
+
+  {
+    id: 25,
+    fecha: "2026-08-28",
+    jornada: 6,
+    local: "sporting",
+    visitante: "inter-sc",
+    hora: "20:00",
+    estado: "proximo",
+  },
+  {
+    id: 26,
+    fecha: "2026-08-29",
+    jornada: 6,
+    local: "perez-zeledon",
+    visitante: "alajuelense",
+    hora: "20:00",
+    estado: "proximo",
+  },
+  {
+    id: 27,
+    fecha: "2026-08-30",
+    jornada: 6,
+    local: "cartagines",
+    visitante: "herediano",
+    hora: "11:00",
+    estado: "proximo",
+  },
+  {
+    id: 28,
+    fecha: "2026-08-30",
+    jornada: 6,
+    local: "san-carlos",
+    visitante: "puntarenas",
+    hora: "16:00",
+    estado: "proximo",
+  },
+  {
+    id: 29,
+    fecha: "2026-08-30",
+    jornada: 6,
+    local: "saprissa",
+    visitante: "escorpiones",
+    hora: "18:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 7
+  // =========================
+
+  {
+    id: 30,
+    fecha: "2026-09-06",
+    jornada: 7,
+    local: "escorpiones",
+    visitante: "inter-sc",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 31,
+    fecha: "2026-09-06",
+    jornada: 7,
+    local: "puntarenas",
+    visitante: "cartagines",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 32,
+    fecha: "2026-09-06",
+    jornada: 7,
+    local: "san-carlos",
+    visitante: "sporting",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 33,
+    fecha: "2026-09-06",
+    jornada: 7,
+    local: "herediano",
+    visitante: "perez-zeledon",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 34,
+    fecha: "2026-09-06",
+    jornada: 7,
+    local: "alajuelense",
+    visitante: "saprissa",
+    hora: "15:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 8
+  // =========================
+
+  {
+    id: 35,
+    fecha: "2026-09-13",
+    jornada: 8,
+    local: "sporting",
+    visitante: "saprissa",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 36,
+    fecha: "2026-09-13",
+    jornada: 8,
+    local: "escorpiones",
+    visitante: "herediano",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 37,
+    fecha: "2026-09-13",
+    jornada: 8,
+    local: "inter-sc",
+    visitante: "puntarenas",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 38,
+    fecha: "2026-09-13",
+    jornada: 8,
+    local: "perez-zeledon",
+    visitante: "san-carlos",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 39,
+    fecha: "2026-09-13",
+    jornada: 8,
+    local: "cartagines",
+    visitante: "alajuelense",
+    hora: "15:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 9
+  // =========================
+
+  {
+    id: 40,
+    fecha: "2026-09-20",
+    jornada: 9,
+    local: "san-carlos",
+    visitante: "cartagines",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 41,
+    fecha: "2026-09-20",
+    jornada: 9,
+    local: "puntarenas",
+    visitante: "escorpiones",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 42,
+    fecha: "2026-09-20",
+    jornada: 9,
+    local: "perez-zeledon",
+    visitante: "sporting",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 43,
+    fecha: "2026-09-20",
+    jornada: 9,
+    local: "alajuelense",
+    visitante: "inter-sc",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 44,
+    fecha: "2026-09-20",
+    jornada: 9,
+    local: "saprissa",
+    visitante: "herediano",
+    hora: "15:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 10
+  // =========================
+
+  {
+    id: 45,
+    fecha: "2026-10-11",
+    jornada: 10,
+    local: "puntarenas",
+    visitante: "alajuelense",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 46,
+    fecha: "2026-10-11",
+    jornada: 10,
+    local: "herediano",
+    visitante: "san-carlos",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 47,
+    fecha: "2026-10-11",
+    jornada: 10,
+    local: "inter-sc",
+    visitante: "perez-zeledon",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 48,
+    fecha: "2026-10-11",
+    jornada: 10,
+    local: "escorpiones",
+    visitante: "saprissa",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 49,
+    fecha: "2026-10-11",
+    jornada: 10,
+    local: "sporting",
+    visitante: "cartagines",
+    hora: "15:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 11
+  // =========================
+
+  {
+    id: 50,
+    fecha: "2026-10-14",
+    jornada: 11,
+    local: "cartagines",
+    visitante: "puntarenas",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 51,
+    fecha: "2026-10-14",
+    jornada: 11,
+    local: "alajuelense",
+    visitante: "herediano",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 52,
+    fecha: "2026-10-14",
+    jornada: 11,
+    local: "san-carlos",
+    visitante: "inter-sc",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 53,
+    fecha: "2026-10-14",
+    jornada: 11,
+    local: "perez-zeledon",
+    visitante: "escorpiones",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 54,
+    fecha: "2026-10-14",
+    jornada: 11,
+    local: "saprissa",
+    visitante: "sporting",
+    hora: "15:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 12
+  // =========================
+
+  {
+    id: 55,
+    fecha: "2026-10-18",
+    jornada: 12,
+    local: "cartagines",
+    visitante: "saprissa",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 56,
+    fecha: "2026-10-18",
+    jornada: 12,
+    local: "inter-sc",
+    visitante: "alajuelense",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 57,
+    fecha: "2026-10-18",
+    jornada: 12,
+    local: "sporting",
+    visitante: "san-carlos",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 58,
+    fecha: "2026-10-18",
+    jornada: 12,
+    local: "escorpiones",
+    visitante: "puntarenas",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 59,
+    fecha: "2026-10-18",
+    jornada: 12,
+    local: "perez-zeledon",
+    visitante: "herediano",
+    hora: "15:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 13
+  // =========================
+
+  {
+    id: 60,
+    fecha: "2026-10-25",
+    jornada: 13,
+    local: "puntarenas",
+    visitante: "inter-sc",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 61,
+    fecha: "2026-10-25",
+    jornada: 13,
+    local: "san-carlos",
+    visitante: "saprissa",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 62,
+    fecha: "2026-10-25",
+    jornada: 13,
+    local: "alajuelense",
+    visitante: "perez-zeledon",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 63,
+    fecha: "2026-10-25",
+    jornada: 13,
+    local: "escorpiones",
+    visitante: "sporting",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 64,
+    fecha: "2026-10-25",
+    jornada: 13,
+    local: "herediano",
+    visitante: "cartagines",
+    hora: "15:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 14
+  // =========================
+
+  {
+    id: 65,
+    fecha: "2026-11-01",
+    jornada: 14,
+    local: "inter-sc",
+    visitante: "escorpiones",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 66,
+    fecha: "2026-11-01",
+    jornada: 14,
+    local: "saprissa",
+    visitante: "alajuelense",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 67,
+    fecha: "2026-11-01",
+    jornada: 14,
+    local: "sporting",
+    visitante: "herediano",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 68,
+    fecha: "2026-11-01",
+    jornada: 14,
+    local: "cartagines",
+    visitante: "san-carlos",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 69,
+    fecha: "2026-11-01",
+    jornada: 14,
+    local: "perez-zeledon",
+    visitante: "puntarenas",
+    hora: "15:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 15
+  // =========================
+
+  {
+    id: 70,
+    fecha: "2026-11-04",
+    jornada: 15,
+    local: "inter-sc",
+    visitante: "cartagines",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 71,
+    fecha: "2026-11-04",
+    jornada: 15,
+    local: "herediano",
+    visitante: "saprissa",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 72,
+    fecha: "2026-11-04",
+    jornada: 15,
+    local: "puntarenas",
+    visitante: "san-carlos",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 73,
+    fecha: "2026-11-04",
+    jornada: 15,
+    local: "sporting",
+    visitante: "perez-zeledon",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 74,
+    fecha: "2026-11-04",
+    jornada: 15,
+    local: "escorpiones",
+    visitante: "alajuelense",
+    hora: "15:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 16
+  // =========================
+
+  {
+    id: 75,
+    fecha: "2026-11-08",
+    jornada: 16,
+    local: "saprissa",
+    visitante: "puntarenas",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 76,
+    fecha: "2026-11-08",
+    jornada: 16,
+    local: "alajuelense",
+    visitante: "sporting",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 77,
+    fecha: "2026-11-08",
+    jornada: 16,
+    local: "cartagines",
+    visitante: "escorpiones",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 78,
+    fecha: "2026-11-08",
+    jornada: 16,
+    local: "san-carlos",
+    visitante: "perez-zeledon",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 79,
+    fecha: "2026-11-08",
+    jornada: 16,
+    local: "herediano",
+    visitante: "inter-sc",
+    hora: "15:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 17
+  // =========================
+
+  {
+    id: 80,
+    fecha: "2026-11-22",
+    jornada: 17,
+    local: "escorpiones",
+    visitante: "san-carlos",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 81,
+    fecha: "2026-11-22",
+    jornada: 17,
+    local: "puntarenas",
+    visitante: "herediano",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 82,
+    fecha: "2026-11-22",
+    jornada: 17,
+    local: "perez-zeledon",
+    visitante: "saprissa",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 83,
+    fecha: "2026-11-22",
+    jornada: 17,
+    local: "inter-sc",
+    visitante: "sporting",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 84,
+    fecha: "2026-11-22",
+    jornada: 17,
+    local: "alajuelense",
+    visitante: "cartagines",
+    hora: "15:00",
+    estado: "proximo",
+  },
+
+  // =========================
+  // JORNADA 18
+  // =========================
+
+  {
+    id: 85,
+    fecha: "2026-11-29",
+    jornada: 18,
+    local: "herediano",
+    visitante: "escorpiones",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 86,
+    fecha: "2026-11-29",
+    jornada: 18,
+    local: "sporting",
+    visitante: "puntarenas",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 87,
+    fecha: "2026-11-29",
+    jornada: 18,
+    local: "san-carlos",
+    visitante: "alajuelense",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 88,
+    fecha: "2026-11-29",
+    jornada: 18,
+    local: "cartagines",
+    visitante: "perez-zeledon",
+    hora: "15:00",
+    estado: "proximo",
+  },
+  {
+    id: 89,
+    fecha: "2026-11-29",
+    jornada: 18,
+    local: "saprissa",
+    visitante: "inter-sc",
+    hora: "15:00",
+    estado: "proximo",
+  },
+];
