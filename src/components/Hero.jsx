@@ -1,3 +1,5 @@
+
+import { Link } from "react-router";
 import { obtenerLogo } from "../data/equipos";
 
 function Hero() {
@@ -5,35 +7,32 @@ function Hero() {
 
   return (
     <section className="hero container">
-      {" "}
       <div className="hero-copy">
-        {" "}
         <span className="eyebrow">JEANSPORT</span>
+
         <h1>
           Todo el fútbol,
           <br />
           <span>en un solo lugar.</span>
         </h1>
+
         <p>
           Noticias, resultados, tablas y actualidad del fútbol de Costa Rica y
           del mundo.
         </p>
-        <div className="hero-actions">
-          <a className="btn btn-primary" href="/noticias">
-            Ver noticias
-          </a>
 
-          <a className="btn btn-secondary" href="/resultados">
-            Resultados
-          </a>
+        <div className="hero-actions">
+          <Link className="btn btn-primary" to="/noticias">
+            Ver noticias
+          </Link>
         </div>
       </div>
-      <a
-        href="/noticias"
+
+      <Link
+        to="/noticias"
         className="hero-card hero-news-card"
         aria-label="Ver noticia de Puntarenas FC"
       >
-      
         {logoPuntarenas && (
           <img
             src={logoPuntarenas}
@@ -50,9 +49,10 @@ function Hero() {
         </p>
 
         <span className="hero-news-link">Ver noticia →</span>
-      </a>
+      </Link>
     </section>
   );
 }
 
 export default Hero;
+

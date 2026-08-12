@@ -1,21 +1,30 @@
+
 import { useState } from "react";
+import { Link } from "react-router";
 
 function Header() {
   const [menuAbierto, setMenuAbierto] = useState(false);
 
+  const cerrarMenu = () => {
+    setMenuAbierto(false);
+  };
+
   return (
     <header className="site-header">
       <div className="container nav-wrap">
-        <a className="brand" href="/" onClick={() => setMenuAbierto(false)}>
+        <Link className="brand" to="/" onClick={cerrarMenu}>
           <span className="logo-box">
-            <img src="/logo.png" alt="JeanSport" />
+            <img
+              src={`${import.meta.env.BASE_URL}logo.png`}
+              alt="JeanSport"
+            />
           </span>
 
           <span className="brand-text">
             <strong>JEANSPORT</strong>
             <small>Pasión por el fútbol</small>
           </span>
-        </a>
+        </Link>
 
         <button
           className="menu-toggle"
@@ -28,25 +37,25 @@ function Header() {
         </button>
 
         <nav className={`main-nav ${menuAbierto ? "menu-open" : ""}`}>
-          <a href="/" onClick={() => setMenuAbierto(false)}>
+          <Link to="/" onClick={cerrarMenu}>
             Inicio
-          </a>
+          </Link>
 
-          <a href="/noticias" onClick={() => setMenuAbierto(false)}>
+          <Link to="/noticias" onClick={cerrarMenu}>
             Noticias
-          </a>
+          </Link>
 
-          <a href="/resultados" onClick={() => setMenuAbierto(false)}>
+          <Link to="/resultados" onClick={cerrarMenu}>
             Resultados
-          </a>
+          </Link>
 
-          <a href="/posiciones" onClick={() => setMenuAbierto(false)}>
+          <Link to="/posiciones" onClick={cerrarMenu}>
             Posiciones
-          </a>
+          </Link>
 
-          <a href="/goleadores" onClick={() => setMenuAbierto(false)}>
+          <Link to="/goleadores" onClick={cerrarMenu}>
             Goleadores
-          </a>
+          </Link>
         </nav>
       </div>
     </header>
@@ -54,3 +63,4 @@ function Header() {
 }
 
 export default Header;
+

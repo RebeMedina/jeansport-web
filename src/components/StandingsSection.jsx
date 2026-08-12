@@ -1,3 +1,5 @@
+
+import { Link } from "react-router";
 import { partidos } from "../data/partidos";
 import TablaPosiciones from "../components/TablaPosiciones";
 
@@ -38,9 +40,13 @@ function StandingsSection() {
     partidosEquipo.forEach((partido) => {
       const esLocal = partido.local === equipo;
 
-      const golesEquipo = esLocal ? partido.golesLocal : partido.golesVisitante;
+      const golesEquipo = esLocal
+        ? partido.golesLocal
+        : partido.golesVisitante;
 
-      const golesRival = esLocal ? partido.golesVisitante : partido.golesLocal;
+      const golesRival = esLocal
+        ? partido.golesVisitante
+        : partido.golesLocal;
 
       if (typeof golesEquipo !== "number" || typeof golesRival !== "number") {
         return;
@@ -111,7 +117,7 @@ function StandingsSection() {
           <h2>Tabla de posiciones</h2>
         </div>
 
-        <a href="/posiciones">Tabla completa →</a>
+        <Link to="/posiciones">Tabla completa →</Link>
       </div>
 
       <TablaPosiciones tabla={primerosCinco} />
@@ -120,3 +126,4 @@ function StandingsSection() {
 }
 
 export default StandingsSection;
+
