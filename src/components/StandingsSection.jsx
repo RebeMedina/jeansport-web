@@ -1,5 +1,5 @@
-import { obtenerLogo } from "../data/equipos";
 import { partidos } from "../data/partidos";
+import TablaPosiciones from "../components/TablaPosiciones";
 
 const nombresEquipos = {
   "san-carlos": "A.D. San Carlos",
@@ -30,6 +30,10 @@ function StandingsSection() {
     let ganados = 0;
     let empatados = 0;
     let perdidos = 0;
+    let golesFavor = 0;
+    let golesContra = 0;
+
+    const ultimos = [];
 
     partidosEquipo.forEach((partido) => {
       const esLocal = partido.local === equipo;
@@ -44,16 +48,23 @@ function StandingsSection() {
 
       jugados++;
 
+      golesFavor += golesEquipo;
+      golesContra += golesRival;
+
       if (golesEquipo > golesRival) {
         ganados++;
+        ultimos.push("ganado");
       } else if (golesEquipo === golesRival) {
         empatados++;
+        ultimos.push("empatado");
       } else {
         perdidos++;
+        ultimos.push("perdido");
       }
     });
 
     const puntos = ganados * 3 + empatados;
+    const diferenciaGoles = golesFavor - golesContra;
 
     return {
       equipo,
@@ -62,13 +73,25 @@ function StandingsSection() {
       ganados,
       empatados,
       perdidos,
+      golesFavor,
+      golesContra,
+      diferenciaGoles,
       puntos,
+      ultimosTres: ultimos.slice(-3),
     };
   });
 
   tabla.sort((a, b) => {
     if (a.puntos !== b.puntos) {
       return b.puntos - a.puntos;
+    }
+
+    if (a.diferenciaGoles !== b.diferenciaGoles) {
+      return b.diferenciaGoles - a.diferenciaGoles;
+    }
+
+    if (a.golesFavor !== b.golesFavor) {
+      return b.golesFavor - a.golesFavor;
     }
 
     if (a.ganados !== b.ganados) {
@@ -82,66 +105,16 @@ function StandingsSection() {
 
   return (
     <section className="container section">
-      {" "}
       <div className="section-heading">
-        {" "}
         <div>
-          {" "}
-          <span className="eyebrow">CLASIFICACIÓN</span>{" "}
-          <h2>Tabla de posiciones</h2>{" "}
+          <span className="eyebrow">CLASIFICACIÓN</span>
+          <h2>Tabla de posiciones</h2>
         </div>
+
         <a href="/posiciones">Tabla completa →</a>
       </div>
-      <div className="table-wrap posiciones-wrap">
-        <table className="tabla tabla-posiciones standings-home">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Equipo</th>
-              <th>PJ</th>
-              <th>G</th>
-              <th>E</th>
-              <th>P</th>
-              <th>PTS</th>
-            </tr>
-          </thead>
 
-          <tbody>
-            {primerosCinco.map((equipo, index) => {
-              const logo = obtenerLogo(equipo.nombre);
-
-              return (
-                <tr key={equipo.equipo}>
-                  <td>
-                    <span className="posicion">{index + 1}</span>
-                  </td>
-
-                  <td className="club-cell">
-                    {logo && (
-                      <img
-                        src={logo}
-                        alt={`Escudo de ${equipo.nombre}`}
-                        className="tabla-logo standings-logo"
-                      />
-                    )}
-
-                    <strong>{equipo.nombre}</strong>
-                  </td>
-
-                  <td>{equipo.jugados}</td>
-                  <td>{equipo.ganados}</td>
-                  <td>{equipo.empatados}</td>
-                  <td>{equipo.perdidos}</td>
-
-                  <td className="puntos">
-                    <strong>{equipo.puntos}</strong>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <TablaPosiciones tabla={primerosCinco} />
     </section>
   );
 }

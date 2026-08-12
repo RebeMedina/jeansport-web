@@ -128,6 +128,63 @@ color: #fff;
 font-size: 26px;
 cursor: pointer;
 }
+/* =============================
+   MENÚ MÓVIL
+============================= */
+
+.menu-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 26px;
+  cursor: pointer;
+  padding: 6px;
+  line-height: 1;
+}
+
+@media (max-width: 700px) {
+  .nav-wrap {
+    position: relative;
+  }
+
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+  }
+
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 10px;
+    background: #101722;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+  }
+
+  .main-nav.menu-open {
+    display: flex;
+  }
+
+  .main-nav a {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 8px;
+  }
+
+  .main-nav a:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
 
 /* =============================
 HERO
