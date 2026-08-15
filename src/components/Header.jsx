@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router";
 
@@ -14,10 +13,7 @@ function Header() {
       <div className="container nav-wrap">
         <Link className="brand" to="/" onClick={cerrarMenu}>
           <span className="logo-box">
-            <img
-              src={`${import.meta.env.BASE_URL}logo.png`}
-              alt="JeanSport"
-            />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="JeanSport" />
           </span>
 
           <span className="brand-text">
@@ -53,8 +49,8 @@ function Header() {
             Posiciones
           </Link>
 
-          <Link to="/goleadores" onClick={cerrarMenu}>
-            Goleadores
+          <Link to="/estadisticas" onClick={cerrarMenu}>
+            Estadísticas
           </Link>
         </nav>
       </div>
@@ -63,4 +59,3 @@ function Header() {
 }
 
 export default Header;
-

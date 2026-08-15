@@ -1,56 +1,83 @@
 import { obtenerLogo } from "../data/equipos";
+import { goleadores } from "../data/goleadores";
 
-function TablaGoleadores({ goleadores }) {
-return ( <div className="tabla-container tabla-goleadores-container"> <div className="tabla-scroll"> <table className="tabla tabla-goleadores"> <thead> <tr> <th>#</th> <th>Jugador</th> <th>Goles</th> <th>PJ</th> </tr> </thead>
+function Goleadores() {
+  const goleadoresOrdenados = [...goleadores]
+    .map((jugador) => ({
+      ...jugador,
+      promedio:
+        jugador.partidosJugados > 0
+          ? jugador.goles / jugador.partidosJugados
+          : 0,
+    }))
+    .sort((a, b) => b.goles - a.goles);
 
-```
-      <tbody>
-        {goleadores.map((jugador, index) => {
-          const logo = obtenerLogo(jugador.equipo);
+  return (
+    <>
+      <section className="container page-hero">
+        <span className="eyebrow">ESTADÍSTICAS</span>
 
-          return (
-            <tr key={`${jugador.nombre}-${index}`}>
-              <td className="goleador-posicion">
-                {index + 1}
-              </td>
+        <h1>Tabla de goleadores</h1>
 
-              <td className="goleador-info">
-                {logo && (
-                  <img
-                    src={logo}
-                    alt={`Escudo de ${jugador.equipo}`}
-                    className="goleador-foto"
-                  />
-                )}
+        <p>Los máximos goleadores de la Liga Promerica.</p>
+      </section>
 
-                <div className="goleador-datos">
-                  <strong className="goleador-nombre">
-                    {jugador.nombre}
-                  </strong>
+      <section className="container section">
+        <div className="tabla-wrap goleadores-wrap">
+          <table className="tabla tabla-goleadores">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Jugador</th>
+                <th>G</th>
+                <th>Prom.</th>
+              </tr>
+            </thead>
 
-                  <span className="goleador-equipo">
-                    {jugador.equipo}
-                  </span>
-                </div>
-              </td>
+            <tbody>
+              {goleadoresOrdenados.map((jugador, index) => {
+                const logo = obtenerLogo(jugador.equipo);
 
-              <td className="goleador-goles">
-                {jugador.goles}
-              </td>
+                return (
+                  <tr key={`${jugador.nombre}-${index}`}>
+                    <td>
+                      <span className="goleador-posicion">{index + 1}</span>
+                    </td>
 
-              <td className="goleador-partidos">
-                {jugador.partidosJugados}
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  </div>
-</div>
+                    <td className="goleador-info">
+                      {logo && (
+                        <img
+                          src={logo}
+                          alt={`Escudo de ${jugador.equipo}`}
+                          className="goleador-foto"
+                        />
+                      )}
 
+                      <div className="goleador-datos">
+                        <strong className="goleador-nombre">
+                          {jugador.nombre}
+                        </strong>
 
-);
+                        <span className="goleador-equipo">
+                          {jugador.equipo}
+                        </span>
+                      </div>
+                    </td>
+
+                    <td className="goleador-goles">{jugador.goles}</td>
+
+                    <td className="goleador-promedio">
+                      {jugador.promedio.toFixed(2)}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </>
+  );
 }
 
-export default TablaGoleadores;
+export default Goleadores;

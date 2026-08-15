@@ -20,39 +20,43 @@ const jornadas = [...new Set(partidos.map((partido) => partido.jornada))].sort(
   (a, b) => a - b,
 );
 
+// Determina la jornada actual según la fecha de hoy: es la jornada
+// más reciente cuya fecha de inicio ya llegó (sin importar si todos
+// sus partidos ya se jugaron o no). Se usa solo para el texto
+// "Jornada X" del encabezado, no para filtrar la tabla de posiciones.
+
 function obtenerJornadaActual() {
   const ahora = new Date();
 
-  const jornadasFinalizadas = jornadas.filter((jornada) => {
-    const partidosJornada = partidos.filter(
-      (partido) => partido.jornada === jornada,
-    );
+  const jornadasIniciadas = jornadas.filter((jornada) => {
+    const fechasJornada = partidos
+      .filter((partido) => partido.jornada === jornada)
+      .map((partido) => new Date(`${partido.fecha}T00:00:00`).getTime());
 
-    return (
-      partidosJornada.length > 0 &&
-      partidosJornada.every((partido) => {
-        const fechaPartido = new Date(`${partido.fecha}T23:59:59`);
+    const fechaInicio = new Date(Math.min(...fechasJornada));
 
-        return partido.estado === "finalizado" && fechaPartido <= ahora;
-      })
-    );
+    return fechaInicio <= ahora;
   });
 
-  if (jornadasFinalizadas.length > 0) {
-    return jornadasFinalizadas[jornadasFinalizadas.length - 1];
+  if (jornadasIniciadas.length > 0) {
+    return jornadasIniciadas[jornadasIniciadas.length - 1];
   }
 
   return jornadas[0];
 }
 
-function obtenerTablaPosiciones(jornadaActual) {
-  const partidosHastaJornada = partidos.filter(
-    (partido) =>
-      partido.jornada <= jornadaActual && partido.estado === "finalizado",
+// Cuenta TODOS los partidos con estado "finalizado", sin importar
+// a qué jornada pertenezcan. Así, en cuanto actualizas un resultado
+// a mano en partidos.js, se refleja de inmediato en la tabla,
+// sin esperar a que se complete toda la jornada.
+
+function obtenerTablaPosiciones() {
+  const partidosFinalizados = partidos.filter(
+    (partido) => partido.estado === "finalizado",
   );
 
   const tabla = equipos.map((equipo) => {
-    const partidosEquipo = partidosHastaJornada
+    const partidosEquipo = partidosFinalizados
       .filter(
         (partido) => partido.local === equipo || partido.visitante === equipo,
       )
@@ -140,7 +144,7 @@ function obtenerTablaPosiciones(jornadaActual) {
 
 function Posiciones() {
   const jornadaActual = obtenerJornadaActual();
-  const tabla = obtenerTablaPosiciones(jornadaActual);
+  const tabla = obtenerTablaPosiciones();
 
   return (
     <>

@@ -42,50 +42,56 @@ return nombre
 }
 
 export function obtenerLogo(nombreEquipo) {
-const nombre = normalizarNombre(nombreEquipo);
+  const nombre = normalizarNombre(nombreEquipo);
 
-if (nombre.includes("saprissa")) {
-return LOGOS_EQUIPOS.saprissa;
-}
+  if (nombre.includes("saprissa")) {
+    return LOGOS_EQUIPOS.saprissa;
+  }
 
-if (nombre.includes("cartagines")) {
-return LOGOS_EQUIPOS.cartagines;
-}
+  if (nombre.includes("cartagines")) {
+    return LOGOS_EQUIPOS.cartagines;
+  }
 
-if (nombre.includes("sporting")) {
-return LOGOS_EQUIPOS.sporting;
-}
+  if (nombre.includes("sporting")) {
+    return LOGOS_EQUIPOS.sporting;
+  }
 
-if (nombre.includes("escorpiones")) {
-return LOGOS_EQUIPOS.escorpiones;
-}
+  if (nombre.includes("escorpiones")) {
+    return LOGOS_EQUIPOS.escorpiones;
+  }
 
-if (nombre.includes("perez") || nombre.includes("zeledon")) {
-return LOGOS_EQUIPOS["perez zeledon"];
-}
+  if (nombre.includes("perez") || nombre.includes("zeledon")) {
+    return LOGOS_EQUIPOS["perez zeledon"];
+  }
 
-if (nombre.includes("puntarenas")) {
-return LOGOS_EQUIPOS.puntarenas;
-}
+  if (nombre.includes("puntarenas")) {
+    return LOGOS_EQUIPOS.puntarenas;
+  }
 
-if (
-nombre.includes("alajuelense") ||
-nombre.includes("liga deportiva")
-) {
-return LOGOS_EQUIPOS.alajuelense;
-}
+  if (
+    nombre.includes("alajuelense") ||
+    nombre.includes("liga deportiva")
+  ) {
+    return LOGOS_EQUIPOS.alajuelense;
+  }
 
-if (nombre.includes("herediano")) {
-return LOGOS_EQUIPOS.herediano;
-}
+  if (nombre.includes("herediano")) {
+    return LOGOS_EQUIPOS.herediano;
+  }
 
-if (nombre.includes("inter san carlos")) {
-return LOGOS_EQUIPOS["inter san carlos"];
-}
+  // Inter San Carlos
+  if (
+    nombre.includes("inter san carlos") ||
+    nombre === "inter sc" ||
+    nombre.includes("inter sc")
+  ) {
+    return LOGOS_EQUIPOS["inter san carlos"];
+  }
 
-if (nombre.includes("san carlos")) {
-return LOGOS_EQUIPOS["san carlos"];
-}
+  // San Carlos
+  if (nombre.includes("san carlos")) {
+    return LOGOS_EQUIPOS["san carlos"];
+  }
 
-return "";
+  return "";
 }

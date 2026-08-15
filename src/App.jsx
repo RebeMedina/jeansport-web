@@ -1,26 +1,25 @@
-
-import { BrowserRouter, Routes, Route } from "react-router";
+import { HashRouter, Routes, Route } from "react-router";
 
 import Layout from "./layouts/Layout";
 import Home from "./pages/Home";
 import Resultados from "./pages/Resultados";
 import Posiciones from "./pages/Posiciones";
-import Goleadores from "./pages/Goleadores";
+import Estadisticas from "./pages/Estadisticas";
 import Noticias from "./pages/Noticias";
 
 function App() {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <HashRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/resultados" element={<Resultados />} />
           <Route path="/posiciones" element={<Posiciones />} />
-          <Route path="/goleadores" element={<Goleadores />} />
+          <Route path="/estadisticas" element={<Estadisticas/>} />
           <Route path="/noticias" element={<Noticias />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

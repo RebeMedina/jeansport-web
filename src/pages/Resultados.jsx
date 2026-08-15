@@ -19,31 +19,33 @@ const jornadas = [...new Set(partidos.map((partido) => partido.jornada))].sort(
   (a, b) => a - b,
 );
 
+// Misma lógica que en Posiciones.jsx: la jornada actual es la más
+// reciente cuya fecha de inicio ya llegó, sin importar si todos sus
+// partidos ya se jugaron o no.
 const obtenerJornadaActual = () => {
   const ahora = new Date();
 
-  const jornadasFinalizadas = jornadas.filter((jornada) => {
-    const partidosJornada = partidos.filter(
-      (partido) => partido.jornada === jornada,
-    );
+  const jornadasIniciadas = jornadas.filter((jornada) => {
+    const fechasJornada = partidos
+      .filter((partido) => partido.jornada === jornada)
+      .map((partido) => new Date(`${partido.fecha}T00:00:00`).getTime());
 
-    return partidosJornada.some((partido) => {
-      const fechaPartido = new Date(`${partido.fecha}T23:59:59`);
-      return fechaPartido <= ahora;
-    });
+    const fechaInicio = new Date(Math.min(...fechasJornada));
+
+    return fechaInicio <= ahora;
   });
 
-  if (jornadasFinalizadas.length > 0) {
-    return jornadasFinalizadas[jornadasFinalizadas.length - 1];
+  if (jornadasIniciadas.length > 0) {
+    return jornadasIniciadas[jornadasIniciadas.length - 1];
   }
 
   return jornadas[0];
 };
 
 function Resultados() {
-  const [jornadaSeleccionada, setJornadaSeleccionada] = useState(
-    obtenerJornadaActual(),
-  );
+  const jornadaActual = obtenerJornadaActual();
+
+  const [jornadaSeleccionada, setJornadaSeleccionada] = useState(jornadaActual);
 
   useEffect(() => {
     window.scrollTo({
@@ -69,7 +71,7 @@ function Resultados() {
         {" "}
         <span className="eyebrow">PARTIDOS</span>
         <h1>Resultados</h1>
-        <p>Jornada {jornadaSeleccionada} Liga Promerica.</p>
+        <p>Jornada {jornadaActual} Liga Promerica.</p>
       </section>
       <section className="container section">
         <div className="jornada-selector">

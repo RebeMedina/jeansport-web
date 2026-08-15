@@ -163,9 +163,11 @@ export const partidos = [
     fecha: "2026-08-14",
     jornada: 4,
     local: "san-carlos",
+    golesLocal: 1,
     visitante: "herediano",
+    golesVisitante: 0,
     hora: "20:00",
-    estado: "proximo",
+    estado: "finalizado",
   },
   {
     id: 16,

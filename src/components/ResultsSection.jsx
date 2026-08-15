@@ -15,9 +15,40 @@ const nombresEquipos = {
   alajuelense: "L.D. Alajuelense",
 };
 
+const jornadas = [...new Set(partidos.map((partido) => partido.jornada))].sort(
+  (a, b) => a - b,
+);
+
+// Misma lógica que en Posiciones.jsx y Resultados.jsx: la jornada
+// actual es la más reciente cuya fecha de inicio ya llegó.
+const obtenerJornadaActual = () => {
+  const ahora = new Date();
+
+  const jornadasIniciadas = jornadas.filter((jornada) => {
+    const fechasJornada = partidos
+      .filter((partido) => partido.jornada === jornada)
+      .map((partido) => new Date(`${partido.fecha}T00:00:00`).getTime());
+
+    const fechaInicio = new Date(Math.min(...fechasJornada));
+
+    return fechaInicio <= ahora;
+  });
+
+  if (jornadasIniciadas.length > 0) {
+    return jornadasIniciadas[jornadasIniciadas.length - 1];
+  }
+
+  return jornadas[0];
+};
+
 function ResultsSection() {
+  const jornadaActual = obtenerJornadaActual();
+
   const resultados = partidos
-    .filter((partido) => partido.estado === "finalizado")
+    .filter(
+      (partido) =>
+        partido.jornada === jornadaActual && partido.estado === "finalizado",
+    )
     .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
     .slice(0, 3);
 
@@ -88,9 +119,7 @@ function ResultsSection() {
                     />
                   )}
 
-                  <strong className="equipo-nombre">
-                    {nombreVisitante}
-                  </strong>
+                  <strong className="equipo-nombre">{nombreVisitante}</strong>
                 </div>
               </div>
             </article>
@@ -102,4 +131,3 @@ function ResultsSection() {
 }
 
 export default ResultsSection;
-
