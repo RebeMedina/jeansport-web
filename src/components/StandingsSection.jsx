@@ -83,7 +83,7 @@ function StandingsSection() {
       golesContra,
       diferenciaGoles,
       puntos,
-      ultimosTres: ultimos.slice(-3),
+      ultimosTres: ultimos.slice(-5),
     };
   });
 

@@ -1412,6 +1412,7 @@ select {
   .tabla-goleadores .goleador-info {
     min-width: 280px;
     gap: 10px;
+    justify-content: center;
   }
 
   .tabla-goleadores .goleador-foto {

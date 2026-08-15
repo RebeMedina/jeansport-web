@@ -1,9 +1,13 @@
-
 import { Link } from "react-router";
 import { obtenerLogo } from "../data/equipos";
+import { noticias } from "../data/noticias";
 
 function Hero() {
-  const logoPuntarenas = obtenerLogo("Puntarenas F.C.");
+  const noticiaReciente = [...noticias].sort(
+    (a, b) => new Date(b.fecha) - new Date(a.fecha),
+  )[0];
+
+  const logo = obtenerLogo(noticiaReciente?.equipos?.[0]);
 
   return (
     <section className="hero container">
@@ -21,38 +25,31 @@ function Hero() {
           del mundo.
         </p>
 
-        <div className="hero-actions">
-          <Link className="btn btn-primary" to="/noticias">
-            Ver noticias
-          </Link>
-        </div>
       </div>
 
-      <Link
-        to="/noticias"
-        className="hero-card hero-news-card"
-        aria-label="Ver noticia de Puntarenas FC"
-      >
-        {logoPuntarenas && (
-          <img
-            src={logoPuntarenas}
-            alt="Escudo de Puntarenas F.C."
-            className="hero-news-logo"
-          />
-        )}
+      {noticiaReciente && (
+        <Link
+          to="/noticias"
+          className="hero-card hero-news-card"
+          aria-label={`Ver noticia: ${noticiaReciente.titulo}`}
+        >
+          {logo && (
+            <img
+              src={logo}
+              alt={`Escudo de ${noticiaReciente.equipos[0]}`}
+              className="hero-news-logo"
+            />
+          )}
 
-        <h2>Comunicado oficial UNAFUT</h2>
+          <h2>{noticiaReciente.titulo}</h2>
 
-        <p>
-          El Comité de Competición concluyó que Puntarenas FC no logró demostrar
-          lo interpuesto con el jugador Walter Cortés.
-        </p>
+          <p>{noticiaReciente.descripcion}</p>
 
-        <span className="hero-news-link">Ver noticia →</span>
-      </Link>
+          <span className="hero-news-link">Ver noticia →</span>
+        </Link>
+      )}
     </section>
   );
 }
 
 export default Hero;
-
