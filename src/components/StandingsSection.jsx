@@ -1,6 +1,6 @@
-
 import { Link } from "react-router";
 import { partidos } from "../data/partidos";
+import { obtenerEstadoPartido } from "../data/estadoPartido";
 import TablaPosiciones from "../components/TablaPosiciones";
 
 const nombresEquipos = {
@@ -20,7 +20,7 @@ const equipos = Object.keys(nombresEquipos);
 
 function StandingsSection() {
   const partidosFinalizados = partidos.filter(
-    (partido) => partido.estado === "finalizado",
+    (partido) => obtenerEstadoPartido(partido) === "finalizado",
   );
 
   const tabla = equipos.map((equipo) => {
@@ -40,13 +40,9 @@ function StandingsSection() {
     partidosEquipo.forEach((partido) => {
       const esLocal = partido.local === equipo;
 
-      const golesEquipo = esLocal
-        ? partido.golesLocal
-        : partido.golesVisitante;
+      const golesEquipo = esLocal ? partido.golesLocal : partido.golesVisitante;
 
-      const golesRival = esLocal
-        ? partido.golesVisitante
-        : partido.golesLocal;
+      const golesRival = esLocal ? partido.golesVisitante : partido.golesLocal;
 
       if (typeof golesEquipo !== "number" || typeof golesRival !== "number") {
         return;
@@ -126,4 +122,3 @@ function StandingsSection() {
 }
 
 export default StandingsSection;
-

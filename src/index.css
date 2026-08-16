@@ -1280,6 +1280,15 @@ select {
   outline-offset: 2px;
 }
 
+  .estado-en-vivo {
+  color: #ff0037;
+  font-weight: 700;
+}
+
+  .resultado-card-en-vivo {
+  border-color: #ff0037;
+}
+
 /* =============================
    RESPONSIVE 850px
 ============================= */
@@ -1322,6 +1331,16 @@ select {
   .noticias-grid .featured .noticias-logos {
     min-height: 190px;
   }
+
+  .estado-en-vivo {
+  color: #ff0037;
+  font-weight: 700;
+}
+
+  .resultado-card-en-vivo {
+  border-color: #ff0037;
+}
+  
 }
 
 /* =============================
@@ -1463,6 +1482,16 @@ select {
   .standings-home .club-cell strong {
     font-size: 13px;
   }
+
+  .estado-en-vivo {
+  color: #ff0037;
+  font-weight: 700;
+}
+
+  .resultado-card-en-vivo {
+  border-color: #ff0037;
+}
+
 }
 
 /* =============================
@@ -1568,4 +1597,13 @@ select {
   .noticias-grid .news-content {
     padding: 16px;
   }
+  .estado-en-vivo {
+  color: #ff0037;
+  font-weight: 700;
+}
+
+  .resultado-card-en-vivo {
+  border-color: #ff0037;
+}
+
 }

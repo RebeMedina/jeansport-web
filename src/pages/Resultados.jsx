@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { obtenerLogo } from "../data/equipos";
 import { partidos } from "../data/partidos";
+import { obtenerEstadoPartido } from "../data/estadoPartido";
 
 const nombresEquipos = {
   "san-carlos": "A.D. San Carlos",
@@ -19,9 +20,6 @@ const jornadas = [...new Set(partidos.map((partido) => partido.jornada))].sort(
   (a, b) => a - b,
 );
 
-// Misma lógica que en Posiciones.jsx: la jornada actual es la más
-// reciente cuya fecha de inicio ya llegó, sin importar si todos sus
-// partidos ya se jugaron o no.
 const obtenerJornadaActual = () => {
   const ahora = new Date();
 
@@ -53,6 +51,18 @@ function Resultados() {
       behavior: "smooth",
     });
   }, [jornadaSeleccionada]);
+
+  // Recalcula el estado cada 60s para que un partido pase solo de
+  // "próximo" a "en-curso" sin que el usuario tenga que refrescar.
+  const [, forzarActualizacion] = useState(0);
+
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      forzarActualizacion((valor) => valor + 1);
+    }, 60000);
+
+    return () => clearInterval(intervalo);
+  }, []);
 
   const partidosJornada = partidos.filter(
     (partido) => partido.jornada === jornadaSeleccionada,
@@ -106,8 +116,19 @@ function Resultados() {
             const logoLocal = obtenerLogo(nombreLocal);
             const logoVisitante = obtenerLogo(nombreVisitante);
 
+            const estado = obtenerEstadoPartido(partido);
+
+            const tieneGoles =
+              typeof partido.golesLocal === "number" &&
+              typeof partido.golesVisitante === "number";
+
             return (
-              <article className="resultado-card" key={partido.id}>
+              <article
+                className={`resultado-card ${
+                  estado === "en-curso" ? "resultado-card-en-vivo" : ""
+                }`}
+                key={partido.id}
+              >
                 <div className="resultado-header">
                   <span className="resultado-fecha">
                     {formatearFecha(partido.fecha)}
@@ -130,7 +151,7 @@ function Resultados() {
                   </div>
 
                   <div className="resultado-marcador">
-                    {partido.estado === "finalizado" ? (
+                    {estado === "finalizado" && (
                       <>
                         <strong className="marcador">
                           {partido.golesLocal} - {partido.golesVisitante}
@@ -138,7 +159,23 @@ function Resultados() {
 
                         <span className="estado-partido">Finalizado</span>
                       </>
-                    ) : (
+                    )}
+
+                    {estado === "en-curso" && (
+                      <>
+                        <strong className="marcador">
+                          {tieneGoles
+                            ? `${partido.golesLocal} - ${partido.golesVisitante}`
+                            : "0 - 0"}
+                        </strong>
+
+                        <span className="estado-partido estado-en-vivo">
+                          ● En vivo
+                        </span>
+                      </>
+                    )}
+
+                    {estado === "proximo" && (
                       <>
                         <strong className="marcador">{partido.hora}</strong>
 

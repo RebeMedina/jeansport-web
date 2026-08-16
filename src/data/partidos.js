@@ -2,7 +2,6 @@ export const partidos = [
   // =========================
   // JORNADA 1
   // =========================
-
   {
     id: 1,
     fecha: "2026-07-23",
@@ -185,7 +184,9 @@ export const partidos = [
     fecha: "2026-08-15",
     jornada: 4,
     local: "saprissa",
+    golesLocal: 3,
     visitante: "cartagines",
+    golesVisitante: 2,
     hora: "20:00",
     estado: "proximo",
   },

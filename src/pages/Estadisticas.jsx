@@ -2,6 +2,7 @@ import { useState } from "react";
 import { obtenerLogo } from "../data/equipos";
 import { goleadores } from "../data/goleadores";
 import { partidos } from "../data/partidos";
+import { obtenerEstadoPartido } from "../data/estadoPartido";
 
 const nombresEquipos = {
   "san-carlos": "A.D. San Carlos",
@@ -28,7 +29,7 @@ function Estadisticas() {
 
   const partidosFinalizados = partidos.filter(
     (partido) =>
-      partido.estado === "finalizado" &&
+      obtenerEstadoPartido(partido) === "finalizado" &&
       typeof partido.golesLocal === "number" &&
       typeof partido.golesVisitante === "number",
   );
@@ -53,6 +54,8 @@ function Estadisticas() {
         b.promedio - a.promedio ||
         a.nombre.localeCompare(b.nombre),
     );
+
+  const primerosCincoGoleadores = goleadoresOrdenados.slice(0, 5);
 
   /*
    * ============================================================
@@ -474,9 +477,7 @@ function Estadisticas() {
 
         <h1>Estadísticas del torneo</h1>
 
-        <p>
-          Todos los números del Apertura 2026.
-        </p>
+        <p>Todos los números del Apertura 2026.</p>
       </section>
 
       {/* ======================================================
@@ -928,7 +929,7 @@ function Estadisticas() {
 
             <h2>Máximos goleadores</h2>
 
-            <p>Los jugadores con más goles en el Apertura 2026.</p>
+            <p>Los 5 jugadores con más goles en el Apertura 2026.</p>
           </div>
         </div>
 
@@ -944,7 +945,7 @@ function Estadisticas() {
             </thead>
 
             <tbody>
-              {goleadoresOrdenados.map((jugador, index) => {
+              {primerosCincoGoleadores.map((jugador, index) => {
                 return (
                   <tr key={jugador.nombre}>
                     <td>

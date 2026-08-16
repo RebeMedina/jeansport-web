@@ -1,4 +1,5 @@
 import { partidos } from "../data/partidos";
+import { obtenerEstadoPartido } from "../data/estadoPartido";
 import TablaPosiciones from "../components/TablaPosiciones";
 
 const nombresEquipos = {
@@ -45,14 +46,16 @@ function obtenerJornadaActual() {
   return jornadas[0];
 }
 
-// Cuenta TODOS los partidos con estado "finalizado", sin importar
-// a qué jornada pertenezcan. Así, en cuanto actualizas un resultado
-// a mano en partidos.js, se refleja de inmediato en la tabla,
-// sin esperar a que se complete toda la jornada.
+// Cuenta TODOS los partidos cuyo estado REAL (calculado con
+// obtenerEstadoPartido, según fecha/hora/resultado) es "finalizado",
+// sin importar a qué jornada pertenezcan ni lo que diga el campo
+// "estado" crudo en partidos.js. Así, en cuanto cargas el resultado
+// y pasa la hora de fin, se refleja de inmediato en la tabla, sin
+// tener que ir a cambiar "estado" a mano en el archivo de datos.
 
 function obtenerTablaPosiciones() {
   const partidosFinalizados = partidos.filter(
-    (partido) => partido.estado === "finalizado",
+    (partido) => obtenerEstadoPartido(partido) === "finalizado",
   );
 
   const tabla = equipos.map((equipo) => {

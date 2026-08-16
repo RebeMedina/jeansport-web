@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { partidos } from "../data/partidos";
 import { obtenerLogo } from "../data/equipos";
+import { obtenerEstadoPartido } from "../data/estadoPartido";
 
 const nombresEquipos = {
   "san-carlos": "A.D. San Carlos",
@@ -19,8 +20,6 @@ const jornadas = [...new Set(partidos.map((partido) => partido.jornada))].sort(
   (a, b) => a - b,
 );
 
-// Misma lógica que en Posiciones.jsx y Resultados.jsx: la jornada
-// actual es la más reciente cuya fecha de inicio ya llegó.
 const obtenerJornadaActual = () => {
   const ahora = new Date();
 
@@ -44,12 +43,22 @@ const obtenerJornadaActual = () => {
 function ResultsSection() {
   const jornadaActual = obtenerJornadaActual();
 
-  const resultados = partidos
+  const partidosConEstado = partidos
+    .filter((partido) => partido.jornada === jornadaActual)
+    .map((partido) => ({
+      ...partido,
+      estadoReal: obtenerEstadoPartido(partido),
+    }))
     .filter(
       (partido) =>
-        partido.jornada === jornadaActual && partido.estado === "finalizado",
+        partido.estadoReal === "finalizado" ||
+        partido.estadoReal === "en-curso",
     )
-    .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+    .sort((a, b) => {
+      const fechaHoraA = new Date(`${a.fecha}T${a.hora || "00:00"}:00`);
+      const fechaHoraB = new Date(`${b.fecha}T${b.hora || "00:00"}:00`);
+      return fechaHoraB - fechaHoraA; // más reciente jugado primero
+    })
     .slice(0, 3);
 
   const formatearFecha = (fecha) => {
@@ -71,7 +80,7 @@ function ResultsSection() {
       </div>
 
       <div className="resultados-container">
-        {resultados.map((partido) => {
+        {partidosConEstado.map((partido) => {
           const nombreLocal = nombresEquipos[partido.local] || partido.local;
           const nombreVisitante =
             nombresEquipos[partido.visitante] || partido.visitante;
@@ -79,8 +88,19 @@ function ResultsSection() {
           const logoLocal = obtenerLogo(nombreLocal);
           const logoVisitante = obtenerLogo(nombreVisitante);
 
+          const tieneGoles =
+            typeof partido.golesLocal === "number" &&
+            typeof partido.golesVisitante === "number";
+
           return (
-            <article className="resultado-card" key={partido.id}>
+            <article
+              className={`resultado-card ${
+                partido.estadoReal === "en-curso"
+                  ? "resultado-card-en-vivo"
+                  : ""
+              }`}
+              key={partido.id}
+            >
               <div className="resultado-header">
                 <span className="resultado-fecha">
                   {formatearFecha(partido.fecha)}
@@ -104,10 +124,20 @@ function ResultsSection() {
 
                 <div className="resultado-marcador">
                   <strong className="marcador">
-                    {partido.golesLocal} - {partido.golesVisitante}
+                    {tieneGoles
+                      ? `${partido.golesLocal} - ${partido.golesVisitante}`
+                      : "0 - 0"}
                   </strong>
 
-                  <span className="estado-partido">Finalizado</span>
+                  <span
+                    className={`estado-partido ${
+                      partido.estadoReal === "en-curso" ? "estado-en-vivo" : ""
+                    }`}
+                  >
+                    {partido.estadoReal === "en-curso"
+                      ? "● En vivo"
+                      : "Finalizado"}
+                  </span>
                 </div>
 
                 <div className="equipo equipo-visitante">
