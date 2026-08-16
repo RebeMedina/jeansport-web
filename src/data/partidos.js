@@ -174,9 +174,11 @@ export const partidos = [
     fecha: "2026-08-15",
     jornada: 4,
     local: "alajuelense",
+    golesLocal: 2,
     visitante: "puntarenas",
+    golesVisitante:1,
     hora: "16:00",
-    estado: "proximo",
+    estado: "finalizado",
   },
   {
     id: 17,
