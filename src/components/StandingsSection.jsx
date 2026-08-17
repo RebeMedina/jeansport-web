@@ -19,14 +19,20 @@ const nombresEquipos = {
 const equipos = Object.keys(nombresEquipos);
 
 function StandingsSection() {
-  const partidosFinalizados = partidos.filter(
-    (partido) => obtenerEstadoPartido(partido) === "finalizado",
-  );
+  const partidosActivos = partidos.filter((partido) => {
+    const estado = obtenerEstadoPartido(partido);
+
+    return estado === "finalizado" || estado === "en-curso";
+  });
 
   const tabla = equipos.map((equipo) => {
-    const partidosEquipo = partidosFinalizados.filter(
-      (partido) => partido.local === equipo || partido.visitante === equipo,
-    );
+    const partidosEquipo = partidosActivos
+      .filter(
+        (partido) => partido.local === equipo || partido.visitante === equipo,
+      )
+      .sort(
+        (a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime(),
+      );
 
     let jugados = 0;
     let ganados = 0;
@@ -84,22 +90,27 @@ function StandingsSection() {
   });
 
   tabla.sort((a, b) => {
+    // 1. Más puntos
     if (a.puntos !== b.puntos) {
       return b.puntos - a.puntos;
     }
 
+    // 2. Mejor diferencia de goles
     if (a.diferenciaGoles !== b.diferenciaGoles) {
       return b.diferenciaGoles - a.diferenciaGoles;
     }
 
+    // 3. Más goles a favor
     if (a.golesFavor !== b.golesFavor) {
       return b.golesFavor - a.golesFavor;
     }
 
+    // 4. Más partidos ganados
     if (a.ganados !== b.ganados) {
       return b.ganados - a.ganados;
     }
 
+    // 5. Orden alfabético como último desempate
     return a.nombre.localeCompare(b.nombre);
   });
 
@@ -110,6 +121,7 @@ function StandingsSection() {
       <div className="section-heading">
         <div>
           <span className="eyebrow">CLASIFICACIÓN</span>
+
           <h2>Tabla de posiciones</h2>
         </div>
 

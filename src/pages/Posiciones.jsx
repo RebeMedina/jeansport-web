@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { partidos } from "../data/partidos";
 import { obtenerEstadoPartido } from "../data/estadoPartido";
 import TablaPosiciones from "../components/TablaPosiciones";
@@ -21,11 +22,6 @@ const jornadas = [...new Set(partidos.map((partido) => partido.jornada))].sort(
   (a, b) => a - b,
 );
 
-// Determina la jornada actual según la fecha de hoy: es la jornada
-// más reciente cuya fecha de inicio ya llegó (sin importar si todos
-// sus partidos ya se jugaron o no). Se usa solo para el texto
-// "Jornada X" del encabezado, no para filtrar la tabla de posiciones.
-
 function obtenerJornadaActual() {
   const ahora = new Date();
 
@@ -46,20 +42,15 @@ function obtenerJornadaActual() {
   return jornadas[0];
 }
 
-// Cuenta TODOS los partidos cuyo estado REAL (calculado con
-// obtenerEstadoPartido, según fecha/hora/resultado) es "finalizado",
-// sin importar a qué jornada pertenezcan ni lo que diga el campo
-// "estado" crudo en partidos.js. Así, en cuanto cargas el resultado
-// y pasa la hora de fin, se refleja de inmediato en la tabla, sin
-// tener que ir a cambiar "estado" a mano en el archivo de datos.
-
 function obtenerTablaPosiciones() {
-  const partidosFinalizados = partidos.filter(
-    (partido) => obtenerEstadoPartido(partido) === "finalizado",
-  );
+  const partidosActivos = partidos.filter((partido) => {
+    const estado = obtenerEstadoPartido(partido);
+
+    return estado === "finalizado" || estado === "en-curso";
+  });
 
   const tabla = equipos.map((equipo) => {
-    const partidosEquipo = partidosFinalizados
+    const partidosEquipo = partidosActivos
       .filter(
         (partido) => partido.local === equipo || partido.visitante === equipo,
       )
@@ -146,6 +137,16 @@ function obtenerTablaPosiciones() {
 }
 
 function Posiciones() {
+  const [, setActualizacion] = useState(0);
+
+  useEffect(() => {
+    const intervalo = setInterval(() => {
+      setActualizacion((valor) => valor + 1);
+    }, 30000);
+
+    return () => clearInterval(intervalo);
+  }, []);
+
   const jornadaActual = obtenerJornadaActual();
   const tabla = obtenerTablaPosiciones();
 

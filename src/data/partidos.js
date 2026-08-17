@@ -42,13 +42,23 @@ export const partidos = [
     golesVisitante: 1,
     estado: "finalizado",
   },
+  {
+    id: 5,
+    fecha: "2026-07-26",
+    jornada: 1,
+    local: "san-carlos",
+    golesLocal: 0,
+    visitante: "escorpiones",
+    golesVisitante: 3,
+    hora: "17:00",
+    estado: "finalizado",
+  },
 
   // =========================
   // JORNADA 2
   // =========================
-
   {
-    id: 5,
+    id: 6,
     fecha: "2026-08-01",
     jornada: 2,
     local: "puntarenas",
@@ -58,7 +68,7 @@ export const partidos = [
     estado: "finalizado",
   },
   {
-    id: 6,
+    id: 7,
     fecha: "2026-08-01",
     jornada: 2,
     local: "alajuelense",
@@ -68,7 +78,7 @@ export const partidos = [
     estado: "finalizado",
   },
   {
-    id: 7,
+    id: 8,
     fecha: "2026-08-02",
     jornada: 2,
     local: "saprissa",
@@ -78,7 +88,7 @@ export const partidos = [
     estado: "finalizado",
   },
   {
-    id: 8,
+    id: 9,
     fecha: "2026-08-02",
     jornada: 2,
     local: "inter-sc",
@@ -88,7 +98,7 @@ export const partidos = [
     estado: "finalizado",
   },
   {
-    id: 9,
+    id: 10,
     fecha: "2026-08-03",
     jornada: 2,
     local: "perez-zeledon",
@@ -101,9 +111,8 @@ export const partidos = [
   // =========================
   // JORNADA 3
   // =========================
-
   {
-    id: 10,
+    id: 11,
     fecha: "2026-08-07",
     jornada: 3,
     local: "cartagines",
@@ -113,7 +122,7 @@ export const partidos = [
     estado: "finalizado",
   },
   {
-    id: 11,
+    id: 12,
     fecha: "2026-08-08",
     jornada: 3,
     local: "escorpiones",
@@ -123,7 +132,7 @@ export const partidos = [
     estado: "finalizado",
   },
   {
-    id: 12,
+    id: 13,
     fecha: "2026-08-08",
     jornada: 3,
     local: "puntarenas",
@@ -133,7 +142,7 @@ export const partidos = [
     estado: "finalizado",
   },
   {
-    id: 13,
+    id: 14,
     fecha: "2026-08-09",
     jornada: 3,
     local: "inter-sc",
@@ -143,7 +152,7 @@ export const partidos = [
     estado: "finalizado",
   },
   {
-    id: 14,
+    id: 15,
     fecha: "2026-08-09",
     jornada: 3,
     local: "herediano",
@@ -156,9 +165,8 @@ export const partidos = [
   // =========================
   // JORNADA 4
   // =========================
-
   {
-    id: 15,
+    id: 16,
     fecha: "2026-08-14",
     jornada: 4,
     local: "san-carlos",
@@ -169,18 +177,18 @@ export const partidos = [
     estado: "finalizado",
   },
   {
-    id: 16,
+    id: 17,
     fecha: "2026-08-15",
     jornada: 4,
     local: "alajuelense",
     golesLocal: 2,
     visitante: "puntarenas",
-    golesVisitante:1,
+    golesVisitante: 1,
     hora: "16:00",
     estado: "finalizado",
   },
   {
-    id: 17,
+    id: 18,
     fecha: "2026-08-15",
     jornada: 4,
     local: "saprissa",
@@ -191,16 +199,18 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 18,
+    id: 19,
     fecha: "2026-08-16",
     jornada: 4,
     local: "perez-zeledon",
+    golesLocal: 0,
     visitante: "inter-sc",
+    golesVisitante: 1,
     hora: "16:00",
     estado: "proximo",
   },
   {
-    id: 19,
+    id: 20,
     fecha: "2026-08-17",
     jornada: 4,
     local: "sporting",
@@ -212,9 +222,8 @@ export const partidos = [
   // =========================
   // JORNADA 5
   // =========================
-
   {
-    id: 20,
+    id: 21,
     fecha: "2026-08-21",
     jornada: 5,
     local: "puntarenas",
@@ -223,7 +232,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 21,
+    id: 22,
     fecha: "2026-08-22",
     jornada: 5,
     local: "escorpiones",
@@ -232,7 +241,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 22,
+    id: 23,
     fecha: "2026-08-22",
     jornada: 5,
     local: "herediano",
@@ -241,7 +250,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 23,
+    id: 24,
     fecha: "2026-08-23",
     jornada: 5,
     local: "inter-sc",
@@ -250,7 +259,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 24,
+    id: 25,
     fecha: "2026-08-23",
     jornada: 5,
     local: "alajuelense",
@@ -262,9 +271,8 @@ export const partidos = [
   // =========================
   // JORNADA 6
   // =========================
-
   {
-    id: 25,
+    id: 26,
     fecha: "2026-08-28",
     jornada: 6,
     local: "sporting",
@@ -273,7 +281,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 26,
+    id: 27,
     fecha: "2026-08-29",
     jornada: 6,
     local: "perez-zeledon",
@@ -282,7 +290,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 27,
+    id: 28,
     fecha: "2026-08-30",
     jornada: 6,
     local: "cartagines",
@@ -291,7 +299,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 28,
+    id: 29,
     fecha: "2026-08-30",
     jornada: 6,
     local: "san-carlos",
@@ -300,7 +308,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 29,
+    id: 30,
     fecha: "2026-08-30",
     jornada: 6,
     local: "saprissa",
@@ -312,9 +320,8 @@ export const partidos = [
   // =========================
   // JORNADA 7
   // =========================
-
   {
-    id: 30,
+    id: 31,
     fecha: "2026-09-06",
     jornada: 7,
     local: "escorpiones",
@@ -323,7 +330,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 31,
+    id: 32,
     fecha: "2026-09-06",
     jornada: 7,
     local: "puntarenas",
@@ -332,7 +339,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 32,
+    id: 33,
     fecha: "2026-09-06",
     jornada: 7,
     local: "san-carlos",
@@ -341,7 +348,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 33,
+    id: 34,
     fecha: "2026-09-06",
     jornada: 7,
     local: "herediano",
@@ -350,7 +357,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 34,
+    id: 35,
     fecha: "2026-09-06",
     jornada: 7,
     local: "alajuelense",
@@ -362,9 +369,8 @@ export const partidos = [
   // =========================
   // JORNADA 8
   // =========================
-
   {
-    id: 35,
+    id: 36,
     fecha: "2026-09-13",
     jornada: 8,
     local: "sporting",
@@ -373,7 +379,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 36,
+    id: 37,
     fecha: "2026-09-13",
     jornada: 8,
     local: "escorpiones",
@@ -382,7 +388,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 37,
+    id: 38,
     fecha: "2026-09-13",
     jornada: 8,
     local: "inter-sc",
@@ -391,7 +397,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 38,
+    id: 39,
     fecha: "2026-09-13",
     jornada: 8,
     local: "perez-zeledon",
@@ -400,7 +406,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 39,
+    id: 40,
     fecha: "2026-09-13",
     jornada: 8,
     local: "cartagines",
@@ -412,9 +418,8 @@ export const partidos = [
   // =========================
   // JORNADA 9
   // =========================
-
   {
-    id: 40,
+    id: 41,
     fecha: "2026-09-20",
     jornada: 9,
     local: "san-carlos",
@@ -423,7 +428,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 41,
+    id: 42,
     fecha: "2026-09-20",
     jornada: 9,
     local: "puntarenas",
@@ -432,7 +437,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 42,
+    id: 43,
     fecha: "2026-09-20",
     jornada: 9,
     local: "perez-zeledon",
@@ -441,7 +446,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 43,
+    id: 44,
     fecha: "2026-09-20",
     jornada: 9,
     local: "alajuelense",
@@ -450,7 +455,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 44,
+    id: 45,
     fecha: "2026-09-20",
     jornada: 9,
     local: "saprissa",
@@ -462,9 +467,8 @@ export const partidos = [
   // =========================
   // JORNADA 10
   // =========================
-
   {
-    id: 45,
+    id: 46,
     fecha: "2026-10-11",
     jornada: 10,
     local: "puntarenas",
@@ -473,7 +477,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 46,
+    id: 47,
     fecha: "2026-10-11",
     jornada: 10,
     local: "herediano",
@@ -482,7 +486,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 47,
+    id: 48,
     fecha: "2026-10-11",
     jornada: 10,
     local: "inter-sc",
@@ -491,7 +495,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 48,
+    id: 49,
     fecha: "2026-10-11",
     jornada: 10,
     local: "escorpiones",
@@ -500,7 +504,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 49,
+    id: 50,
     fecha: "2026-10-11",
     jornada: 10,
     local: "sporting",
@@ -512,9 +516,8 @@ export const partidos = [
   // =========================
   // JORNADA 11
   // =========================
-
   {
-    id: 50,
+    id: 51,
     fecha: "2026-10-14",
     jornada: 11,
     local: "cartagines",
@@ -523,7 +526,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 51,
+    id: 52,
     fecha: "2026-10-14",
     jornada: 11,
     local: "alajuelense",
@@ -532,7 +535,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 52,
+    id: 53,
     fecha: "2026-10-14",
     jornada: 11,
     local: "san-carlos",
@@ -541,7 +544,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 53,
+    id: 54,
     fecha: "2026-10-14",
     jornada: 11,
     local: "perez-zeledon",
@@ -550,7 +553,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 54,
+    id: 55,
     fecha: "2026-10-14",
     jornada: 11,
     local: "saprissa",
@@ -562,9 +565,8 @@ export const partidos = [
   // =========================
   // JORNADA 12
   // =========================
-
   {
-    id: 55,
+    id: 56,
     fecha: "2026-10-18",
     jornada: 12,
     local: "cartagines",
@@ -573,7 +575,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 56,
+    id: 57,
     fecha: "2026-10-18",
     jornada: 12,
     local: "inter-sc",
@@ -582,7 +584,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 57,
+    id: 58,
     fecha: "2026-10-18",
     jornada: 12,
     local: "sporting",
@@ -591,7 +593,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 58,
+    id: 59,
     fecha: "2026-10-18",
     jornada: 12,
     local: "escorpiones",
@@ -600,7 +602,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 59,
+    id: 60,
     fecha: "2026-10-18",
     jornada: 12,
     local: "perez-zeledon",
@@ -612,9 +614,8 @@ export const partidos = [
   // =========================
   // JORNADA 13
   // =========================
-
   {
-    id: 60,
+    id: 61,
     fecha: "2026-10-25",
     jornada: 13,
     local: "puntarenas",
@@ -623,7 +624,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 61,
+    id: 62,
     fecha: "2026-10-25",
     jornada: 13,
     local: "san-carlos",
@@ -632,7 +633,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 62,
+    id: 63,
     fecha: "2026-10-25",
     jornada: 13,
     local: "alajuelense",
@@ -641,7 +642,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 63,
+    id: 64,
     fecha: "2026-10-25",
     jornada: 13,
     local: "escorpiones",
@@ -650,7 +651,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 64,
+    id: 65,
     fecha: "2026-10-25",
     jornada: 13,
     local: "herediano",
@@ -662,9 +663,8 @@ export const partidos = [
   // =========================
   // JORNADA 14
   // =========================
-
   {
-    id: 65,
+    id: 66,
     fecha: "2026-11-01",
     jornada: 14,
     local: "inter-sc",
@@ -673,7 +673,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 66,
+    id: 67,
     fecha: "2026-11-01",
     jornada: 14,
     local: "saprissa",
@@ -682,7 +682,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 67,
+    id: 68,
     fecha: "2026-11-01",
     jornada: 14,
     local: "sporting",
@@ -691,7 +691,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 68,
+    id: 69,
     fecha: "2026-11-01",
     jornada: 14,
     local: "cartagines",
@@ -700,7 +700,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 69,
+    id: 70,
     fecha: "2026-11-01",
     jornada: 14,
     local: "perez-zeledon",
@@ -712,9 +712,8 @@ export const partidos = [
   // =========================
   // JORNADA 15
   // =========================
-
   {
-    id: 70,
+    id: 71,
     fecha: "2026-11-04",
     jornada: 15,
     local: "inter-sc",
@@ -723,7 +722,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 71,
+    id: 72,
     fecha: "2026-11-04",
     jornada: 15,
     local: "herediano",
@@ -732,7 +731,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 72,
+    id: 73,
     fecha: "2026-11-04",
     jornada: 15,
     local: "puntarenas",
@@ -741,7 +740,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 73,
+    id: 74,
     fecha: "2026-11-04",
     jornada: 15,
     local: "sporting",
@@ -750,7 +749,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 74,
+    id: 75,
     fecha: "2026-11-04",
     jornada: 15,
     local: "escorpiones",
@@ -762,9 +761,8 @@ export const partidos = [
   // =========================
   // JORNADA 16
   // =========================
-
   {
-    id: 75,
+    id: 76,
     fecha: "2026-11-08",
     jornada: 16,
     local: "saprissa",
@@ -773,7 +771,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 76,
+    id: 77,
     fecha: "2026-11-08",
     jornada: 16,
     local: "alajuelense",
@@ -782,7 +780,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 77,
+    id: 78,
     fecha: "2026-11-08",
     jornada: 16,
     local: "cartagines",
@@ -791,7 +789,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 78,
+    id: 79,
     fecha: "2026-11-08",
     jornada: 16,
     local: "san-carlos",
@@ -800,7 +798,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 79,
+    id: 80,
     fecha: "2026-11-08",
     jornada: 16,
     local: "herediano",
@@ -812,9 +810,8 @@ export const partidos = [
   // =========================
   // JORNADA 17
   // =========================
-
   {
-    id: 80,
+    id: 81,
     fecha: "2026-11-22",
     jornada: 17,
     local: "escorpiones",
@@ -823,7 +820,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 81,
+    id: 82,
     fecha: "2026-11-22",
     jornada: 17,
     local: "puntarenas",
@@ -832,7 +829,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 82,
+    id: 83,
     fecha: "2026-11-22",
     jornada: 17,
     local: "perez-zeledon",
@@ -841,7 +838,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 83,
+    id: 84,
     fecha: "2026-11-22",
     jornada: 17,
     local: "inter-sc",
@@ -850,7 +847,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 84,
+    id: 85,
     fecha: "2026-11-22",
     jornada: 17,
     local: "alajuelense",
@@ -862,9 +859,8 @@ export const partidos = [
   // =========================
   // JORNADA 18
   // =========================
-
   {
-    id: 85,
+    id: 86,
     fecha: "2026-11-29",
     jornada: 18,
     local: "herediano",
@@ -873,7 +869,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 86,
+    id: 87,
     fecha: "2026-11-29",
     jornada: 18,
     local: "sporting",
@@ -882,7 +878,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 87,
+    id: 88,
     fecha: "2026-11-29",
     jornada: 18,
     local: "san-carlos",
@@ -891,7 +887,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 88,
+    id: 89,
     fecha: "2026-11-29",
     jornada: 18,
     local: "cartagines",
@@ -900,7 +896,7 @@ export const partidos = [
     estado: "proximo",
   },
   {
-    id: 89,
+    id: 90,
     fecha: "2026-11-29",
     jornada: 18,
     local: "saprissa",

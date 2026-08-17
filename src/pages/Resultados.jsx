@@ -139,8 +139,6 @@ function Resultados() {
 
                 <div className="resultado-partido">
                   <div className="equipo equipo-local">
-                    <strong className="equipo-nombre">{nombreLocal}</strong>
-
                     {logoLocal && (
                       <img
                         className="equipo-logo"
@@ -148,6 +146,7 @@ function Resultados() {
                         alt={`Escudo de ${nombreLocal}`}
                       />
                     )}
+                    <strong className="equipo-nombre">{nombreLocal}</strong>
                   </div>
 
                   <div className="resultado-marcador">
@@ -192,7 +191,6 @@ function Resultados() {
                         alt={`Escudo de ${nombreVisitante}`}
                       />
                     )}
-
                     <strong className="equipo-nombre">{nombreVisitante}</strong>
                   </div>
                 </div>

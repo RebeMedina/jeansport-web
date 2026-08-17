@@ -486,15 +486,15 @@ select {
 .resultados-container {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  max-width: 900px;
+  gap: 10px;
+  max-width: 950px;
   margin: 0 auto;
 }
 
 .resultado-card {
   background: #ffffff;
   border-radius: 16px;
-  padding: 20px 24px;
+  padding: 10px 10px;
   border: 1px solid #e5e7eb;
   box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
 }
@@ -965,11 +965,11 @@ select {
 }
 
 /* =============================
-   INSTAGRAM
+   INSTAGRAM Y FACEBOOK CTA
 ============================= */
 
 .instagram-cta {
-  margin-bottom: 70px;
+  margin-bottom: 20px;
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--panel);
@@ -990,14 +990,56 @@ select {
   margin: 0;
 }
 
-.instagram-button {
+.social-buttons {
+  display: flex;
+  align-items: center;
   gap: 9px;
+  flex-shrink: 0;
 }
 
-.instagram-icon {
+.instagram-button,
+.facebook-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.instagram-icon,
+.facebook-icon {
   width: 19px;
   height: 19px;
   flex-shrink: 0;
+  display: block;
+}
+
+.facebook-button {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.facebook-button:disabled {
+  opacity: 0.55;
+}
+
+/* =============================
+   RESPONSIVE
+============================= */
+
+@media (max-width: 700px) {
+  .instagram-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .social-buttons {
+    width: 100%;
+  }
+
+  .instagram-button,
+  .facebook-button {
+    flex: 1;
+  }
 }
 
 /* =============================
@@ -1081,38 +1123,132 @@ select {
    RESULTADOS HOME
 ============================= */
 
-.resultados-home {
-  gap: 12px;
+.resultado-partido {
+display: grid;
+grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+align-items: start;
+gap: 20px;
+padding: 1px 20px 10px;
 }
 
-.resultado-card-home {
-  padding: 14px 18px;
+.equipo {
+display: flex;
+flex-direction: column !important;
+align-items: center;
+justify-content: flex-start;
+gap: 8px;
+min-width: 0;
+text-align: center;
 }
 
-.resultado-card-home .resultado-header {
-  font-size: 12px;
-  margin-bottom: 8px;
+.equipo-local,
+.equipo-visitante {
+justify-content: flex-start;
+text-align: center;
 }
 
-.resultado-card-home .resultado-partido {
-  gap: 12px;
+.equipo-logo {
+width: 58px;
+height: 58px;
+object-fit: contain;
+flex-shrink: 0;
 }
 
-.resultado-card-home .equipo-logo {
-  width: 38px;
-  height: 38px;
+.equipo-nombre {
+display: block;
+width: 100%;
+max-width: 180px;
+font-size: 1rem;
+line-height: 1.25;
+text-align: center;
+overflow-wrap: break-word;
 }
 
-.resultado-card-home .equipo-nombre {
-  font-size: 13px;
+.resultado-marcador {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+min-width: 90px;
+padding-top: 20px;
 }
 
-.resultado-card-home .marcador {
-  font-size: 20px;
+.marcador {
+font-size: 2rem;
+line-height: 1;
+font-weight: 800;
+white-space: nowrap;
 }
 
-.resultado-card-home .estado-partido {
-  font-size: 10px;
+.estado-partido {
+margin-top: 14px;
+font-size: 0.8rem;
+line-height: 1;
+font-weight: 700;
+color: #6b7280;
+text-transform: uppercase;
+white-space: nowrap;
+}
+
+.estado-en-vivo {
+color: #dc2626;
+}
+
+/* =========================
+LAPTOP
+========================= */
+
+@media (min-width: 769px) {
+.resultado-partido {
+max-width: 950px;
+margin: 0 auto;
+}
+
+.equipo-logo {
+width: 64px;
+height: 64px;
+}
+
+.equipo-nombre {
+max-width: 180px;
+font-size: 1rem;
+}
+}
+
+/* =========================
+MÓVIL
+========================= */
+
+@media (max-width: 768px) {
+.resultado-partido {
+grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+gap: 1px;
+padding: 1px 4px 6px;
+}
+
+.equipo-logo {
+width: 58px;
+height: 58px;
+}
+
+.equipo-nombre {
+max-width: 125px;
+font-size: 0.95rem;
+}
+
+.resultado-marcador {
+min-width: 70px;
+padding-top: 42px;
+}
+
+.marcador {
+font-size: 1.8rem;
+}
+
+.estado-partido {
+margin-top: 12px;
+font-size: 0.75rem;
+}
 }
 
 /* =============================
@@ -1289,6 +1425,21 @@ select {
   border-color: #ff0037;
 }
 
+.tabla-posiciones tbody tr.fila-clasificacion {
+background: rgba(36, 157, 216, 0.06);
+}
+
+.tabla-posiciones tbody tr.fila-clasificacion td:first-child {
+border-left: 4px solid #35c84a;
+}
+
+.tabla-posiciones tbody tr.fila-clasificacion .posicion {
+color: #35c84a;
+font-weight: 800;
+}
+
+
+
 /* =============================
    RESPONSIVE 850px
 ============================= */
@@ -1349,12 +1500,12 @@ select {
 
 @media (max-width: 700px) {
   .resultado-card {
-    padding: 18px 14px;
+    padding: 18px 1px;
   }
 
   .resultado-partido {
     grid-template-columns: 1fr 90px 1fr;
-    gap: 10px;
+    gap: 1px;
   }
 
   .equipo {
