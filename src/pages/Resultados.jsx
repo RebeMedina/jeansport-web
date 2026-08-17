@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { obtenerLogo } from "../data/equipos";
 import { partidos } from "../data/partidos";
+import { jugadoresPorId } from "../data/jugadores";
 import { obtenerEstadoPartido } from "../data/estadoPartido";
 
 const nombresEquipos = {
@@ -39,6 +40,94 @@ const obtenerJornadaActual = () => {
 
   return jornadas[0];
 };
+
+// Ícono de balón de fútbol en SVG, hereda el color del texto (currentColor)
+function IconoBalon({ className }) {
+  return (
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/7965/7965127.png"
+      alt=""
+      className={className}
+      width="12"
+      height="12"
+    />
+  );
+}
+
+// Devuelve el detalle de goles de un partido ordenado por minuto,
+// con el nombre del jugador ya resuelto.
+function obtenerDetalleGoles(partido, lado) {
+  const detalle =
+    lado === "local"
+      ? partido.golesLocalDetalle
+      : partido.golesVisitanteDetalle;
+
+  return (detalle || [])
+    .map((gol) => {
+      const jugador = gol.jugadorId ? jugadoresPorId[gol.jugadorId] : null;
+
+      return {
+        ...gol,
+        nombre: jugador ? jugador.nombre : "Gol",
+      };
+    })
+    .sort((a, b) => (a.minuto || 0) - (b.minuto || 0));
+}
+
+function FilaGoles({ golesLocal, golesVisitante }) {
+  const filas = Math.max(golesLocal.length, golesVisitante.length);
+
+  if (filas === 0) return null;
+
+  return (
+    <div className="goles-filas">
+      {Array.from({ length: filas }).map((_, index) => {
+        const golLocal = golesLocal[index];
+        const golVisitante = golesVisitante[index];
+
+        return (
+          <div className="goles-fila" key={index}>
+            <div className="goles-lado goles-lado-local">
+              {golLocal && (
+                <>
+                  <span className="gol-nombre">
+                    {golLocal.nombre}
+                    {golLocal.propia && (
+                      <span className="gol-propia"> (AG)</span>
+                    )}
+                  </span>
+                  <span className="gol-minuto">{golLocal.minuto}'</span>
+                </>
+              )}
+            </div>
+
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/7965/7965127.png"
+              alt=""
+              className="gol-icono"
+              width="12"
+              height="12"
+            />
+
+            <div className="goles-lado goles-lado-visitante">
+              {golVisitante && (
+                <>
+                  <span className="gol-nombre">
+                    {golVisitante.nombre}
+                    {golVisitante.propia && (
+                      <span className="gol-propia"> (AG)</span>
+                    )}
+                  </span>
+                  <span className="gol-minuto">{golVisitante.minuto}'</span>
+                </>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 function Resultados() {
   const jornadaActual = obtenerJornadaActual();
@@ -122,6 +211,18 @@ function Resultados() {
               typeof partido.golesLocal === "number" &&
               typeof partido.golesVisitante === "number";
 
+            const mostrarGoles =
+              !partido.walkover &&
+              (estado === "finalizado" || estado === "en-curso");
+
+            const golesLocal = mostrarGoles
+              ? obtenerDetalleGoles(partido, "local")
+              : [];
+
+            const golesVisitante = mostrarGoles
+              ? obtenerDetalleGoles(partido, "visitante")
+              : [];
+
             return (
               <article
                 className={`resultado-card ${
@@ -194,6 +295,16 @@ function Resultados() {
                     <strong className="equipo-nombre">{nombreVisitante}</strong>
                   </div>
                 </div>
+
+                {mostrarGoles &&
+                  (golesLocal.length > 0 || golesVisitante.length > 0) && (
+                    <div className="resultado-goles">
+                      <FilaGoles
+                        golesLocal={golesLocal}
+                        golesVisitante={golesVisitante}
+                      />
+                    </div>
+                  )}
               </article>
             );
           })}

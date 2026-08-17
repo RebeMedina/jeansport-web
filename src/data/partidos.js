@@ -7,9 +7,14 @@ export const partidos = [
     fecha: "2026-07-23",
     jornada: 1,
     local: "herediano",
-    golesLocal: 1,
+    golesLocal: 3,
+    golesLocalDetalle: [],
     visitante: "puntarenas",
-    golesVisitante: 1,
+    golesVisitante: 0,
+    golesVisitanteDetalle: [],
+    // Partido ganado en la mesa (walkover) por Herediano 3-0:
+    // sin goles reales en cancha.
+    walkover: true,
     estado: "finalizado",
   },
   {
@@ -18,8 +23,18 @@ export const partidos = [
     jornada: 1,
     local: "saprissa",
     golesLocal: 5,
+    golesLocalDetalle: [
+      { jugadorId: "orlando-sinclair-saprissa", minuto: 47 },
+      { jugadorId: "luis-paradela-saprissa", minuto: 59 },
+      { jugadorId: "luis-paradela-saprissa", minuto: 67 },
+      { jugadorId: "newton-williams-saprissa", minuto: 70 },
+      { jugadorId: "fabricio-urbina-saprissa", minuto: 82 },
+    ],
     visitante: "perez-zeledon",
     golesVisitante: 1,
+    golesVisitanteDetalle: [
+      { jugadorId: "jose-alvarado-perez-zeledon", minuto: 55 },
+    ],
     estado: "finalizado",
   },
   {
@@ -28,8 +43,17 @@ export const partidos = [
     jornada: 1,
     local: "cartagines",
     golesLocal: 3,
+    golesLocalDetalle: [
+      { jugadorId: "carlos-gaete-cartagines", minuto: 30 },
+      { jugadorId: "carlos-gaete-cartagines", minuto: 47 },
+      { jugadorId: "bernald-alfaro-cartagines", minuto: 78 },
+    ],
     visitante: "inter-sc",
     golesVisitante: 1,
+    golesVisitanteDetalle: [
+      // Autogol: el jugador es de Cartago pero el gol cuenta para Inter SC.
+      { jugadorId: "kevin-briceno-cartagines", minuto: 58, propia: true },
+    ],
     estado: "finalizado",
   },
   {
@@ -38,8 +62,12 @@ export const partidos = [
     jornada: 1,
     local: "sporting",
     golesLocal: 1,
+    golesLocalDetalle: [{ jugadorId: "renzo-carballo-sporting", minuto: 30 }],
     visitante: "alajuelense",
     golesVisitante: 1,
+    golesVisitanteDetalle: [
+      { jugadorId: "kenyel-michel-alajuelense", minuto: 87 },
+    ],
     estado: "finalizado",
   },
   {
@@ -48,8 +76,14 @@ export const partidos = [
     jornada: 1,
     local: "san-carlos",
     golesLocal: 0,
+    golesLocalDetalle: [],
     visitante: "escorpiones",
     golesVisitante: 3,
+    // Partido ganado en la mesa (walkover): el marcador es administrativo,
+    // no hubo goles reales en la cancha. Por eso el detalle queda vacío
+    // aunque golesVisitante sea 3.
+    golesVisitanteDetalle: [],
+    walkover: true,
     hora: "17:00",
     estado: "finalizado",
   },
@@ -63,8 +97,12 @@ export const partidos = [
     jornada: 2,
     local: "puntarenas",
     golesLocal: 1,
+    golesLocalDetalle: [{ jugadorId: "jaylon-hadden-puntarenas", minuto: 37 }],
     visitante: "sporting",
     golesVisitante: 1,
+    golesVisitanteDetalle: [
+      { jugadorId: "renzo-carballo-sporting", minuto: 51 },
+    ],
     estado: "finalizado",
   },
   {
@@ -73,8 +111,15 @@ export const partidos = [
     jornada: 2,
     local: "alajuelense",
     golesLocal: 2,
+    golesLocalDetalle: [
+      { jugadorId: "anthony-hernandez-alajuelense", minuto: 72 },
+      { jugadorId: "alexis-gamboa-alajuelense", minuto: 94 },
+    ],
     visitante: "escorpiones",
     golesVisitante: 1,
+    golesVisitanteDetalle: [
+      { jugadorId: "raul-orellana-escorpiones", minuto: 75 },
+    ],
     estado: "finalizado",
   },
   {
@@ -83,8 +128,15 @@ export const partidos = [
     jornada: 2,
     local: "saprissa",
     golesLocal: 2,
+    golesLocalDetalle: [
+      { jugadorId: "newton-williams-saprissa", minuto: 65 },
+      { jugadorId: "newton-williams-saprissa", minuto: 69 },
+    ],
     visitante: "san-carlos",
     golesVisitante: 1,
+    golesVisitanteDetalle: [
+      { jugadorId: "kenneth-cerdas-san-carlos", minuto: 83 },
+    ],
     estado: "finalizado",
   },
   {
@@ -93,8 +145,15 @@ export const partidos = [
     jornada: 2,
     local: "inter-sc",
     golesLocal: 1,
+    golesLocalDetalle: [{ jugadorId: "joel-campbell-inter-sc", minuto: 22 }],
     visitante: "herediano",
     golesVisitante: 1,
+    // NOTA: se mencionó que este partido se ganó "en la mesa", pero la
+    // fuente de datos sí trae goleadores reales para ambos equipos.
+    // Se dejaron estos goles hasta confirmar cuál dato es el correcto.
+    golesVisitanteDetalle: [
+      { jugadorId: "yurgin-roman-herediano", minuto: 9 },
+    ],
     estado: "finalizado",
   },
   {
@@ -103,8 +162,12 @@ export const partidos = [
     jornada: 2,
     local: "perez-zeledon",
     golesLocal: 1,
+    golesLocalDetalle: [
+      { jugadorId: "jose-alvarado-perez-zeledon", minuto: 27 },
+    ],
     visitante: "cartagines",
     golesVisitante: 0,
+    golesVisitanteDetalle: [],
     estado: "finalizado",
   },
 
@@ -117,8 +180,15 @@ export const partidos = [
     jornada: 3,
     local: "cartagines",
     golesLocal: 2,
+    golesLocalDetalle: [
+      { jugadorId: "jose-gonzalez-cartagines", minuto: 52 },
+      { jugadorId: "geancarlo-castro-cartagines", minuto: 86 },
+    ],
     visitante: "sporting",
     golesVisitante: 1,
+    golesVisitanteDetalle: [
+      { jugadorId: "alexander-lopez-sporting", minuto: 62 },
+    ],
     estado: "finalizado",
   },
   {
@@ -127,8 +197,10 @@ export const partidos = [
     jornada: 3,
     local: "escorpiones",
     golesLocal: 0,
+    golesLocalDetalle: [],
     visitante: "perez-zeledon",
     golesVisitante: 0,
+    golesVisitanteDetalle: [],
     estado: "finalizado",
   },
   {
@@ -137,8 +209,13 @@ export const partidos = [
     jornada: 3,
     local: "puntarenas",
     golesLocal: 0,
+    golesLocalDetalle: [],
     visitante: "saprissa",
     golesVisitante: 2,
+    golesVisitanteDetalle: [
+      { jugadorId: "jefferson-brenes-saprissa", minuto: 35 },
+      { jugadorId: "jefferson-brenes-saprissa", minuto: 73 },
+    ],
     estado: "finalizado",
   },
   {
@@ -147,8 +224,13 @@ export const partidos = [
     jornada: 3,
     local: "inter-sc",
     golesLocal: 2,
+    golesLocalDetalle: [
+      { jugadorId: "erick-torres-inter-sc", minuto: 13 },
+      { jugadorId: "joel-campbell-inter-sc", minuto: 65 },
+    ],
     visitante: "san-carlos",
     golesVisitante: 0,
+    golesVisitanteDetalle: [],
     estado: "finalizado",
   },
   {
@@ -157,8 +239,14 @@ export const partidos = [
     jornada: 3,
     local: "herediano",
     golesLocal: 0,
+    golesLocalDetalle: [],
     visitante: "alajuelense",
     golesVisitante: 3,
+    golesVisitanteDetalle: [
+      { jugadorId: "rashir-parkins-alajuelense", minuto: 33 },
+      { jugadorId: "jeison-lucumi-alajuelense", minuto: 66 },
+      { jugadorId: "kenyel-michel-alajuelense", minuto: 84 },
+    ],
     estado: "finalizado",
   },
 
@@ -171,8 +259,12 @@ export const partidos = [
     jornada: 4,
     local: "san-carlos",
     golesLocal: 1,
+    golesLocalDetalle: [
+      { jugadorId: "brian-martinez-san-carlos", minuto: 62 },
+    ],
     visitante: "herediano",
     golesVisitante: 0,
+    golesVisitanteDetalle: [],
     hora: "20:00",
     estado: "finalizado",
   },
@@ -182,8 +274,15 @@ export const partidos = [
     jornada: 4,
     local: "alajuelense",
     golesLocal: 2,
+    golesLocalDetalle: [
+      { jugadorId: "alexis-gamboa-alajuelense", minuto: 41 },
+      { jugadorId: "kenyel-michel-alajuelense", minuto: 69 },
+    ],
     visitante: "puntarenas",
     golesVisitante: 1,
+    golesVisitanteDetalle: [
+      { jugadorId: "doryan-rodriguez-puntarenas", minuto: 28 },
+    ],
     hora: "16:00",
     estado: "finalizado",
   },
@@ -193,8 +292,17 @@ export const partidos = [
     jornada: 4,
     local: "saprissa",
     golesLocal: 3,
+    golesLocalDetalle: [
+      { jugadorId: "jefferson-brenes-saprissa", minuto: 13 },
+      { jugadorId: "jefferson-brenes-saprissa", minuto: 34 },
+      { jugadorId: "bancy-hernandez-saprissa", minuto: 77 },
+    ],
     visitante: "cartagines",
     golesVisitante: 2,
+    golesVisitanteDetalle: [
+      { jugadorId: "douglas-lopez-cartagines", minuto: 31 },
+      { jugadorId: "carlos-barahona-cartagines", minuto: 88 },
+    ],
     hora: "20:00",
     estado: "proximo",
   },
@@ -204,8 +312,12 @@ export const partidos = [
     jornada: 4,
     local: "perez-zeledon",
     golesLocal: 0,
+    golesLocalDetalle: [],
     visitante: "inter-sc",
     golesVisitante: 1,
+    golesVisitanteDetalle: [
+      { jugadorId: "randy-vega-inter-sc", minuto: 9 },
+    ],
     hora: "16:00",
     estado: "proximo",
   },

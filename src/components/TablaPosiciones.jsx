@@ -28,7 +28,7 @@ function TablaPosiciones({ tabla }) {
             {" "}
             <th>#</th> <th>Equipo</th> <th>PJ</th> <th>G</th> <th>E</th>{" "}
             <th>P</th> <th>GF</th> <th>GC</th> <th>DG</th> <th>PTS</th>{" "}
-            <th>Últimos</th>{" "}
+            <th>Últimos 5</th>{" "}
           </tr>{" "}
         </thead>
         <tbody>
@@ -71,7 +71,7 @@ function TablaPosiciones({ tabla }) {
 
                 <td>
                   <div className="ultimos">
-                    {equipo.ultimosTres?.map((resultado, resultadoIndex) => (
+                    {equipo.ultimosCinco?.map((resultado, resultadoIndex) => (
                       <span
                         key={`${equipo.equipo}-${resultadoIndex}`}
                         className={obtenerClaseResultado(resultado)}

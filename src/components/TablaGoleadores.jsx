@@ -2,16 +2,6 @@ import { obtenerLogo } from "../data/equipos";
 import { goleadores } from "../data/goleadores";
 
 function Goleadores() {
-  const goleadoresOrdenados = [...goleadores]
-    .map((jugador) => ({
-      ...jugador,
-      promedio:
-        jugador.partidosJugados > 0
-          ? jugador.goles / jugador.partidosJugados
-          : 0,
-    }))
-    .sort((a, b) => b.goles - a.goles);
-
   return (
     <>
       <section className="container page-hero">
@@ -30,12 +20,11 @@ function Goleadores() {
                 <th>#</th>
                 <th>Jugador</th>
                 <th>G</th>
-                <th>Prom.</th>
               </tr>
             </thead>
 
             <tbody>
-              {goleadoresOrdenados.map((jugador, index) => {
+              {goleadores.map((jugador, index) => {
                 const logo = obtenerLogo(jugador.equipo);
 
                 return (
@@ -65,10 +54,6 @@ function Goleadores() {
                     </td>
 
                     <td className="goleador-goles">{jugador.goles}</td>
-
-                    <td className="goleador-promedio">
-                      {jugador.promedio.toFixed(2)}
-                    </td>
                   </tr>
                 );
               })}

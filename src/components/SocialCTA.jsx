@@ -1,12 +1,12 @@
 function SocialCTA() {
   return (
-    <section className="instagram-cta container">
+    <section className="social-cta container">
       <div>
         <span className="eyebrow">REDES SOCIALES</span>
         <h2>Seguinos en redes</h2>
         <p>
-          Las noticias, memes y contenido deportivo de JeanSport también están
-          en redes.
+          Las noticias y contenido deportivo de JeanSport también están en
+          redes.
         </p>
       </div>
 
@@ -45,11 +45,11 @@ function SocialCTA() {
           Instagram
         </a>
 
-        <button
+        <a
           className="btn btn-primary facebook-button"
-          type="button"
-          disabled
-          title="Facebook próximamente"
+          href="https://www.facebook.com/share/197RBtynEE"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <svg
             className="facebook-icon"
@@ -61,7 +61,7 @@ function SocialCTA() {
             <path d="M14 8h3V4h-3c-2.8 0-5 2.2-5 5v2H6v4h3v5h4v-5h3l1-4h-4V9c0-.6.4-1 1-1Z" />
           </svg>
           Facebook
-        </button>
+        </a>
       </div>
     </section>
   );

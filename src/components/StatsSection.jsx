@@ -2,23 +2,21 @@ import { Link } from "react-router";
 import { obtenerLogo } from "../data/equipos";
 import { goleadores } from "../data/goleadores";
 
-function StatsSection() {
-  const goleadoresOrdenados = [...goleadores]
-    .map((jugador) => ({
-      ...jugador,
-      promedio:
-        jugador.partidosJugados > 0
-          ? jugador.goles / jugador.partidosJugados
-          : 0,
-    }))
-    .sort(
-      (a, b) =>
-        b.goles - a.goles ||
-        b.promedio - a.promedio ||
-        a.nombre.localeCompare(b.nombre),
-    );
+const nombresEquipos = {
+  "san-carlos": "A.D. San Carlos",
+  escorpiones: "Escorpiones F.C.",
+  cartagines: "C.S. Cartaginés",
+  "inter-sc": "Inter San Carlos",
+  herediano: "C.S. Herediano",
+  puntarenas: "Puntarenas F.C.",
+  saprissa: "Deportivo Saprissa",
+  "perez-zeledon": "Municipal Pérez Zeledón",
+  sporting: "Sporting F.C.",
+  alajuelense: "L.D. Alajuelense",
+};
 
-  const primerosCinco = goleadoresOrdenados.slice(0, 5);
+function StatsSection() {
+  const primerosCinco = goleadores.slice(0, 5);
 
   return (
     <section className="container section">
@@ -38,13 +36,15 @@ function StatsSection() {
               <th>#</th>
               <th>Jugador</th>
               <th>Goles</th>
-              <th>Prom.</th>
             </tr>
           </thead>
 
           <tbody>
             {primerosCinco.map((jugador, index) => {
-              const logo = obtenerLogo(jugador.equipo);
+              const nombreEquipo =
+                nombresEquipos[jugador.equipo] || jugador.equipo;
+
+              const logo = obtenerLogo(nombreEquipo);
 
               return (
                 <tr key={jugador.nombre}>
@@ -56,22 +56,18 @@ function StatsSection() {
                     {logo && (
                       <img
                         src={logo}
-                        alt={`Escudo de ${jugador.equipo}`}
+                        alt={`Escudo de ${nombreEquipo}`}
                         className="goleador-foto"
                       />
                     )}
 
                     <div>
                       <div className="goleador-nombre">{jugador.nombre}</div>
-                      <div className="goleador-equipo">{jugador.equipo}</div>
+                      <div className="goleador-equipo">{nombreEquipo}</div>
                     </div>
                   </td>
 
                   <td className="goleador-goles">{jugador.goles}</td>
-
-                  <td className="goleador-promedio">
-                    {jugador.promedio.toFixed(2)}
-                  </td>
                 </tr>
               );
             })}

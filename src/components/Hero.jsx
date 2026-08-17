@@ -21,8 +21,7 @@ function Hero() {
         </h1>
 
         <p>
-          Noticias, resultados, tablas y actualidad del fútbol de Costa Rica y
-          del mundo.
+          Noticias, resultados, tablas y actualidad del fútbol de Costa Rica.
         </p>
 
       </div>

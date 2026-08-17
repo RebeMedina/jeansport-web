@@ -968,8 +968,8 @@ select {
    INSTAGRAM Y FACEBOOK CTA
 ============================= */
 
-.instagram-cta {
-  margin-bottom: 20px;
+.social-cta {
+  margin-block: 20px;
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--panel);
@@ -978,14 +978,19 @@ select {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
-.instagram-cta h2 {
+.social-cta > div {
+  min-width: 0;
+}
+
+.social-cta h2 {
   margin: 8px 0;
   font-size: 28px;
 }
 
-.instagram-cta p {
+.social-cta p {
   color: var(--muted);
   margin: 0;
 }
@@ -1012,24 +1017,275 @@ select {
   display: block;
 }
 
-.facebook-button {
-  opacity: 0.55;
-  cursor: not-allowed;
+/* =============================
+   EQUIPO DE LA JORNADA (CANCHA)
+============================= */
+
+.jornada-equipo {
+  position: relative;
+  border-radius: 20px;
+  padding: 40px 20px 28px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      #1e7a3e 0px,
+      #1e7a3e 48px,
+      #226f39 48px,
+      #226f39 96px
+    );
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.facebook-button:disabled {
-  opacity: 0.55;
+.jornada-equipo::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 10px;
+  pointer-events: none;
 }
+
+.jornada-equipo::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90px;
+  height: 90px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.jornada-fila {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.jornada-fila-delanteros {
+  margin-bottom: 60px;
+}
+
+.jornada-fila-portero {
+  margin-top: 10px;
+}
+
+.jornada-jugador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 130px;
+  text-align: center;
+}
+
+.jornada-jugador-logo {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  padding: 6px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+.jornada-jugador-nombre {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.jornada-jugador-equipo {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 11px;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.jornada-jugador-dato {
+  margin-top: 2px;
+  background: #ffffff;
+  color: #111827;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+@media (max-width: 700px) {
+  .jornada-equipo {
+    padding: 32px 12px 22px;
+  }
+
+  .jornada-fila {
+    gap: 16px;
+  }
+
+  .jornada-fila-delanteros {
+    margin-bottom: 44px;
+  }
+
+  .jornada-jugador {
+    width: 100px;
+  }
+
+  .jornada-jugador-logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .jornada-jugador-nombre {
+    font-size: 12px;
+  }
+
+  .jornada-jugador-equipo {
+    font-size: 10px;
+  }
+
+  .jornada-equipo::after {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+@media (max-width: 480px) {
+  .jornada-fila {
+    gap: 12px;
+  }
+
+  .jornada-jugador {
+    width: 84px;
+  }
+
+  .jornada-jugador-nombre {
+    font-size: 11px;
+  }
+
+  .jornada-jugador-dato {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+}
+/* =============================
+   GOLEADORES POR PARTIDO
+============================= */
+
+.resultado-goles {
+  padding: 0.5rem 20px 0.75rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.8rem;
+}
+
+.goles-filas {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.goles-fila {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+}
+
+.goles-lado {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  min-width: 0;
+  text-align: center;
+}
+
+.gol-icono {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.gol-nombre {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #111827;
+}
+
+.gol-minuto {
+  color: #6b7280;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.gol-propia {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+@media (min-width: 769px) {
+  .resultado-goles {
+    font-size: 0.95rem;
+  }
+
+  .gol-icono {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .resultado-goles {
+    padding: 0.5rem 6px 0.75rem;
+  }
+
+  .goles-fila {
+    grid-template-columns: minmax(0, 1fr) 20px minmax(0, 1fr);
+    gap: 4px;
+  }
+
+  .gol-icono {
+    width: 11px;
+    height: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .resultado-goles {
+    font-size: 0.72rem;
+  }
+
+  .goles-lado {
+    flex-wrap: wrap;
+    row-gap: 0;
+  }
+
+  .gol-nombre {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    line-height: 1.15;
+  }
+}
+
 
 /* =============================
    RESPONSIVE
 ============================= */
 
 @media (max-width: 700px) {
-  .instagram-cta {
+  .social-cta {
     flex-direction: column;
     align-items: flex-start;
-    padding: 10px;
+    padding: 20px;
   }
 
   .social-buttons {

@@ -3,6 +3,7 @@ import { obtenerLogo } from "../data/equipos";
 import { goleadores } from "../data/goleadores";
 import { partidos } from "../data/partidos";
 import { obtenerEstadoPartido } from "../data/estadoPartido";
+import EquipoJornada from "../components/EquipoJornada";
 
 const nombresEquipos = {
   "san-carlos": "A.D. San Carlos",
@@ -40,22 +41,10 @@ function Estadisticas() {
    * ============================================================
    */
 
-  const goleadoresOrdenados = [...goleadores]
-    .map((jugador) => ({
-      ...jugador,
-      promedio:
-        jugador.partidosJugados > 0
-          ? jugador.goles / jugador.partidosJugados
-          : 0,
-    }))
-    .sort(
-      (a, b) =>
-        b.goles - a.goles ||
-        b.promedio - a.promedio ||
-        a.nombre.localeCompare(b.nombre),
-    );
-
-  const primerosCincoGoleadores = goleadoresOrdenados.slice(0, 5);
+  // goleadores ya viene derivado de partidos.js (100% automático) y
+  // ordenado, con "promedio" calculado o en null si todavía no
+  // cargamos el partidosJugados de ese jugador.
+  const primerosCincoGoleadores = goleadores.slice(0, 5);
 
   /*
    * ============================================================
@@ -586,6 +575,20 @@ function Estadisticas() {
         </div>
       </section>
 
+      <section className="container section">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">DESTACADOS</span>
+            <h2>Delantera y portería de la jornada</h2>
+            <p>
+              Los máximos goleadores y la mejor portería de la última jornada.
+            </p>
+          </div>
+        </div>
+
+        <EquipoJornada jornada={4} />
+      </section>
+
       {/* ======================================================
           LÍDERES ESTADÍSTICOS
           ====================================================== */}
@@ -940,14 +943,13 @@ function Estadisticas() {
                 <th>#</th>
                 <th>Jugador</th>
                 <th>Goles</th>
-                <th>Prom.</th>
               </tr>
             </thead>
 
             <tbody>
               {primerosCincoGoleadores.map((jugador, index) => {
                 return (
-                  <tr key={jugador.nombre}>
+                  <tr key={jugador.id}>
                     <td>
                       <span className="goleador-posicion">{index + 1}</span>
                     </td>
@@ -958,15 +960,13 @@ function Estadisticas() {
                       <div>
                         <div className="goleador-nombre">{jugador.nombre}</div>
 
-                        <div className="goleador-equipo">{jugador.equipo}</div>
+                        <div className="goleador-equipo">
+                          {nombresEquipos[jugador.equipo] || jugador.equipo}
+                        </div>
                       </div>
                     </td>
 
                     <td className="goleador-goles">{jugador.goles}</td>
-
-                    <td className="goleador-promedio">
-                      {jugador.promedio.toFixed(2)}
-                    </td>
                   </tr>
                 );
               })}

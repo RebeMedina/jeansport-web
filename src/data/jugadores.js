@@ -3,10 +3,6 @@
 // 1) Validar que los jugadorId cargados en partidos.js sean correctos.
 // 2) Derivar la tabla de goleadores contando goles por jugador en
 //    partidos.js, sin tener que mantener goleadores.js a mano.
-//
-// El id se genera a partir del nombre + equipo (slug), para evitar
-// colisiones entre jugadores homónimos de distintos equipos
-// (ej. "Joel Campbell" existe en Alajuelense y en Inter San Carlos).
 
 function slugify(texto) {
   return texto
@@ -74,10 +70,10 @@ const plantillas = {
     "Kenneth Vargas",
     "Anthony Hernández",
     "Isaac Badilla",
-    "Joel Campbell",
     "Ronaldo Cisneros",
     "Ángel Zaldívar",
     "José Alvarado",
+    "Kenyel Michel",
   ],
 
   cartagines: [
@@ -100,7 +96,7 @@ const plantillas = {
     "Douglas López",
     "Cristopher Núñez",
     "Leonardo Alfaro",
-    "Juan Carlos Gaete",
+    "Carlos Gaete",
     "Dariel Castrillo",
     "Manuel Morán",
     "José Mora",
@@ -137,6 +133,7 @@ const plantillas = {
     "Rodolfo Montiel",
     "Anderson Núñez",
     "Josué Serrano",
+    "Raúl Orellana",
   ],
 
   "inter-sc": [
@@ -174,6 +171,7 @@ const plantillas = {
     "Brayton Lewis",
     "Andrés Gómez",
     "Yeudid López",
+    "Erick Torres",
   ],
 
   "perez-zeledon": [
