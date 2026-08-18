@@ -31,4 +31,13 @@ export const noticias = [
     fecha: "2026-08-10",
     enlace: "https://www.instagram.com/p/Db1nJrZONmo/",
   },
+
+  {
+    titulo: "Sporting 2 - 0 AD Escorpiones",
+    descripcion: "Sporting FC saca un triunfo de 2 a 0 en casa ante Escorpiones que no mostró prácticamente nada en cancha.",
+      equipos: ["Sporting F.C", "Escorpiones"],
+    fecha: "2026-08-17",
+    enlace:
+      "https://www.facebook.com/jeansportcr/posts/pfbid02WY8GELL1DramLdL91bdEJENXoQWRaW4Mixuh2t8tdxwYLoxtWpDLg8qMNcsvgKeul",
+  },
 ];

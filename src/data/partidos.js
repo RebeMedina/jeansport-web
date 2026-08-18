@@ -326,7 +326,13 @@ export const partidos = [
     fecha: "2026-08-17",
     jornada: 4,
     local: "sporting",
+    golesLocal: 2,
+    golesLocalDetalle: [
+      { jugadorId: "josimar-mendez-sporting", minuto: 2 },
+      { jugadorId: "marco-urena-sporting", minuto: 4 },
+    ],
     visitante: "escorpiones",
+    golesVisitante: 0,
     hora: "20:00",
     estado: "proximo",
   },

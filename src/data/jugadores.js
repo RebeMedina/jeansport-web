@@ -267,7 +267,7 @@ const plantillas = {
     "Daniel Colindres",
     "Mayron George",
     "Renzo Carballo",
-    "Marcos Ureña",
+    "Marco Ureña",
     "Joser González",
   ],
 

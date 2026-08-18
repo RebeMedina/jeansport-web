@@ -1,33 +1,33 @@
 const LOGOS_EQUIPOS = {
 "saprissa":
-"https://images.statsengine.playbyplay.api.geniussports.com/19b9fd102d9ef48591d37c1aa069d37dT1.png",
+"https://img.sofascore.com/api/v1/team/6574/image",
 
 "cartagines":
-"https://images.statsengine.playbyplay.api.geniussports.com/fa2caa94351bb0b7582389a56a18eb65T1.png",
+"https://img.sofascore.com/api/v1/team/7044/image",
 
 "sporting":
-"https://images.statsengine.playbyplay.api.geniussports.com/8bfadddecfdb8f97f261ff04d51ef209T1.png",
+"https://img.sofascore.com/api/v1/team/262906/image",
 
 "escorpiones":
-"https://images.statsengine.playbyplay.api.geniussports.com/7d615541d195d65e0bf9dccf37a68667T1.jpg",
+"https://img.sofascore.com/api/v1/team/391662/image",
 
 "perez zeledon":
-"https://images.statsengine.playbyplay.api.geniussports.com/2aea1ae2222f8691fbfb1aba3491c8d9T1.png",
+"https://img.sofascore.com/api/v1/team/6576/image",
 
 "puntarenas":
-"https://images.statsengine.playbyplay.api.geniussports.com/fcbb8e831cdde70f3193b6f1d06befe0T1.png",
+"https://img.sofascore.com/api/v1/team/7046/image",
 
 "alajuelense":
-"https://images.statsengine.playbyplay.api.geniussports.com/cc12dc0e1be3a31cbdb19e41082a0e67T1.png",
+"https://img.sofascore.com/api/v1/team/6572/image",
 
 "herediano":
-"https://images.statsengine.playbyplay.api.geniussports.com/097764c20d0c208daab3b0cc955c057eT1.png",
+"https://img.sofascore.com/api/v1/team/7044/image",
 
 "inter san carlos":
-"https://images.statsengine.playbyplay.api.geniussports.com/75dd6c094f9fa26b7ffe7e1c29bab3b4T1.png",
+"https://img.sofascore.com/api/v1/team/531301/image",
 
 "san carlos":
-"https://images.statsengine.playbyplay.api.geniussports.com/0919ab0447ec918050240f581ddb98d1T1.png",
+"https://img.sofascore.com/api/v1/team/7047/image",
 };
 
 function normalizarNombre(nombre) {

@@ -579,14 +579,15 @@ function Estadisticas() {
         <div className="section-heading">
           <div>
             <span className="eyebrow">DESTACADOS</span>
-            <h2>Delantera y portería de la jornada</h2>
+            <h2>Figuras de la jornada</h2>
             <p>
-              Los máximos goleadores y la mejor portería de la última jornada.
+              Los goleadores destacados y la portería menos vencida de la
+              jornada.
             </p>
           </div>
         </div>
 
-        <EquipoJornada jornada={4} />
+        <EquipoJornada/>
       </section>
 
       {/* ======================================================

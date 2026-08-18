@@ -10,7 +10,7 @@ jugadores.forEach((jugador) => {
   }
 });
 
-export function obtenerEquipoDeLaJornada(jornada, cantidadDelanteros = 3) {
+export function obtenerEquipoDeLaJornada(jornada, cantidadGoleadores = 3) {
   const partidosJornada = partidos.filter(
     (partido) => partido.jornada === jornada && !partido.walkover,
   );
@@ -30,7 +30,7 @@ export function obtenerEquipoDeLaJornada(jornada, cantidadDelanteros = 3) {
     });
   });
 
-  const delanteros = Object.entries(golesJornada)
+  const Goleadores = Object.entries(golesJornada)
     .map(([jugadorId, goles]) => {
       const jugador = jugadoresPorId[jugadorId];
 
@@ -42,7 +42,7 @@ export function obtenerEquipoDeLaJornada(jornada, cantidadDelanteros = 3) {
       };
     })
     .sort((a, b) => b.goles - a.goles || a.nombre.localeCompare(b.nombre))
-    .slice(0, cantidadDelanteros);
+    .slice(0, cantidadGoleadores);
 
   // Mejor registro defensivo de la jornada: menos goles recibidos
   const registrosDefensivos = [];
@@ -73,7 +73,7 @@ export function obtenerEquipoDeLaJornada(jornada, cantidadDelanteros = 3) {
 
   return {
     jornada,
-    delanteros,
+    Goleadores,
     portero: portero
       ? {
           id: portero.id,

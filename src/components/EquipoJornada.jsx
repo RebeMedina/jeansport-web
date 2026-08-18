@@ -56,7 +56,6 @@ function TarjetaJugador({ jugador }) {
         />
       )}
       <strong className="jornada-jugador-nombre">{jugador.nombre}</strong>
-      <span className="jornada-jugador-equipo">{nombreEquipo}</span>
     </div>
   );
 }
@@ -66,7 +65,7 @@ function EquipoJornada() {
     obtenerJornadaActual(),
   );
 
-  const { delanteros, portero } = obtenerEquipoDeLaJornada(
+  const { Goleadores, portero } = obtenerEquipoDeLaJornada(
     jornadaSeleccionada,
   );
 
@@ -94,15 +93,15 @@ function EquipoJornada() {
         </div>
       </div>
 
-      {delanteros.length === 0 && !portero ? (
+      {Goleadores.length === 0 && !portero ? (
         <div className="empty-state">
           <h3>Sin datos para esta jornada</h3>
           <p>Todavía no hay goles registrados en la Jornada {jornadaSeleccionada}.</p>
         </div>
       ) : (
         <div className="jornada-equipo">
-          <div className="jornada-fila jornada-fila-delanteros">
-            {delanteros.map((jugador) => (
+          <div className="jornada-fila jornada-fila-Goleadores">
+            {Goleadores.map((jugador) => (
               <TarjetaJugador key={jugador.id} jugador={jugador} />
             ))}
           </div>
