@@ -19,18 +19,23 @@ function obtenerClaseResultado(resultado) {
 function TablaPosiciones({ tabla }) {
   return (
     <div className="tabla-wrap posiciones-wrap">
-      {" "}
       <table className="tabla tabla-posiciones">
-        {" "}
         <thead>
-          {" "}
           <tr>
-            {" "}
-            <th>#</th> <th>Equipo</th> <th>PJ</th> <th>G</th> <th>E</th>{" "}
-            <th>P</th> <th>GF</th> <th>GC</th> <th>DG</th> <th>PTS</th>{" "}
-            <th>Últimos 5</th>{" "}
-          </tr>{" "}
+            <th>#</th>
+            <th>Equipo</th>
+            <th>PJ</th>
+            <th>G</th>
+            <th>E</th>
+            <th>P</th>
+            <th>GF</th>
+            <th>GC</th>
+            <th>DG</th>
+            <th>PTS</th>
+            <th>Últimos 5</th>
+          </tr>
         </thead>
+
         <tbody>
           {tabla.map((equipo, index) => {
             const logo = obtenerLogo(equipo.nombre);
@@ -51,6 +56,7 @@ function TablaPosiciones({ tabla }) {
                       src={logo}
                       alt={`Escudo de ${equipo.nombre}`}
                       className="tabla-logo"
+                      referrerPolicy="no-referrer"
                     />
                   )}
 

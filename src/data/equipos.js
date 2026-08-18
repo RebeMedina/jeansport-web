@@ -1,33 +1,33 @@
 const LOGOS_EQUIPOS = {
-"saprissa":
-"https://img.sofascore.com/api/v1/team/6574/image",
+  saprissa:
+    "https://img.sofascore.com/api/v1/team/6574/image",
 
-"cartagines":
-"https://img.sofascore.com/api/v1/team/7044/image",
+  cartagines:
+    "https://img.sofascore.com/api/v1/team/7044/image",
 
-"sporting":
-"https://img.sofascore.com/api/v1/team/262906/image",
+  sporting:
+    "https://img.sofascore.com/api/v1/team/262906/image",
 
-"escorpiones":
-"https://img.sofascore.com/api/v1/team/391662/image",
+  escorpiones:
+    "https://img.sofascore.com/api/v1/team/391662/image",
 
-"perez zeledon":
-"https://img.sofascore.com/api/v1/team/6576/image",
+  "perez zeledon":
+    "https://img.sofascore.com/api/v1/team/6576/image",
 
-"puntarenas":
-"https://img.sofascore.com/api/v1/team/7046/image",
+  puntarenas:
+    "https://img.sofascore.com/api/v1/team/7046/image",
 
-"alajuelense":
-"https://img.sofascore.com/api/v1/team/6572/image",
+  alajuelense:
+    "https://img.sofascore.com/api/v1/team/6572/image",
 
-"herediano":
-"https://img.sofascore.com/api/v1/team/7044/image",
+  herediano:
+    "https://img.sofascore.com/api/v1/team/7045/image",
 
-"inter san carlos":
-"https://img.sofascore.com/api/v1/team/531301/image",
+  "inter san carlos":
+    "https://img.sofascore.com/api/v1/team/531301/image",
 
-"san carlos":
-"https://img.sofascore.com/api/v1/team/7047/image",
+  "san carlos":
+    "https://img.sofascore.com/api/v1/team/7047/image",
 };
 
 function normalizarNombre(nombre) {

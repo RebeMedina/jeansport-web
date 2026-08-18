@@ -1,4 +1,3 @@
-
 import { obtenerLogo } from "../data/equipos";
 import { noticias } from "../data/noticias";
 
@@ -6,8 +5,17 @@ function calcularTiempoRelativo(fechaISO) {
   const fecha = new Date(`${fechaISO}T00:00:00`);
   const ahora = new Date();
 
-  const hoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
-  const diaFecha = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
+  const hoy = new Date(
+    ahora.getFullYear(),
+    ahora.getMonth(),
+    ahora.getDate(),
+  );
+
+  const diaFecha = new Date(
+    fecha.getFullYear(),
+    fecha.getMonth(),
+    fecha.getDate(),
+  );
 
   const diffMs = hoy.getTime() - diaFecha.getTime();
   const diffDias = Math.round(diffMs / (1000 * 60 * 60 * 24));
@@ -17,12 +25,15 @@ function calcularTiempoRelativo(fechaISO) {
   if (diffDias < 30) return `Hace ${diffDias} días`;
 
   const diffMeses = Math.floor(diffDias / 30);
+
   if (diffMeses === 1) return "Hace 1 mes";
   if (diffMeses < 12) return `Hace ${diffMeses} meses`;
 
   const diffAnios = Math.floor(diffMeses / 12);
+
   return diffAnios === 1 ? "Hace 1 año" : `Hace ${diffAnios} años`;
 }
+
 function Noticias() {
   const noticiasOrdenadas = [...noticias].sort(
     (a, b) => new Date(b.fecha) - new Date(a.fecha),
@@ -60,6 +71,7 @@ function Noticias() {
                         key={`${noticia.titulo}-${logoIndex}`}
                         src={logo}
                         alt={`Logo de ${noticia.equipos[logoIndex]}`}
+                        referrerPolicy="no-referrer"
                       />
                     ))}
                   </div>
@@ -79,7 +91,8 @@ function Noticias() {
                       href={noticia.enlace}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn btn-secondary">
+                      className="btn btn-secondary"
+                    >
                       Ver publicación →
                     </a>
                   </div>
