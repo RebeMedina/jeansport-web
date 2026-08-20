@@ -31,18 +31,22 @@ const LOGOS_EQUIPOS = {
 };
 
 function normalizarNombre(nombre) {
-return nombre
-.toLowerCase()
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g, "")
-.replace(/[.']/g, "")
-.replace(/-/g, " ")
-.replace(/\s+/g, " ")
-.trim();
+  if (!nombre) return "";
+
+  return String(nombre)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[.']/g, "")
+    .replace(/-/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 export function obtenerLogo(nombreEquipo) {
   const nombre = normalizarNombre(nombreEquipo);
+
+  if (!nombre) return "";
 
   if (nombre.includes("saprissa")) {
     return LOGOS_EQUIPOS.saprissa;
@@ -79,7 +83,6 @@ export function obtenerLogo(nombreEquipo) {
     return LOGOS_EQUIPOS.herediano;
   }
 
-  // Inter San Carlos
   if (
     nombre.includes("inter san carlos") ||
     nombre === "inter sc" ||
@@ -88,7 +91,6 @@ export function obtenerLogo(nombreEquipo) {
     return LOGOS_EQUIPOS["inter san carlos"];
   }
 
-  // San Carlos
   if (nombre.includes("san carlos")) {
     return LOGOS_EQUIPOS["san carlos"];
   }

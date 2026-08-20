@@ -1,13 +1,20 @@
 import { Link } from "react-router";
 import { obtenerLogo } from "../data/equipos";
-import { noticias } from "../data/noticias";
+import { useAppData } from "../context/DataContext";
 
 function Hero() {
-  const noticiaReciente = [...noticias].sort(
-    (a, b) => new Date(b.fecha) - new Date(a.fecha),
-  )[0];
+  const { noticias, loadingNoticias } = useAppData();
 
-  const logo = obtenerLogo(noticiaReciente?.equipos?.[0]);
+  const noticiaReciente =
+    !loadingNoticias && noticias.length > 0
+      ? [...noticias].sort(
+          (a, b) => new Date(b.fecha) - new Date(a.fecha)
+        )[0]
+      : null;
+
+  const logo = noticiaReciente?.equipos?.[0]
+    ? obtenerLogo(noticiaReciente.equipos[0])
+    : "";
 
   return (
     <section className="hero container">
@@ -23,7 +30,6 @@ function Hero() {
         <p>
           Noticias, resultados, tablas y actualidad del fútbol de Costa Rica.
         </p>
-
       </div>
 
       {noticiaReciente && (

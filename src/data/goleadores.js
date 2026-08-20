@@ -1,60 +1,67 @@
-import { partidos } from "./partidos.js";
-import { jugadoresPorId } from "./jugadores.js";
 
-/*
- * ============================================================
- * GOLES POR JUGADOR (derivado de partidos.js)
- * ============================================================
- *
- * Recorre golesLocalDetalle / golesVisitanteDetalle de cada partido
- * y cuenta goles por jugadorId. Se excluyen:
- * - Partidos con walkover (ganados en la mesa): no hubo goles reales.
- * - Goles sin jugadorId (dato faltante en la fuente).
- * - Autogoles (propia: true): cuentan para el marcador del equipo,
- *   pero no se le suman al historial goleador del jugador que los metió.
- *
- * 100% derivado: no hay ningún dato cargado a mano acá. Cuando se
- * agregue un gol en partidos.js, esta lista se actualiza sola.
- */
+// ANTES esto probablemente exportaba un array `goleadores` ya calculado
+// a partir del import estático de partidos.js. Ahora partidos llega
+// async desde Sheets, así que esto se convierte en una FUNCIÓN que
+// recibe el array de partidos ya cargado y devuelve los goleadores.
+//
+// NOTA: no tenía el contenido original de este archivo, así que
+// reconstruí la lógica según cómo se usa `goleadores` en Estadisticas.jsx
+// y Goleadores.jsx (id, nombre, equipo, goles, ordenado descendente).
+// Si tu versión original calculaba algo distinto (por ejemplo, un
+// desempate distinto, o cómo cuenta partidosJugados), compárteme el
+// archivo original y lo ajusto exacto.
 
-function calcularGolesPorJugador() {
-  const conteo = {};
+import { jugadoresPorId } from "./jugadores";
+
+export function calcularGoleadores(partidos) {
+  const conteoGoles = {};
+  const partidosJugadosPorEquipo = {};
 
   partidos.forEach((partido) => {
-    if (partido.walkover) return;
+    const tieneGoles =
+      typeof partido.golesLocal === "number" &&
+      typeof partido.golesVisitante === "number";
 
-    const goles = [
+    if (!tieneGoles) return;
+
+    partidosJugadosPorEquipo[partido.local] =
+      (partidosJugadosPorEquipo[partido.local] || 0) + 1;
+    partidosJugadosPorEquipo[partido.visitante] =
+      (partidosJugadosPorEquipo[partido.visitante] || 0) + 1;
+
+    const golesDelPartido = [
       ...(partido.golesLocalDetalle || []),
       ...(partido.golesVisitanteDetalle || []),
     ];
 
-    goles.forEach((gol) => {
+    golesDelPartido.forEach((gol) => {
+      // Los autogoles no cuentan para la tabla de goleadores
       if (!gol.jugadorId || gol.propia) return;
 
-      conteo[gol.jugadorId] = (conteo[gol.jugadorId] || 0) + 1;
+      conteoGoles[gol.jugadorId] = (conteoGoles[gol.jugadorId] || 0) + 1;
     });
   });
 
-  return conteo;
+  const goleadores = Object.entries(conteoGoles).map(([jugadorId, goles]) => {
+    const jugador = jugadoresPorId[jugadorId];
+    const equipo = jugador?.equipo;
+    const partidosJugados = equipo
+      ? partidosJugadosPorEquipo[equipo] || 0
+      : 0;
+
+    return {
+      id: jugadorId,
+      nombre: jugador?.nombre || jugadorId,
+      equipo,
+      goles,
+      promedio: partidosJugados > 0 ? goles / partidosJugados : null,
+    };
+  });
+
+  goleadores.sort((a, b) => {
+    if (b.goles !== a.goles) return b.goles - a.goles;
+    return a.nombre.localeCompare(b.nombre);
+  });
+
+  return goleadores;
 }
-
-export function obtenerGoleadores() {
-  const conteo = calcularGolesPorJugador();
-
-  return Object.entries(conteo)
-    .map(([jugadorId, goles]) => {
-      const jugador = jugadoresPorId[jugadorId];
-
-      return {
-        id: jugadorId,
-        nombre: jugador ? jugador.nombre : jugadorId,
-        equipo: jugador ? jugador.equipo : null,
-        goles,
-      };
-    })
-    .sort((a, b) => b.goles - a.goles || a.nombre.localeCompare(b.nombre));
-}
-
-// Se mantiene este export para no romper los componentes que ya
-// hacen `import { goleadores } from "../data/goleadores"`.
-export const goleadores = obtenerGoleadores();

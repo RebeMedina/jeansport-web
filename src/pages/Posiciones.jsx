@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { partidos } from "../data/partidos";
 import { obtenerEstadoPartido } from "../data/estadoPartido";
+import { useAppData } from "../context/DataContext";
 import TablaPosiciones from "../components/TablaPosiciones";
 
 const nombresEquipos = {
@@ -18,11 +18,11 @@ const nombresEquipos = {
 
 const equipos = Object.keys(nombresEquipos);
 
-const jornadas = [...new Set(partidos.map((partido) => partido.jornada))].sort(
-  (a, b) => a - b,
-);
+// Antes estas dos funciones leían `partidos` de un import estático a
+// nivel de módulo. Ahora reciben el array como parámetro, porque los
+// datos llegan async desde Sheets y solo existen dentro del componente.
 
-function obtenerJornadaActual() {
+function obtenerJornadaActual(partidos, jornadas) {
   const ahora = new Date();
 
   const jornadasIniciadas = jornadas.filter((jornada) => {
@@ -42,7 +42,7 @@ function obtenerJornadaActual() {
   return jornadas[0];
 }
 
-function obtenerTablaPosiciones() {
+function obtenerTablaPosiciones(partidos) {
   const partidosActivos = partidos.filter((partido) => {
     const estado = obtenerEstadoPartido(partido);
 
@@ -137,6 +137,8 @@ function obtenerTablaPosiciones() {
 }
 
 function Posiciones() {
+  const { partidos, loadingPartidos, errorPartidos } = useAppData();
+
   const [, setActualizacion] = useState(0);
 
   useEffect(() => {
@@ -147,8 +149,27 @@ function Posiciones() {
     return () => clearInterval(intervalo);
   }, []);
 
-  const jornadaActual = obtenerJornadaActual();
-  const tabla = obtenerTablaPosiciones();
+  if (loadingPartidos) {
+    return (
+      <section className="container section">
+      </section>
+    );
+  }
+
+  if (errorPartidos) {
+    return (
+      <section className="container section">
+        <p>No se pudo cargar la tabla de posiciones. Intenta de nuevo más tarde.</p>
+      </section>
+    );
+  }
+
+  const jornadas = [...new Set(partidos.map((partido) => partido.jornada))].sort(
+    (a, b) => a - b,
+  );
+
+  const jornadaActual = obtenerJornadaActual(partidos, jornadas);
+  const tabla = obtenerTablaPosiciones(partidos);
 
   return (
     <>

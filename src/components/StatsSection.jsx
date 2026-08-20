@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { obtenerLogo } from "../data/equipos";
-import { goleadores } from "../data/goleadores";
+import { calcularGoleadores } from "../data/goleadores";
+import { useAppData } from "../context/DataContext";
 
 const nombresEquipos = {
   "san-carlos": "A.D. San Carlos",
@@ -16,6 +17,42 @@ const nombresEquipos = {
 };
 
 function StatsSection() {
+  const {
+    partidos,
+    loadingPartidos,
+    errorPartidos,
+  } = useAppData();
+
+  if (loadingPartidos) {
+    return (
+      <section className="container section">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">GOLEADORES</span>
+            <h2>Máximos goleadores</h2>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (errorPartidos) {
+    return (
+      <section className="container section">
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">GOLEADORES</span>
+            <h2>Máximos goleadores</h2>
+          </div>
+        </div>
+
+        <p>No se pudieron cargar los goleadores.</p>
+      </section>
+    );
+  }
+
+  const goleadores = calcularGoleadores(partidos);
+
   const primerosCinco = goleadores.slice(0, 5);
 
   return (
@@ -47,9 +84,11 @@ function StatsSection() {
               const logo = obtenerLogo(nombreEquipo);
 
               return (
-                <tr key={jugador.nombre}>
+                <tr key={jugador.id}>
                   <td>
-                    <span className="goleador-posicion">{index + 1}</span>
+                    <span className="goleador-posicion">
+                      {index + 1}
+                    </span>
                   </td>
 
                   <td className="goleador-info">
@@ -62,12 +101,19 @@ function StatsSection() {
                     )}
 
                     <div>
-                      <div className="goleador-nombre">{jugador.nombre}</div>
-                      <div className="goleador-equipo">{nombreEquipo}</div>
+                      <div className="goleador-nombre">
+                        {jugador.nombre}
+                      </div>
+
+                      <div className="goleador-equipo">
+                        {nombreEquipo}
+                      </div>
                     </div>
                   </td>
 
-                  <td className="goleador-goles">{jugador.goles}</td>
+                  <td className="goleador-goles">
+                    {jugador.goles}
+                  </td>
                 </tr>
               );
             })}

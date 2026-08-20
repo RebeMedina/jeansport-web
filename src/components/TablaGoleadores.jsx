@@ -1,7 +1,28 @@
 import { obtenerLogo } from "../data/equipos";
-import { goleadores } from "../data/goleadores";
+import { calcularGoleadores } from "../data/goleadores";
+import { useAppData } from "../context/DataContext";
 
 function Goleadores() {
+  const { partidos, loadingPartidos, errorPartidos } = useAppData();
+
+  if (loadingPartidos) {
+    return (
+      <section className="container section">
+        <p>Cargando tabla de goleadores...</p>
+      </section>
+    );
+  }
+
+  if (errorPartidos) {
+    return (
+      <section className="container section">
+        <p>No se pudo cargar la tabla de goleadores. Intenta de nuevo más tarde.</p>
+      </section>
+    );
+  }
+
+  const goleadores = calcularGoleadores(partidos);
+
   return (
     <>
       <section className="container page-hero">
@@ -28,7 +49,7 @@ function Goleadores() {
                 const logo = obtenerLogo(jugador.equipo);
 
                 return (
-                  <tr key={`${jugador.nombre}-${index}`}>
+                  <tr key={jugador.id || `${jugador.nombre}-${index}`}>
                     <td>
                       <span className="goleador-posicion">{index + 1}</span>
                     </td>

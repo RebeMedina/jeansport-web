@@ -1,7 +1,7 @@
 import { Link } from "react-router";
-import { partidos } from "../data/partidos";
 import { obtenerLogo } from "../data/equipos";
 import { obtenerEstadoPartido } from "../data/estadoPartido";
+import { useAppData } from "../context/DataContext";
 
 const nombresEquipos = {
   "san-carlos": "A.D. San Carlos",
@@ -16,31 +16,37 @@ const nombresEquipos = {
   alajuelense: "L.D. Alajuelense",
 };
 
-const jornadas = [...new Set(partidos.map((partido) => partido.jornada))].sort(
-  (a, b) => a - b,
-);
-
-const obtenerJornadaActual = () => {
-  const ahora = new Date();
-
-  const jornadasIniciadas = jornadas.filter((jornada) => {
-    const fechasJornada = partidos
-      .filter((partido) => partido.jornada === jornada)
-      .map((partido) => new Date(`${partido.fecha}T00:00:00`).getTime());
-
-    const fechaInicio = new Date(Math.min(...fechasJornada));
-
-    return fechaInicio <= ahora;
-  });
-
-  if (jornadasIniciadas.length > 0) {
-    return jornadasIniciadas[jornadasIniciadas.length - 1];
-  }
-
-  return jornadas[0];
-};
-
 function ResultsSection() {
+  const { partidos, loadingPartidos } = useAppData();
+
+  const jornadas = [
+    ...new Set(partidos.map((partido) => partido.jornada)),
+  ].sort((a, b) => a - b);
+
+  const obtenerJornadaActual = () => {
+    if (jornadas.length === 0) return null;
+
+    const ahora = new Date();
+
+    const jornadasIniciadas = jornadas.filter((jornada) => {
+      const fechasJornada = partidos
+        .filter((partido) => partido.jornada === jornada)
+        .map((partido) =>
+          new Date(`${partido.fecha}T00:00:00`).getTime()
+        );
+
+      const fechaInicio = new Date(Math.min(...fechasJornada));
+
+      return fechaInicio <= ahora;
+    });
+
+    if (jornadasIniciadas.length > 0) {
+      return jornadasIniciadas[jornadasIniciadas.length - 1];
+    }
+
+    return jornadas[0];
+  };
+
   const jornadaActual = obtenerJornadaActual();
 
   const partidosConEstado = partidos
@@ -52,12 +58,18 @@ function ResultsSection() {
     .filter(
       (partido) =>
         partido.estadoReal === "finalizado" ||
-        partido.estadoReal === "en-curso",
+        partido.estadoReal === "en-curso"
     )
     .sort((a, b) => {
-      const fechaHoraA = new Date(`${a.fecha}T${a.hora || "00:00"}:00`);
-      const fechaHoraB = new Date(`${b.fecha}T${b.hora || "00:00"}:00`);
-      return fechaHoraB - fechaHoraA; // más reciente jugado primero
+      const fechaHoraA = new Date(
+        `${a.fecha}T${a.hora || "00:00"}:00`
+      );
+
+      const fechaHoraB = new Date(
+        `${b.fecha}T${b.hora || "00:00"}:00`
+      );
+
+      return fechaHoraB - fechaHoraA;
     })
     .slice(0, 3);
 
@@ -65,6 +77,13 @@ function ResultsSection() {
     const [, mes, dia] = fecha.split("-");
     return `${dia}.${mes}`;
   };
+
+  if (loadingPartidos) {
+    return (
+      <section className="container section">
+      </section>
+    );
+  }
 
   return (
     <section className="container section">
@@ -81,7 +100,9 @@ function ResultsSection() {
 
       <div className="resultados-container">
         {partidosConEstado.map((partido) => {
-          const nombreLocal = nombresEquipos[partido.local] || partido.local;
+          const nombreLocal =
+            nombresEquipos[partido.local] || partido.local;
+
           const nombreVisitante =
             nombresEquipos[partido.visitante] || partido.visitante;
 
@@ -118,7 +139,10 @@ function ResultsSection() {
                       alt={`Escudo de ${nombreLocal}`}
                     />
                   )}
-                  <strong className="equipo-nombre">{nombreLocal}</strong>
+
+                  <strong className="equipo-nombre">
+                    {nombreLocal}
+                  </strong>
                 </div>
 
                 <div className="resultado-marcador">
@@ -130,7 +154,9 @@ function ResultsSection() {
 
                   <span
                     className={`estado-partido ${
-                      partido.estadoReal === "en-curso" ? "estado-en-vivo" : ""
+                      partido.estadoReal === "en-curso"
+                        ? "estado-en-vivo"
+                        : ""
                     }`}
                   >
                     {partido.estadoReal === "en-curso"
@@ -147,7 +173,10 @@ function ResultsSection() {
                       alt={`Escudo de ${nombreVisitante}`}
                     />
                   )}
-                  <strong className="equipo-nombre">{nombreVisitante}</strong>
+
+                  <strong className="equipo-nombre">
+                    {nombreVisitante}
+                  </strong>
                 </div>
               </div>
             </article>

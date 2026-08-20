@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { obtenerLogo } from "../data/equipos";
-import { goleadores } from "../data/goleadores";
-import { partidos } from "../data/partidos";
+import { calcularGoleadores } from "../data/goleadores";
 import { obtenerEstadoPartido } from "../data/estadoPartido";
+import { useAppData } from "../context/DataContext";
 import EquipoJornada from "../components/EquipoJornada";
 
 const nombresEquipos = {
@@ -19,8 +19,25 @@ const nombresEquipos = {
 };
 
 function Estadisticas() {
+  const { partidos, loadingPartidos, errorPartidos } = useAppData();
+
   const [tipoAtaque, setTipoAtaque] = useState("general");
   const [tipoDefensa, setTipoDefensa] = useState("general");
+
+  if (loadingPartidos) {
+    return (
+      <section className="container section">
+      </section>
+    );
+  }
+
+  if (errorPartidos) {
+    return (
+      <section className="container section">
+        <p>No se pudieron cargar las estadísticas. Intenta de nuevo más tarde.</p>
+      </section>
+    );
+  }
 
   /*
    * ============================================================
@@ -41,9 +58,10 @@ function Estadisticas() {
    * ============================================================
    */
 
-  // goleadores ya viene derivado de partidos.js (100% automático) y
-  // ordenado, con "promedio" calculado o en null si todavía no
-  // cargamos el partidosJugados de ese jugador.
+  // Antes `goleadores` venía precalculado de un import estático.
+  // Ahora se recalcula en cada render a partir de los partidos ya
+  // cargados desde Sheets.
+  const goleadores = calcularGoleadores(partidos);
   const primerosCincoGoleadores = goleadores.slice(0, 5);
 
   /*
