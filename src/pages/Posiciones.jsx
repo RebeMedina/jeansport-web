@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
-import { obtenerEstadoPartido } from "../data/estadoPartido";
+import { obtenerLogo } from "../data/equipos";
+import { partidoCuentaParaTabla } from "../data/estadoPartido";
 import { useAppData } from "../context/DataContext";
 import TablaPosiciones from "../components/TablaPosiciones";
+import { SemifinalesBracket } from "../components/Semifinales";
 
 const nombresEquipos = {
   "san-carlos": "A.D. San Carlos",
@@ -18,19 +19,49 @@ const nombresEquipos = {
 
 const equipos = Object.keys(nombresEquipos);
 
-// Antes estas dos funciones leían `partidos` de un import estático a
-// nivel de módulo. Ahora reciben el array como parámetro, porque los
-// datos llegan async desde Sheets y solo existen dentro del componente.
-
 function obtenerJornadaActual(partidos, jornadas) {
+  if (!partidos.length || !jornadas.length) {
+    return 1;
+  }
+
+  const jornadasConPartidos = jornadas.filter((jornada) =>
+    partidos.some((partido) => partido.jornada === jornada && partido.fecha),
+  );
+
+  if (!jornadasConPartidos.length) {
+    return jornadas[0];
+  }
+
   const ahora = new Date();
 
-  const jornadasIniciadas = jornadas.filter((jornada) => {
-    const fechasJornada = partidos
-      .filter((partido) => partido.jornada === jornada)
-      .map((partido) => new Date(`${partido.fecha}T00:00:00`).getTime());
+  const jornadasIniciadas = jornadasConPartidos.filter((jornada) => {
+    const partidosJornada = partidos.filter(
+      (partido) => partido.jornada === jornada && partido.fecha,
+    );
 
-    const fechaInicio = new Date(Math.min(...fechasJornada));
+    if (!partidosJornada.length) {
+      return false;
+    }
+
+    const fechas = partidosJornada
+      .map((partido) => {
+        const fecha = String(partido.fecha).split("T")[0];
+
+        const [anio, mes, dia] = fecha.split("-").map(Number);
+
+        if (!anio || !mes || !dia) {
+          return null;
+        }
+
+        return new Date(anio, mes - 1, dia).getTime();
+      })
+      .filter((fecha) => fecha !== null && !Number.isNaN(fecha));
+
+    if (!fechas.length) {
+      return false;
+    }
+
+    const fechaInicio = new Date(Math.min(...fechas));
 
     return fechaInicio <= ahora;
   });
@@ -43,25 +74,35 @@ function obtenerJornadaActual(partidos, jornadas) {
 }
 
 function obtenerTablaPosiciones(partidos) {
-  const partidosActivos = partidos.filter((partido) => {
-    const estado = obtenerEstadoPartido(partido);
+  /*
+   * Solamente usamos partidos:
+   *
+   * - con marcador
+   * - finalizados
+   *
+   * Los partidos futuros o en curso
+   * NO afectan la tabla.
+   */
 
-    return estado === "finalizado" || estado === "en-curso";
-  });
+  const partidosFinalizados = partidos.filter(partidoCuentaParaTabla);
 
   const tabla = equipos.map((equipo) => {
-    const partidosEquipo = partidosActivos
+    const partidosEquipo = partidosFinalizados
       .filter(
         (partido) => partido.local === equipo || partido.visitante === equipo,
       )
-      .sort(
-        (a, b) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime(),
-      );
+      .sort((a, b) => {
+        const fechaA = new Date(a.fecha).getTime();
+        const fechaB = new Date(b.fecha).getTime();
+
+        return fechaA - fechaB;
+      });
 
     let jugados = 0;
     let ganados = 0;
     let empatados = 0;
     let perdidos = 0;
+
     let golesFavor = 0;
     let golesContra = 0;
 
@@ -96,22 +137,39 @@ function obtenerTablaPosiciones(partidos) {
     });
 
     const puntos = ganados * 3 + empatados;
+
     const diferenciaGoles = golesFavor - golesContra;
 
     return {
       equipo,
       nombre: nombresEquipos[equipo],
+
       jugados,
+
       ganados,
       empatados,
       perdidos,
+
       golesFavor,
       golesContra,
+
       diferenciaGoles,
+
       puntos,
+
       ultimosCinco: ultimos.slice(-5),
     };
   });
+
+  /*
+   * Orden:
+   *
+   * 1. Puntos
+   * 2. Diferencia de goles
+   * 3. Goles a favor
+   * 4. Victorias
+   * 5. Nombre
+   */
 
   tabla.sort((a, b) => {
     if (a.puntos !== b.puntos) {
@@ -139,19 +197,10 @@ function obtenerTablaPosiciones(partidos) {
 function Posiciones() {
   const { partidos, loadingPartidos, errorPartidos } = useAppData();
 
-  const [, setActualizacion] = useState(0);
-
-  useEffect(() => {
-    const intervalo = setInterval(() => {
-      setActualizacion((valor) => valor + 1);
-    }, 30000);
-
-    return () => clearInterval(intervalo);
-  }, []);
-
   if (loadingPartidos) {
     return (
       <section className="container section">
+        <p>Cargando tabla de posiciones...</p>
       </section>
     );
   }
@@ -159,17 +208,37 @@ function Posiciones() {
   if (errorPartidos) {
     return (
       <section className="container section">
-        <p>No se pudo cargar la tabla de posiciones. Intenta de nuevo más tarde.</p>
+        <p>
+          No se pudo cargar la tabla de posiciones. Intenta de nuevo más tarde.
+        </p>
       </section>
     );
   }
 
-  const jornadas = [...new Set(partidos.map((partido) => partido.jornada))].sort(
-    (a, b) => a - b,
-  );
+  const jornadas = [
+    ...new Set(
+      partidos
+        .map((partido) => partido.jornada)
+        .filter((jornada) => typeof jornada === "number"),
+    ),
+  ].sort((a, b) => a - b);
 
   const jornadaActual = obtenerJornadaActual(partidos, jornadas);
+
   const tabla = obtenerTablaPosiciones(partidos);
+
+  /*
+   * Los 4 cupos de semifinal se toman directamente de las primeras 4
+   * posiciones de la tabla que ya calculamos arriba. Si todavía no hay
+   * suficientes partidos jugados, tabla[i] puede no existir y el bracket
+   * muestra el placeholder "Clasificado N" en su lugar.
+   */
+  const equiposClasificados = {
+    1: tabla[0]?.equipo,
+    2: tabla[1]?.equipo,
+    3: tabla[2]?.equipo,
+    4: tabla[3]?.equipo,
+  };
 
   return (
     <>
@@ -183,6 +252,10 @@ function Posiciones() {
 
       <section className="container section">
         <TablaPosiciones tabla={tabla} />
+      </section>
+
+      <section className="container section">
+        <SemifinalesBracket equiposClasificados={equiposClasificados} />
       </section>
     </>
   );

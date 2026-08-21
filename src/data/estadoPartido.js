@@ -1,30 +1,22 @@
-const DURACION_ESTIMADA_MINUTOS = 120; // 2 horas
+const DURACION_ESTIMADA_MINUTOS = 120;
 
 export function obtenerEstadoPartido(partido) {
   if (!partido) {
     return "proximo";
   }
 
-  // Si en Google Sheets ya está marcado como finalizado,
+  // Si Google Sheets ya indica que terminó,
   // respetamos ese estado.
   if (partido.estado === "finalizado") {
     return "finalizado";
   }
 
+  // Si no hay fecha u hora, mantenemos el estado recibido.
   if (!partido.fecha || !partido.hora) {
     return partido.estado || "proximo";
   }
 
-  // Google Sheets puede enviar fechas como:
-  // 2026-08-16
-  // 2026-08-16T06:00:00.000Z
-  //
-  // Solo necesitamos YYYY-MM-DD.
   const fecha = String(partido.fecha).split("T")[0];
-
-  // Limpiamos la hora por si viene como:
-  // 15:00:00
-  // 15:00
   const hora = String(partido.hora).substring(0, 5);
 
   const [anio, mes, dia] = fecha.split("-").map(Number);
@@ -43,13 +35,9 @@ export function obtenerEstadoPartido(partido) {
   /*
    * Costa Rica = UTC-6.
    *
-   * Construimos el momento del partido usando UTC y
-   * sumamos 6 horas para representar correctamente
-   * la hora local de Costa Rica.
-   *
    * Ejemplo:
-   * 16/08/2026 15:00 Costa Rica
-   * = 16/08/2026 21:00 UTC
+   * 2026-08-16 15:00 Costa Rica
+   * = 2026-08-16 21:00 UTC
    */
 
   const inicio = new Date(
@@ -66,16 +54,51 @@ export function obtenerEstadoPartido(partido) {
     inicio.getTime() + DURACION_ESTIMADA_MINUTOS * 60 * 1000
   );
 
-  // Todavía no empieza.
   if (ahora < inicio) {
     return "proximo";
   }
 
-  // Ya pasaron las 2 horas.
   if (ahora >= fin) {
     return "finalizado";
   }
 
-  // Está dentro de las 2 horas del partido.
   return "en-curso";
+}
+
+/*
+ * Verifica que el partido tenga un marcador válido.
+ */
+export function partidoTieneResultado(partido) {
+  return (
+    partido &&
+    typeof partido.golesLocal === "number" &&
+    typeof partido.golesVisitante === "number"
+  );
+}
+
+/*
+ * Un partido solamente cuenta para la tabla
+ * cuando:
+ *
+ * 1. Tiene ambos goles.
+ * 2. Está finalizado.
+ */
+export function partidoCuentaParaTabla(partido) {
+  if (!partidoTieneResultado(partido)) {
+    return false;
+  }
+
+  return obtenerEstadoPartido(partido) === "finalizado";
+}
+
+/*
+ * Las estadísticas oficiales utilizan
+ * exactamente la misma regla.
+ */
+export function partidoCuentaParaEstadisticas(partido) {
+  if (!partidoTieneResultado(partido)) {
+    return false;
+  }
+
+  return obtenerEstadoPartido(partido) === "finalizado";
 }

@@ -27,6 +27,22 @@ function Footer() {
             </svg>
           </a>
 
+          {/* Facebook */}
+          <a
+            href="https://www.facebook.com/share/197RBtynEE/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+            className="footer-social-link"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M14 8h3V4h-3c-3.3 0-5 2-5 5v3H6v4h3v4h4v-4h3.5l.5-4H13V9c0-.7.3-1 1-1z"
+                fill="currentColor"
+              />
+            </svg>
+          </a>
+
           {/* Instagram */}
           <a
             href="https://instagram.com/jeansport_cr"
@@ -60,21 +76,19 @@ function Footer() {
             </svg>
           </a>
 
-          {/* Facebook */}
-          <a
-            href="https://www.facebook.com/share/197RBtynEE/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Facebook"
-            className="footer-social-link"
+          {/* TikTok */}
+          <span
+            className="footer-social-link footer-social-disabled"
+            aria-label="TikTok próximamente"
+            title="TikTok próximamente"
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path
-                d="M14 8h3V4h-3c-3.3 0-5 2-5 5v3H6v4h3v4h4v-4h3.5l.5-4H13V9c0-.7.3-1 1-1z"
+                d="M16.5 3c.4 2.3 1.8 3.8 4 4.1v3.2c-1.5 0-2.8-.4-4-1.1v6.3c0 4-2.8 6.5-6.5 6.5C6.5 22 4 19.5 4 16.2c0-3.2 2.4-5.7 5.7-5.9v3.3c-1.4.1-2.4 1-2.4 2.4 0 1.5 1.1 2.7 2.7 2.7 1.8 0 2.9-1.2 2.9-3.1V3h3.6z"
                 fill="currentColor"
               />
             </svg>
-          </a>
+          </span>
 
           {/* YouTube */}
           <span

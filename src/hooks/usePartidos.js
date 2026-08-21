@@ -21,11 +21,7 @@ function obtenerCache() {
 
     return datos;
   } catch (error) {
-    console.error(
-      "Error leyendo cache de partidos:",
-      error
-    );
-
+    console.error("Error leyendo cache de partidos:", error);
     return null;
   }
 }
@@ -37,10 +33,7 @@ function guardarCache(partidos) {
       JSON.stringify(partidos)
     );
   } catch (error) {
-    console.error(
-      "Error guardando cache de partidos:",
-      error
-    );
+    console.error("Error guardando cache de partidos:", error);
   }
 }
 
@@ -71,11 +64,10 @@ export function usePartidos({
       cargandoRef.current = true;
 
       try {
-        const [rawPartidos, rawGoles] =
-          await Promise.all([
-            fetchSheet("Partidos"),
-            fetchSheet("Goles"),
-          ]);
+        const [rawPartidos, rawGoles] = await Promise.all([
+          fetchSheet("Partidos"),
+          fetchSheet("Goles"),
+        ]);
 
         if (cancelled) {
           return;
@@ -92,10 +84,7 @@ export function usePartidos({
 
         setError(null);
       } catch (err) {
-        console.error(
-          "Error cargando partidos:",
-          err
-        );
+        console.error("Error cargando partidos:", err);
 
         if (!cancelled) {
           setError(err);
@@ -109,9 +98,6 @@ export function usePartidos({
       }
     }
 
-    // Si ya existe cache, los datos aparecen
-    // inmediatamente y esta petición ocurre
-    // silenciosamente en segundo plano.
     load();
 
     timerRef.current = setInterval(

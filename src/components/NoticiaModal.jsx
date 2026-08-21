@@ -5,6 +5,10 @@ function calcularFecha(fechaISO) {
 
   const fecha = new Date(`${fechaISO}T00:00:00`);
 
+  if (Number.isNaN(fecha.getTime())) {
+    return "";
+  }
+
   return fecha.toLocaleDateString("es-CR", {
     day: "numeric",
     month: "long",
@@ -24,6 +28,28 @@ function NoticiaModal({ noticia, onClose }) {
       onClose();
     }
   }
+
+  /*
+   * ============================================================
+   * PREPARAR CONTENIDO
+   * ============================================================
+   *
+   * Excel / Google Sheets puede enviar los saltos de línea como:
+   *
+   * \n
+   * \r\n
+   *
+   * Normalizamos ambos formatos para que Alt + Enter
+   * se respete correctamente en la noticia.
+   */
+
+  const parrafos = noticia.contenido
+    ? noticia.contenido
+        .replace(/\r\n/g, "\n")
+        .split(/\n/)
+        .map((parrafo) => parrafo.trim())
+        .filter(Boolean)
+    : [];
 
   return (
     <div className="noticia-modal-overlay" onClick={manejarClickFondo}>
@@ -66,6 +92,7 @@ function NoticiaModal({ noticia, onClose }) {
             {noticia.autor && (
               <>
                 <span>•</span>
+
                 <span>{noticia.autor}</span>
               </>
             )}
@@ -74,11 +101,8 @@ function NoticiaModal({ noticia, onClose }) {
           <div className="noticia-modal-linea" />
 
           <div className="noticia-modal-texto">
-            {noticia.contenido ? (
-              noticia.contenido
-                .split(/\n\s*\n/)
-                .filter(Boolean)
-                .map((parrafo, index) => <p key={index}>{parrafo}</p>)
+            {parrafos.length > 0 ? (
+              parrafos.map((parrafo, index) => <p key={index}>{parrafo}</p>)
             ) : (
               <p>No hay contenido adicional para esta noticia.</p>
             )}

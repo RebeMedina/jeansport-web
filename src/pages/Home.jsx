@@ -2,13 +2,14 @@ import Hero from "../components/Hero";
 import ResultsSection from "../components/ResultsSection";
 import StandingsSection from "../components/StandingsSection";
 import StatsSection from "../components/StatsSection";
-import SocialCTA from "../components/SocialCTA";
+import SemifinalesSection from "../components/SemifinalesSection";
 
 function Home() {
   return (
     <>
       {" "}
-      <Hero /> <ResultsSection /> <StandingsSection /> <StatsSection /> <SocialCTA />
+      <Hero /> <ResultsSection /> <SemifinalesSection /> <StandingsSection />{" "}
+      <StatsSection />
     </>
   );
 }

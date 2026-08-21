@@ -3,11 +3,100 @@ import { obtenerLogo } from "../data/equipos";
 import { useAppData } from "../context/DataContext";
 import NoticiaModal from "../components/NoticiaModal";
 
-function calcularTiempoRelativo(fechaISO) {
-  if (!fechaISO) return "";
+/*
+ * ============================================================
+ * CONVERTIR FECHA
+ * ============================================================
+ *
+ * Google Sheets puede entregar la fecha como:
+ *
+ * 2026-08-20
+ *
+ * o como:
+ *
+ * Wed Aug 20 2026 00:00:00 GMT-0600 (...)
+ *
+ * Esta función soporta ambos formatos.
+ */
 
-  const fecha = new Date(`${fechaISO}T00:00:00`);
+function convertirFecha(fecha) {
+  if (!fecha) {
+    return null;
+  }
+
+  /*
+   * Si ya es un objeto Date
+   */
+  if (fecha instanceof Date) {
+    if (!Number.isNaN(fecha.getTime())) {
+      return fecha;
+    }
+
+    return null;
+  }
+
+  const valor = String(fecha).trim();
+
+  if (!valor) {
+    return null;
+  }
+
+  /*
+   * ==========================================================
+   * FORMATO YYYY-MM-DD
+   * ==========================================================
+   *
+   * Lo convertimos manualmente para evitar problemas de zona
+   * horaria.
+   */
+
+  const match = valor.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+
+  if (match) {
+    const [, anio, mes, dia] = match;
+
+    const fechaLocal = new Date(Number(anio), Number(mes) - 1, Number(dia));
+
+    if (!Number.isNaN(fechaLocal.getTime())) {
+      return fechaLocal;
+    }
+  }
+
+  /*
+   * ==========================================================
+   * OTROS FORMATOS
+   * ==========================================================
+   */
+
+  const fechaConvertida = new Date(valor);
+
+  if (!Number.isNaN(fechaConvertida.getTime())) {
+    return fechaConvertida;
+  }
+
+  console.warn("No se pudo convertir la fecha:", fecha);
+
+  return null;
+}
+
+/*
+ * ============================================================
+ * TIEMPO RELATIVO
+ * ============================================================
+ */
+
+function calcularTiempoRelativo(fechaOriginal) {
+  const fecha = convertirFecha(fechaOriginal);
+
+  if (!fecha) {
+    return "Fecha no disponible";
+  }
+
   const ahora = new Date();
+
+  /*
+   * Normalizamos ambas fechas a medianoche.
+   */
 
   const hoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
 
@@ -19,19 +108,43 @@ function calcularTiempoRelativo(fechaISO) {
 
   const diffMs = hoy.getTime() - diaFecha.getTime();
 
-  const diffDias = Math.round(diffMs / (1000 * 60 * 60 * 24));
+  const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-  if (diffDias <= 0) {
+  /*
+   * Fecha futura
+   */
+
+  if (diffDias < 0) {
+    return "Próximamente";
+  }
+
+  /*
+   * Hoy
+   */
+
+  if (diffDias === 0) {
     return "Hoy";
   }
+
+  /*
+   * Ayer
+   */
 
   if (diffDias === 1) {
     return "Hace 1 día";
   }
 
+  /*
+   * Menos de 30 días
+   */
+
   if (diffDias < 30) {
     return `Hace ${diffDias} días`;
   }
+
+  /*
+   * Meses
+   */
 
   const diffMeses = Math.floor(diffDias / 30);
 
@@ -43,10 +156,47 @@ function calcularTiempoRelativo(fechaISO) {
     return `Hace ${diffMeses} meses`;
   }
 
+  /*
+   * Años
+   */
+
   const diffAnios = Math.floor(diffMeses / 12);
 
-  return diffAnios === 1 ? "Hace 1 año" : `Hace ${diffAnios} años`;
+  if (diffAnios === 1) {
+    return "Hace 1 año";
+  }
+
+  return `Hace ${diffAnios} años`;
 }
+
+/*
+ * ============================================================
+ * FORMATO DE FECHA
+ * ============================================================
+ *
+ * Esto es opcional pero útil para el modal o para mostrar
+ * una fecha completa si después quieres utilizarla.
+ */
+
+function formatearFecha(fechaOriginal) {
+  const fecha = convertirFecha(fechaOriginal);
+
+  if (!fecha) {
+    return "Fecha no disponible";
+  }
+
+  return fecha.toLocaleDateString("es-CR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
+/*
+ * ============================================================
+ * COMPONENTE
+ * ============================================================
+ */
 
 function Noticias() {
   const { noticias, loadingNoticias, errorNoticias } = useAppData();
@@ -54,9 +204,9 @@ function Noticias() {
   const [noticiaSeleccionada, setNoticiaSeleccionada] = useState(null);
 
   /*
-   * ============================================================
+   * ==========================================================
    * CERRAR MODAL CON ESC
-   * ============================================================
+   * ==========================================================
    */
 
   useEffect(() => {
@@ -76,9 +226,9 @@ function Noticias() {
   }, [noticiaSeleccionada]);
 
   /*
-   * ============================================================
-   * BLOQUEAR SCROLL CUANDO EL MODAL ESTÁ ABIERTO
-   * ============================================================
+   * ==========================================================
+   * BLOQUEAR SCROLL DEL BODY
+   * ==========================================================
    */
 
   useEffect(() => {
@@ -94,9 +244,9 @@ function Noticias() {
   }, [noticiaSeleccionada]);
 
   /*
-   * ============================================================
+   * ==========================================================
    * ABRIR NOTICIA
-   * ============================================================
+   * ==========================================================
    */
 
   function abrirNoticia(noticia) {
@@ -104,9 +254,9 @@ function Noticias() {
   }
 
   /*
-   * ============================================================
+   * ==========================================================
    * CERRAR NOTICIA
-   * ============================================================
+   * ==========================================================
    */
 
   function cerrarNoticia() {
@@ -114,25 +264,52 @@ function Noticias() {
   }
 
   /*
-   * ============================================================
+   * ==========================================================
    * ORDENAR NOTICIAS
-   * ============================================================
+   * ==========================================================
    *
-   * Google Sheets puede estar ordenado de antigua a nueva.
-   * Aquí las mostramos de nueva a antigua.
+   * MÁS RECIENTE
+   *       ↓
+   * MÁS ANTIGUA
+   *
+   * Si dos noticias tienen la misma fecha, usamos el ID
+   * para mantener un orden consistente.
    */
 
-  const noticiasOrdenadas = [...noticias].sort(
-    (a, b) => new Date(b.fecha) - new Date(a.fecha),
-  );
+  const noticiasOrdenadas = [...(noticias || [])].sort((a, b) => {
+    const fechaA = convertirFecha(a.fecha);
+
+    const fechaB = convertirFecha(b.fecha);
+
+    /*
+     * Si ambas fechas existen
+     */
+
+    if (fechaA && fechaB) {
+      const diferencia = fechaB.getTime() - fechaA.getTime();
+
+      /*
+       * Si tienen fechas diferentes,
+       * la más reciente va primero.
+       */
+
+      if (diferencia !== 0) {
+        return diferencia;
+      }
+    }
+
+    /*
+     * Si tienen la misma fecha,
+     * el ID más alto va primero.
+     */
+
+    return Number(b.id || 0) - Number(a.id || 0);
+  });
 
   /*
-   * ============================================================
-   * LOADING INICIAL
-   * ============================================================
-   *
-   * Si ya tenemos noticias provenientes del cache,
-   * NO mostramos "Cargando noticias".
+   * ==========================================================
+   * LOADING
+   * ==========================================================
    */
 
   if (loadingNoticias && noticias.length === 0) {
@@ -144,12 +321,9 @@ function Noticias() {
   }
 
   /*
-   * ============================================================
+   * ==========================================================
    * ERROR
-   * ============================================================
-   *
-   * Si tenemos datos cacheados, seguimos mostrando esos datos
-   * aunque falle una actualización.
+   * ==========================================================
    */
 
   if (errorNoticias && noticias.length === 0) {
@@ -160,10 +334,16 @@ function Noticias() {
     );
   }
 
+  /*
+   * ============================================================
+   * RENDER
+   * ============================================================
+   */
+
   return (
     <>
       {/* ======================================================
-          HERO DE LA PÁGINA
+          HERO
       ====================================================== */}
 
       <section className="container page-hero">
@@ -178,15 +358,27 @@ function Noticias() {
       </section>
 
       {/* ======================================================
-          LISTADO DE NOTICIAS
+          LISTADO
       ====================================================== */}
 
       <section className="container section">
         <div className="news-grid noticias-grid">
           {noticiasOrdenadas.map((noticia, index) => {
+            /*
+             * ==================================================
+             * LOGOS
+             * ==================================================
+             */
+
             const logos = (noticia.equipos || [])
               .map((equipo) => obtenerLogo(equipo))
               .filter(Boolean);
+
+            /*
+             * ==================================================
+             * FECHA
+             * ==================================================
+             */
 
             return (
               <article
@@ -203,7 +395,7 @@ function Noticias() {
                       <img
                         key={`${noticia.id}-${logoIndex}`}
                         src={logo}
-                        alt={`Logo de ${noticia.equipos[logoIndex]}`}
+                        alt={`Logo de ${noticia.equipos?.[logoIndex] || ""}`}
                         referrerPolicy="no-referrer"
                       />
                     ))}
@@ -211,7 +403,7 @@ function Noticias() {
                 </div>
 
                 {/* ==========================================
-                      CONTENIDO DE LA CARD
+                      CONTENIDO
                   ========================================== */}
 
                 <div className="news-content">
@@ -221,9 +413,9 @@ function Noticias() {
 
                   <p>{noticia.descripcion}</p>
 
-                  {/* ================================
+                  {/* ======================================
                         FECHA + AUTOR
-                    ================================= */}
+                    ====================================== */}
 
                   <div className="noticia-meta">
                     <small>{calcularTiempoRelativo(noticia.fecha)}</small>
@@ -237,9 +429,9 @@ function Noticias() {
                     )}
                   </div>
 
-                  {/* ================================
+                  {/* ======================================
                         BOTÓN
-                    ================================= */}
+                    ====================================== */}
 
                   <div className="noticia-action">
                     <button

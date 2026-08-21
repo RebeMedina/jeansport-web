@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { obtenerLogo } from "../data/equipos";
 import { calcularGoleadores } from "../data/goleadores";
-import { obtenerEstadoPartido } from "../data/estadoPartido";
 import { useAppData } from "../context/DataContext";
 import EquipoJornada from "../components/EquipoJornada";
 
@@ -18,15 +17,56 @@ const nombresEquipos = {
   alajuelense: "L.D. Alajuelense",
 };
 
+const equipos = Object.keys(nombresEquipos);
+
+/*
+ * ============================================================
+ * DETERMINAR SI UN PARTIDO YA TIENE RESULTADO
+ * ============================================================
+ *
+ * Para estadísticas y tabla:
+ * - Ambos goles deben existir.
+ * - Deben ser números válidos.
+ *
+ * Esto evita depender de la hora para decidir si el resultado
+ * debe entrar en las estadísticas.
+ */
+
+function tieneResultado(partido) {
+  if (!partido) {
+    return false;
+  }
+
+  return (
+    typeof partido.golesLocal === "number" &&
+    !Number.isNaN(partido.golesLocal) &&
+    typeof partido.golesVisitante === "number" &&
+    !Number.isNaN(partido.golesVisitante)
+  );
+}
+
+/*
+ * ============================================================
+ * COMPONENTE
+ * ============================================================
+ */
+
 function Estadisticas() {
   const { partidos, loadingPartidos, errorPartidos } = useAppData();
 
   const [tipoAtaque, setTipoAtaque] = useState("general");
   const [tipoDefensa, setTipoDefensa] = useState("general");
 
+  /*
+   * ============================================================
+   * ESTADOS DE CARGA
+   * ============================================================
+   */
+
   if (loadingPartidos) {
     return (
       <section className="container section">
+        <p>Cargando estadísticas...</p>
       </section>
     );
   }
@@ -34,23 +74,47 @@ function Estadisticas() {
   if (errorPartidos) {
     return (
       <section className="container section">
-        <p>No se pudieron cargar las estadísticas. Intenta de nuevo más tarde.</p>
+        <p>
+          No se pudieron cargar las estadísticas. Intenta de nuevo más tarde.
+        </p>
       </section>
     );
   }
 
   /*
    * ============================================================
-   * PARTIDOS FINALIZADOS
+   * VALIDACIÓN
    * ============================================================
    */
 
-  const partidosFinalizados = partidos.filter(
-    (partido) =>
-      obtenerEstadoPartido(partido) === "finalizado" &&
-      typeof partido.golesLocal === "number" &&
-      typeof partido.golesVisitante === "number",
-  );
+  if (!Array.isArray(partidos)) {
+    return (
+      <section className="container section">
+        <p>No hay datos de partidos disponibles.</p>
+      </section>
+    );
+  }
+
+  /*
+   * ============================================================
+   * PARTIDOS CON RESULTADO
+   * ============================================================
+   *
+   * IMPORTANTE:
+   * No dependemos de obtenerEstadoPartido().
+   *
+   * Si Google Sheets tiene:
+   *
+   * golesLocal = 3
+   * golesVisitante = 0
+   *
+   * el partido cuenta para estadísticas.
+   *
+   * Esto hace que la tabla y las estadísticas utilicen los mismos
+   * datos reales de Google Sheets.
+   */
+
+  const partidosJugados = partidos.filter((partido) => tieneResultado(partido));
 
   /*
    * ============================================================
@@ -58,26 +122,13 @@ function Estadisticas() {
    * ============================================================
    */
 
-  // Antes `goleadores` venía precalculado de un import estático.
-  // Ahora se recalcula en cada render a partir de los partidos ya
-  // cargados desde Sheets.
-  const goleadores = calcularGoleadores(partidos);
+  const goleadores = calcularGoleadores(partidosJugados);
+
   const primerosCincoGoleadores = goleadores.slice(0, 5);
 
   /*
    * ============================================================
-   * EQUIPOS
-   * ============================================================
-   */
-
-  const equipos = Object.keys(nombresEquipos);
-
-  /*
-   * ============================================================
-   * ESTADÍSTICAS DE CADA EQUIPO
-   *
-   * Esta lógica sigue la misma fuente de datos que Posiciones:
-   * todos los partidos finalizados.
+   * ESTADÍSTICAS DE EQUIPOS
    * ============================================================
    */
 
@@ -124,42 +175,73 @@ function Estadisticas() {
 
   /*
    * ============================================================
-   * PROCESAR PARTIDOS
+   * PROCESAR TODOS LOS PARTIDOS JUGADOS
    * ============================================================
    */
 
-  partidosFinalizados.forEach((partido) => {
+  partidosJugados.forEach((partido) => {
     const local = estadisticasEquipos[partido.local];
     const visitante = estadisticasEquipos[partido.visitante];
 
-    if (!local || !visitante) return;
+    if (!local || !visitante) {
+      return;
+    }
 
-    const golesLocal = partido.golesLocal;
-    const golesVisitante = partido.golesVisitante;
+    const golesLocal = Number(partido.golesLocal);
+    const golesVisitante = Number(partido.golesVisitante);
 
-    // Partidos jugados
+    if (Number.isNaN(golesLocal) || Number.isNaN(golesVisitante)) {
+      return;
+    }
+
+    /*
+     * ==========================================================
+     * PARTIDOS JUGADOS
+     * ==========================================================
+     */
+
     local.partidos++;
     visitante.partidos++;
 
     local.partidosLocal++;
     visitante.partidosVisitante++;
 
-    // Goles generales
+    /*
+     * ==========================================================
+     * GOLES GENERALES
+     * ==========================================================
+     */
+
     local.golesFavor += golesLocal;
     local.golesContra += golesVisitante;
 
     visitante.golesFavor += golesVisitante;
     visitante.golesContra += golesLocal;
 
-    // Goles como local
+    /*
+     * ==========================================================
+     * GOLES COMO LOCAL
+     * ==========================================================
+     */
+
     local.golesLocal += golesLocal;
     local.golesContraLocal += golesVisitante;
 
-    // Goles como visitante
+    /*
+     * ==========================================================
+     * GOLES COMO VISITANTE
+     * ==========================================================
+     */
+
     visitante.golesVisitante += golesVisitante;
     visitante.golesContraVisitante += golesLocal;
 
-    // Porterías a cero
+    /*
+     * ==========================================================
+     * PORTERÍAS A CERO
+     * ==========================================================
+     */
+
     if (golesVisitante === 0) {
       local.porteriasCero++;
       local.porteriasCeroLocal++;
@@ -170,8 +252,17 @@ function Estadisticas() {
       visitante.porteriasCeroVisitante++;
     }
 
-    // Victoria local
+    /*
+     * ==========================================================
+     * RESULTADO
+     * ==========================================================
+     */
+
     if (golesLocal > golesVisitante) {
+      /*
+       * Victoria local
+       */
+
       local.victorias++;
       local.victoriasLocal++;
 
@@ -180,10 +271,11 @@ function Estadisticas() {
 
       local.puntos += 3;
       local.puntosLocal += 3;
-    }
+    } else if (golesLocal < golesVisitante) {
+      /*
+       * Victoria visitante
+       */
 
-    // Victoria visitante
-    else if (golesLocal < golesVisitante) {
       visitante.victorias++;
       visitante.victoriasVisitante++;
 
@@ -192,10 +284,11 @@ function Estadisticas() {
 
       visitante.puntos += 3;
       visitante.puntosVisitante += 3;
-    }
+    } else {
+      /*
+       * Empate
+       */
 
-    // Empate
-    else {
       local.empates++;
       local.empatesLocal++;
 
@@ -212,7 +305,7 @@ function Estadisticas() {
 
   /*
    * ============================================================
-   * CALCULAR PROMEDIOS Y DIFERENCIAS
+   * PREPARAR ESTADÍSTICAS
    * ============================================================
    */
 
@@ -388,34 +481,31 @@ function Estadisticas() {
    * ============================================================
    */
 
-  const totalGoles = partidosFinalizados.reduce(
-    (total, partido) => total + partido.golesLocal + partido.golesVisitante,
+  const totalGoles = partidosJugados.reduce(
+    (total, partido) =>
+      total + Number(partido.golesLocal) + Number(partido.golesVisitante),
     0,
   );
 
-  const totalGolesLocal = partidosFinalizados.reduce(
-    (total, partido) => total + partido.golesLocal,
+  const totalGolesLocal = partidosJugados.reduce(
+    (total, partido) => total + Number(partido.golesLocal),
     0,
   );
 
-  const totalGolesVisitante = partidosFinalizados.reduce(
-    (total, partido) => total + partido.golesVisitante,
+  const totalGolesVisitante = partidosJugados.reduce(
+    (total, partido) => total + Number(partido.golesVisitante),
     0,
   );
 
   const promedioGoles =
-    partidosFinalizados.length > 0
-      ? totalGoles / partidosFinalizados.length
-      : 0;
+    partidosJugados.length > 0 ? totalGoles / partidosJugados.length : 0;
 
   const promedioGolesLocal =
-    partidosFinalizados.length > 0
-      ? totalGolesLocal / partidosFinalizados.length
-      : 0;
+    partidosJugados.length > 0 ? totalGolesLocal / partidosJugados.length : 0;
 
   const promedioGolesVisitante =
-    partidosFinalizados.length > 0
-      ? totalGolesVisitante / partidosFinalizados.length
+    partidosJugados.length > 0
+      ? totalGolesVisitante / partidosJugados.length
       : 0;
 
   /*
@@ -425,18 +515,24 @@ function Estadisticas() {
    */
 
   const mayorGoleada =
-    partidosFinalizados.length > 0
-      ? [...partidosFinalizados].sort((a, b) => {
-          const diferenciaA = Math.abs(a.golesLocal - a.golesVisitante);
+    partidosJugados.length > 0
+      ? [...partidosJugados].sort((a, b) => {
+          const diferenciaA = Math.abs(
+            Number(a.golesLocal) - Number(a.golesVisitante),
+          );
 
-          const diferenciaB = Math.abs(b.golesLocal - b.golesVisitante);
+          const diferenciaB = Math.abs(
+            Number(b.golesLocal) - Number(b.golesVisitante),
+          );
 
           if (diferenciaA !== diferenciaB) {
             return diferenciaB - diferenciaA;
           }
 
           return (
-            b.golesLocal + b.golesVisitante - (a.golesLocal + a.golesVisitante)
+            Number(b.golesLocal) +
+            Number(b.golesVisitante) -
+            (Number(a.golesLocal) + Number(a.golesVisitante))
           );
         })[0]
       : null;
@@ -448,30 +544,47 @@ function Estadisticas() {
    */
 
   const partidoMasGoles =
-    partidosFinalizados.length > 0
-      ? [...partidosFinalizados].sort(
+    partidosJugados.length > 0
+      ? [...partidosJugados].sort(
           (a, b) =>
-            b.golesLocal + b.golesVisitante - (a.golesLocal + a.golesVisitante),
+            Number(b.golesLocal) +
+            Number(b.golesVisitante) -
+            (Number(a.golesLocal) + Number(a.golesVisitante)),
         )[0]
       : null;
 
   /*
    * ============================================================
-   * COMPONENTE INTERNO PARA LOGOS
+   * LOGO
    * ============================================================
    */
 
   const LogoEquipo = ({ equipo }) => {
+    if (!equipo) {
+      return null;
+    }
+
     const logo = obtenerLogo(equipo);
 
-    return logo ? (
+    if (!logo) {
+      return null;
+    }
+
+    return (
       <img
         src={logo}
         alt={`Escudo de ${nombresEquipos[equipo] || equipo}`}
         className="goleador-foto"
+        referrerPolicy="no-referrer"
       />
-    ) : null;
+    );
   };
+
+  /*
+   * ============================================================
+   * RENDER
+   * ============================================================
+   */
 
   return (
     <>
@@ -514,43 +627,36 @@ function Estadisticas() {
             <tbody>
               <tr>
                 <td>Partidos disputados</td>
-
-                <td>{partidosFinalizados.length}</td>
+                <td>{partidosJugados.length}</td>
               </tr>
 
               <tr>
                 <td>Total de goles</td>
-
                 <td>{totalGoles}</td>
               </tr>
 
               <tr>
                 <td>Promedio de goles por partido</td>
-
                 <td>{promedioGoles.toFixed(2)}</td>
               </tr>
 
               <tr>
                 <td>Goles como local</td>
-
                 <td>{totalGolesLocal}</td>
               </tr>
 
               <tr>
                 <td>Goles como visitante</td>
-
                 <td>{totalGolesVisitante}</td>
               </tr>
 
               <tr>
                 <td>Promedio de goles local</td>
-
                 <td>{promedioGolesLocal.toFixed(2)}</td>
               </tr>
 
               <tr>
                 <td>Promedio de goles visitante</td>
-
                 <td>{promedioGolesVisitante.toFixed(2)}</td>
               </tr>
 
@@ -593,11 +699,17 @@ function Estadisticas() {
         </div>
       </section>
 
+      {/* ======================================================
+          FIGURAS DE LA JORNADA
+          ====================================================== */}
+
       <section className="container section">
         <div className="section-heading">
           <div>
             <span className="eyebrow">DESTACADOS</span>
+
             <h2>Figuras de la jornada</h2>
+
             <p>
               Los goleadores destacados y la portería menos vencida de la
               jornada.
@@ -605,7 +717,7 @@ function Estadisticas() {
           </div>
         </div>
 
-        <EquipoJornada/>
+        <EquipoJornada />
       </section>
 
       {/* ======================================================
@@ -783,23 +895,20 @@ function Estadisticas() {
             <tbody>
               {equiposAtaque.map((equipo, index) => {
                 let goles = equipo.golesFavor;
-
-                let partidosJugados = equipo.partidos;
+                let partidosEquipo = equipo.partidos;
 
                 if (tipoAtaque === "local") {
                   goles = equipo.golesLocal;
-
-                  partidosJugados = equipo.partidosLocal;
+                  partidosEquipo = equipo.partidosLocal;
                 }
 
                 if (tipoAtaque === "visitante") {
                   goles = equipo.golesVisitante;
-
-                  partidosJugados = equipo.partidosVisitante;
+                  partidosEquipo = equipo.partidosVisitante;
                 }
 
                 const promedio =
-                  partidosJugados > 0 ? goles / partidosJugados : 0;
+                  partidosEquipo > 0 ? goles / partidosEquipo : 0;
 
                 return (
                   <tr key={equipo.equipo}>
@@ -813,7 +922,7 @@ function Estadisticas() {
                       <span className="goleador-nombre">{equipo.nombre}</span>
                     </td>
 
-                    <td>{partidosJugados}</td>
+                    <td>{partidosEquipo}</td>
 
                     <td className="goleador-goles">{goles}</td>
 
@@ -889,15 +998,13 @@ function Estadisticas() {
             <tbody>
               {equiposDefensa.map((equipo, index) => {
                 let golesContra = equipo.golesContra;
-
-                let partidosJugados = equipo.partidos;
-
+                let partidosEquipo = equipo.partidos;
                 let porteriasCero = equipo.porteriasCero;
 
                 if (tipoDefensa === "local") {
                   golesContra = equipo.golesContraLocal;
 
-                  partidosJugados = equipo.partidosLocal;
+                  partidosEquipo = equipo.partidosLocal;
 
                   porteriasCero = equipo.porteriasCeroLocal;
                 }
@@ -905,13 +1012,13 @@ function Estadisticas() {
                 if (tipoDefensa === "visitante") {
                   golesContra = equipo.golesContraVisitante;
 
-                  partidosJugados = equipo.partidosVisitante;
+                  partidosEquipo = equipo.partidosVisitante;
 
                   porteriasCero = equipo.porteriasCeroVisitante;
                 }
 
                 const promedio =
-                  partidosJugados > 0 ? golesContra / partidosJugados : 0;
+                  partidosEquipo > 0 ? golesContra / partidosEquipo : 0;
 
                 return (
                   <tr key={equipo.equipo}>
@@ -925,7 +1032,7 @@ function Estadisticas() {
                       <span className="goleador-nombre">{equipo.nombre}</span>
                     </td>
 
-                    <td>{partidosJugados}</td>
+                    <td>{partidosEquipo}</td>
 
                     <td>{golesContra}</td>
 
@@ -966,29 +1073,27 @@ function Estadisticas() {
             </thead>
 
             <tbody>
-              {primerosCincoGoleadores.map((jugador, index) => {
-                return (
-                  <tr key={jugador.id}>
-                    <td>
-                      <span className="goleador-posicion">{index + 1}</span>
-                    </td>
+              {primerosCincoGoleadores.map((jugador, index) => (
+                <tr key={jugador.id}>
+                  <td>
+                    <span className="goleador-posicion">{index + 1}</span>
+                  </td>
 
-                    <td className="goleador-info">
-                      <LogoEquipo equipo={jugador.equipo} />
+                  <td className="goleador-info">
+                    <LogoEquipo equipo={jugador.equipo} />
 
-                      <div>
-                        <div className="goleador-nombre">{jugador.nombre}</div>
+                    <div>
+                      <div className="goleador-nombre">{jugador.nombre}</div>
 
-                        <div className="goleador-equipo">
-                          {nombresEquipos[jugador.equipo] || jugador.equipo}
-                        </div>
+                      <div className="goleador-equipo">
+                        {nombresEquipos[jugador.equipo] || jugador.equipo}
                       </div>
-                    </td>
+                    </div>
+                  </td>
 
-                    <td className="goleador-goles">{jugador.goles}</td>
-                  </tr>
-                );
-              })}
+                  <td className="goleador-goles">{jugador.goles}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

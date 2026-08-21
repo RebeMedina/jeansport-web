@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
+
 import { obtenerLogo } from "../data/equipos";
+
 import { jugadoresPorId } from "../data/jugadores";
+
 import { obtenerEstadoPartido } from "../data/estadoPartido";
+
 import { useAppData } from "../context/DataContext";
 
 const nombresEquipos = {
@@ -21,19 +25,8 @@ const nombresEquipos = {
  * ============================================================
  * JORNADA ACTUAL
  * ============================================================
- *
- * Determina automáticamente la última jornada cuya fecha
- * de inicio ya haya llegado.
- *
- * Ejemplo:
- *
- * Jornada 3 → 07/08
- * Jornada 4 → 14/08
- * Jornada 5 → 21/08
- *
- * Si hoy es 20/08 → Jornada 4
- * Si hoy es 21/08 → Jornada 5
  */
+
 function obtenerJornadaActual(partidos, jornadas) {
   if (!partidos.length || !jornadas.length) {
     return null;
@@ -68,12 +61,7 @@ function obtenerJornadaActual(partidos, jornadas) {
           return NaN;
         }
 
-        /*
-         * Costa Rica = UTC-6.
-         *
-         * 06:00 UTC equivale a 00:00 en Costa Rica.
-         */
-        return Date.UTC(anio, mes - 1, dia, 6, 0, 0);
+        return new Date(anio, mes - 1, dia, 0, 0, 0, 0).getTime();
       })
       .filter((fecha) => !Number.isNaN(fecha));
 
@@ -105,9 +93,7 @@ function obtenerDetalleGoles(partido, lado) {
 
   return (detalle || [])
     .map((gol) => {
-      const jugador = gol.jugadorId
-        ? jugadoresPorId[gol.jugadorId]
-        : null;
+      const jugador = gol.jugadorId ? jugadoresPorId[gol.jugadorId] : null;
 
       return {
         ...gol,
@@ -124,10 +110,7 @@ function obtenerDetalleGoles(partido, lado) {
  */
 
 function FilaGoles({ golesLocal, golesVisitante }) {
-  const filas = Math.max(
-    golesLocal.length,
-    golesVisitante.length,
-  );
+  const filas = Math.max(golesLocal.length, golesVisitante.length);
 
   if (filas === 0) {
     return null;
@@ -135,8 +118,11 @@ function FilaGoles({ golesLocal, golesVisitante }) {
 
   return (
     <div className="goles-filas">
-      {Array.from({ length: filas }).map((_, index) => {
+      {Array.from({
+        length: filas,
+      }).map((_, index) => {
         const golLocal = golesLocal[index];
+
         const golVisitante = golesVisitante[index];
 
         return (
@@ -148,16 +134,11 @@ function FilaGoles({ golesLocal, golesVisitante }) {
                     {golLocal.nombre}
 
                     {golLocal.propia && (
-                      <span className="gol-propia">
-                        {" "}
-                        (AG)
-                      </span>
+                      <span className="gol-propia"> (AG)</span>
                     )}
                   </span>
 
-                  <span className="gol-minuto">
-                    {golLocal.minuto}'
-                  </span>
+                  <span className="gol-minuto">{golLocal.minuto}'</span>
                 </>
               )}
             </div>
@@ -177,16 +158,11 @@ function FilaGoles({ golesLocal, golesVisitante }) {
                     {golVisitante.nombre}
 
                     {golVisitante.propia && (
-                      <span className="gol-propia">
-                        {" "}
-                        (AG)
-                      </span>
+                      <span className="gol-propia"> (AG)</span>
                     )}
                   </span>
 
-                  <span className="gol-minuto">
-                    {golVisitante.minuto}'
-                  </span>
+                  <span className="gol-minuto">{golVisitante.minuto}'</span>
                 </>
               )}
             </div>
@@ -204,30 +180,16 @@ function FilaGoles({ golesLocal, golesVisitante }) {
  */
 
 function Resultados() {
-  const {
-    partidos,
-    loadingPartidos,
-    errorPartidos,
-  } = useAppData();
+  const { partidos, loadingPartidos, errorPartidos } = useAppData();
 
-  const [
-    jornadaSeleccionada,
-    setJornadaSeleccionada,
-  ] = useState(null);
+  const [jornadaSeleccionada, setJornadaSeleccionada] = useState(null);
+
+  const [paginaInicializada, setPaginaInicializada] = useState(false);
 
   /*
-   * Fuerza el recalculo del estado de los partidos cada 5 segundos.
-   *
-   * Esto permite que un partido pase automáticamente:
-   *
-   * Próximo
-   *    ↓
-   * En vivo
-   *    ↓
-   * Finalizado
-   *
-   * sin que el usuario tenga que recargar la página.
+   * Recalcula los estados automáticamente.
    */
+
   const [, forzarActualizacion] = useState(0);
 
   useEffect(() => {
@@ -250,64 +212,57 @@ function Resultados() {
     ...new Set(
       partidos
         .map((partido) => partido.jornada)
-        .filter((jornada) => !Number.isNaN(jornada)),
+        .filter((jornada) => Number.isFinite(jornada)),
     ),
   ].sort((a, b) => a - b);
 
   /*
    * ============================================================
-   * JORNADA ACTUAL
+   * CALCULAR JORNADA ACTUAL
    * ============================================================
    */
 
   const jornadaActual =
-    jornadas.length > 0
-      ? obtenerJornadaActual(partidos, jornadas)
-      : null;
+    jornadas.length > 0 ? obtenerJornadaActual(partidos, jornadas) : null;
 
   /*
-   * Cuando los partidos terminan de cargar,
-   * seleccionamos automáticamente la jornada actual.
-   */
-  useEffect(() => {
-    if (
-      jornadaActual !== null &&
-      jornadaSeleccionada === null
-    ) {
-      setJornadaSeleccionada(jornadaActual);
-    }
-  }, [
-    jornadaActual,
-    jornadaSeleccionada,
-  ]);
-
-  /*
-   * Si cambia la jornada automáticamente,
-   * también actualizamos la selección.
+   * Seleccionamos automáticamente la jornada actual
+   * UNA SOLA VEZ cuando la página recibe los datos.
    *
-   * Esto es importante cuando llega una nueva jornada.
+   * Después el usuario tiene control total del selector.
    */
+
   useEffect(() => {
-    if (
-      jornadaActual !== null &&
-      jornadaSeleccionada !== null
-    ) {
-      /*
-       * Solo actualizamos automáticamente si la selección
-       * actual era la jornada anterior.
-       */
-      if (jornadaSeleccionada < jornadaActual) {
-        setJornadaSeleccionada(jornadaActual);
-      }
+    if (paginaInicializada || jornadaActual === null) {
+      return;
     }
-  }, [
-    jornadaActual,
-    jornadaSeleccionada,
-  ]);
+
+    setJornadaSeleccionada(jornadaActual);
+
+    setPaginaInicializada(true);
+  }, [jornadaActual, paginaInicializada]);
 
   /*
-   * Scroll al cambiar de jornada.
+   * Si por alguna razón la jornada seleccionada ya
+   * no existe en los datos, seleccionamos una válida.
+   *
+   * Esto NO obliga al usuario a volver a la jornada actual.
    */
+
+  useEffect(() => {
+    if (jornadaSeleccionada === null || jornadas.length === 0) {
+      return;
+    }
+
+    if (!jornadas.includes(jornadaSeleccionada)) {
+      setJornadaSeleccionada(jornadas[0]);
+    }
+  }, [jornadas, jornadaSeleccionada]);
+
+  /*
+   * Scroll al cambiar manualmente de jornada.
+   */
+
   useEffect(() => {
     if (jornadaSeleccionada === null) {
       return;
@@ -325,10 +280,23 @@ function Resultados() {
    * ============================================================
    */
 
-  if (
-    loadingPartidos ||
-    jornadaSeleccionada === null
-  ) {
+  if (loadingPartidos && partidos.length === 0) {
+    return (
+      <section className="container section">
+        <p>Cargando resultados...</p>
+      </section>
+    );
+  }
+
+  if (errorPartidos && partidos.length === 0) {
+    return (
+      <section className="container section">
+        <p>No se pudieron cargar los resultados. Intenta de nuevo más tarde.</p>
+      </section>
+    );
+  }
+
+  if (jornadaSeleccionada === null) {
     return (
       <section className="container section">
         <p>Cargando resultados...</p>
@@ -338,42 +306,13 @@ function Resultados() {
 
   /*
    * ============================================================
-   * ERROR
-   * ============================================================
-   */
-
-  if (errorPartidos && partidos.length === 0) {
-  // mostrar error
-}
-
-  /*
-   * ============================================================
    * PARTIDOS DE LA JORNADA
    * ============================================================
    */
 
   const partidosJornada = partidos.filter(
-    (partido) =>
-      partido.jornada === jornadaSeleccionada,
+    (partido) => partido.jornada === jornadaSeleccionada,
   );
-
-  /*
-   * ============================================================
-   * FORMATEAR FECHA
-   * ============================================================
-   *
-   * Convierte:
-   *
-   * 2026-08-16
-   *
-   * o:
-   *
-   * 2026-08-16T06:00:00.000Z
-   *
-   * en:
-   *
-   * 16.08
-   */
 
   function formatearFecha(fecha) {
     if (!fecha) {
@@ -397,24 +336,14 @@ function Resultados() {
     return `${dia}.${mes}`;
   }
 
-  /*
-   * ============================================================
-   * RENDER
-   * ============================================================
-   */
-
   return (
     <>
       <section className="container page-hero">
-        <span className="eyebrow">
-          PARTIDOS
-        </span>
+        <span className="eyebrow">PARTIDOS</span>
 
         <h1>Resultados</h1>
 
-        <p>
-          Jornada {jornadaActual} Liga Promerica.
-        </p>
+        <p>Jornada {jornadaActual} Liga Promerica.</p>
       </section>
 
       <section className="container section">
@@ -422,110 +351,67 @@ function Resultados() {
           <div className="jornada-selector-label">
             <span>JORNADA</span>
 
-            <strong>
-              Selecciona una jornada
-            </strong>
+            <strong>Selecciona una jornada</strong>
           </div>
 
           <div className="jornada-select-wrapper">
             <select
               value={jornadaSeleccionada}
-              onChange={(e) =>
-                setJornadaSeleccionada(
-                  Number(e.target.value),
-                )
-              }
+              onChange={(e) => setJornadaSeleccionada(Number(e.target.value))}
             >
               {jornadas.map((jornada) => (
-                <option
-                  key={jornada}
-                  value={jornada}
-                >
+                <option key={jornada} value={jornada}>
                   Jornada {jornada}
                 </option>
               ))}
             </select>
 
-            <span className="jornada-select-icon">
-              ⌄
-            </span>
+            <span className="jornada-select-icon">⌄</span>
           </div>
         </div>
 
         <div className="resultados-container">
           {partidosJornada.map((partido) => {
-            const nombreLocal =
-              nombresEquipos[partido.local] ||
-              partido.local;
+            const nombreLocal = nombresEquipos[partido.local] || partido.local;
 
             const nombreVisitante =
-              nombresEquipos[
-                partido.visitante
-              ] || partido.visitante;
+              nombresEquipos[partido.visitante] || partido.visitante;
 
-            const logoLocal =
-              obtenerLogo(nombreLocal);
+            const logoLocal = obtenerLogo(nombreLocal);
 
-            const logoVisitante =
-              obtenerLogo(nombreVisitante);
+            const logoVisitante = obtenerLogo(nombreVisitante);
 
-            /*
-             * El estado SIEMPRE se calcula aquí.
-             *
-             * No dependemos únicamente del valor de
-             * "estado" que venga desde Google Sheets.
-             */
-            const estado =
-              obtenerEstadoPartido(partido);
+            const estado = obtenerEstadoPartido(partido);
 
             const tieneGoles =
-              typeof partido.golesLocal ===
-                "number" &&
-              typeof partido.golesVisitante ===
-                "number";
+              typeof partido.golesLocal === "number" &&
+              typeof partido.golesVisitante === "number";
 
             const mostrarGoles =
               !partido.walkover &&
-              (
-                estado === "finalizado" ||
-                estado === "en-curso"
-              );
+              (estado === "finalizado" || estado === "en-curso");
 
-            const golesLocal =
-              mostrarGoles
-                ? obtenerDetalleGoles(
-                    partido,
-                    "local",
-                  )
-                : [];
+            const golesLocal = mostrarGoles
+              ? obtenerDetalleGoles(partido, "local")
+              : [];
 
-            const golesVisitante =
-              mostrarGoles
-                ? obtenerDetalleGoles(
-                    partido,
-                    "visitante",
-                  )
-                : [];
+            const golesVisitante = mostrarGoles
+              ? obtenerDetalleGoles(partido, "visitante")
+              : [];
 
             return (
               <article
                 className={`resultado-card ${
-                  estado === "en-curso"
-                    ? "resultado-card-en-vivo"
-                    : ""
+                  estado === "en-curso" ? "resultado-card-en-vivo" : ""
                 }`}
                 key={partido.id}
               >
                 <div className="resultado-header">
                   <span className="resultado-fecha">
-                    {formatearFecha(
-                      partido.fecha,
-                    )}
+                    {formatearFecha(partido.fecha)}
                   </span>
 
-                  <span>
-                    Jornada {partido.jornada}
-                  </span>
+                  <span>Jornada {partido.jornada}</span>
                 </div>
 
                 <div className="resultado-partido">
@@ -538,30 +424,23 @@ function Resultados() {
                       />
                     )}
 
-                    <strong className="equipo-nombre">
-                      {nombreLocal}
-                    </strong>
+                    <strong className="equipo-nombre">{nombreLocal}</strong>
                   </div>
 
                   <div className="resultado-marcador">
-                    {estado ===
-                      "finalizado" && (
+                    {estado === "finalizado" && (
                       <>
                         <strong className="marcador">
-                          {partido.golesLocal} -{" "}
-                          {
-                            partido.golesVisitante
-                          }
+                          {partido.golesLocal}
+                          {" - "}
+                          {partido.golesVisitante}
                         </strong>
 
-                        <span className="estado-partido">
-                          Finalizado
-                        </span>
+                        <span className="estado-partido">Finalizado</span>
                       </>
                     )}
 
-                    {estado ===
-                      "en-curso" && (
+                    {estado === "en-curso" && (
                       <>
                         <strong className="marcador">
                           {tieneGoles
@@ -575,16 +454,13 @@ function Resultados() {
                       </>
                     )}
 
-                    {estado ===
-                      "proximo" && (
+                    {estado === "proximo" && (
                       <>
                         <strong className="marcador">
-                          {partido.hora}
+                          {partido.hora || "--:--"}
                         </strong>
 
-                        <span className="estado-partido">
-                          Próximo partido
-                        </span>
+                        <span className="estado-partido">Próximo partido</span>
                       </>
                     )}
                   </div>
@@ -598,25 +474,16 @@ function Resultados() {
                       />
                     )}
 
-                    <strong className="equipo-nombre">
-                      {nombreVisitante}
-                    </strong>
+                    <strong className="equipo-nombre">{nombreVisitante}</strong>
                   </div>
                 </div>
 
                 {mostrarGoles &&
-                  (
-                    golesLocal.length > 0 ||
-                    golesVisitante.length > 0
-                  ) && (
+                  (golesLocal.length > 0 || golesVisitante.length > 0) && (
                     <div className="resultado-goles">
                       <FilaGoles
-                        golesLocal={
-                          golesLocal
-                        }
-                        golesVisitante={
-                          golesVisitante
-                        }
+                        golesLocal={golesLocal}
+                        golesVisitante={golesVisitante}
                       />
                     </div>
                   )}

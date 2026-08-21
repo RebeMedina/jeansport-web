@@ -3,6 +3,7 @@ import { fetchSheet } from "../data/sheets";
 import { parseNoticias } from "../data/parseNoticias";
 
 const DEFAULT_POLL_MS = 10_000;
+
 const CACHE_KEY = "jeansport_noticias_cache";
 
 function obtenerCache() {
@@ -58,6 +59,7 @@ export function useNoticias({
   const [error, setError] = useState(null);
 
   const timerRef = useRef(null);
+
   const cargandoRef = useRef(false);
 
   useEffect(() => {
@@ -71,15 +73,13 @@ export function useNoticias({
       cargandoRef.current = true;
 
       try {
-        const rawNoticias =
-          await fetchSheet("Noticias");
+        const rawNoticias = await fetchSheet("Noticias");
 
         if (cancelled) {
           return;
         }
 
-        const nuevasNoticias =
-          parseNoticias(rawNoticias);
+        const nuevasNoticias = parseNoticias(rawNoticias);
 
         setNoticias(nuevasNoticias);
 
@@ -104,8 +104,6 @@ export function useNoticias({
       }
     }
 
-    // Mostrar cache inmediatamente.
-    // Google Sheets se consulta en segundo plano.
     load();
 
     timerRef.current = setInterval(

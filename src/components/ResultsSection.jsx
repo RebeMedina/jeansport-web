@@ -31,9 +31,9 @@ function ResultsSection() {
     const jornadasIniciadas = jornadas.filter((jornada) => {
       const fechasJornada = partidos
         .filter((partido) => partido.jornada === jornada)
-        .map((partido) =>
-          new Date(`${partido.fecha}T00:00:00`).getTime()
-        );
+        .map((partido) => new Date(`${partido.fecha}T00:00:00`).getTime());
+
+      if (fechasJornada.length === 0) return false;
 
       const fechaInicio = new Date(Math.min(...fechasJornada));
 
@@ -58,16 +58,12 @@ function ResultsSection() {
     .filter(
       (partido) =>
         partido.estadoReal === "finalizado" ||
-        partido.estadoReal === "en-curso"
+        partido.estadoReal === "en-curso",
     )
     .sort((a, b) => {
-      const fechaHoraA = new Date(
-        `${a.fecha}T${a.hora || "00:00"}:00`
-      );
+      const fechaHoraA = new Date(`${a.fecha}T${a.hora || "00:00"}:00`);
 
-      const fechaHoraB = new Date(
-        `${b.fecha}T${b.hora || "00:00"}:00`
-      );
+      const fechaHoraB = new Date(`${b.fecha}T${b.hora || "00:00"}:00`);
 
       return fechaHoraB - fechaHoraA;
     })
@@ -75,18 +71,17 @@ function ResultsSection() {
 
   const formatearFecha = (fecha) => {
     const [, mes, dia] = fecha.split("-");
+
     return `${dia}.${mes}`;
   };
 
   if (loadingPartidos) {
-    return (
-      <section className="container section">
-      </section>
-    );
+    return <section className="container section"></section>;
   }
 
   return (
     <section className="container section">
+      {/* ENCABEZADO */}
       <div className="section-heading">
         <div>
           <span className="eyebrow">COSTA RICA</span>
@@ -98,90 +93,104 @@ function ResultsSection() {
         </Link>
       </div>
 
+      {/* RESULTADOS */}
       <div className="resultados-container">
-        {partidosConEstado.map((partido) => {
-          const nombreLocal =
-            nombresEquipos[partido.local] || partido.local;
+        {partidosConEstado.length > 0 ? (
+          partidosConEstado.map((partido) => {
+            const nombreLocal = nombresEquipos[partido.local] || partido.local;
 
-          const nombreVisitante =
-            nombresEquipos[partido.visitante] || partido.visitante;
+            const nombreVisitante =
+              nombresEquipos[partido.visitante] || partido.visitante;
 
-          const logoLocal = obtenerLogo(nombreLocal);
-          const logoVisitante = obtenerLogo(nombreVisitante);
+            const logoLocal = obtenerLogo(nombreLocal);
+            const logoVisitante = obtenerLogo(nombreVisitante);
 
-          const tieneGoles =
-            typeof partido.golesLocal === "number" &&
-            typeof partido.golesVisitante === "number";
+            const tieneGoles =
+              typeof partido.golesLocal === "number" &&
+              typeof partido.golesVisitante === "number";
 
-          return (
-            <article
-              className={`resultado-card ${
-                partido.estadoReal === "en-curso"
-                  ? "resultado-card-en-vivo"
-                  : ""
-              }`}
-              key={partido.id}
-            >
-              <div className="resultado-header">
-                <span className="resultado-fecha">
-                  {formatearFecha(partido.fecha)}
-                </span>
-
-                <span>Jornada {partido.jornada}</span>
-              </div>
-
-              <div className="resultado-partido">
-                <div className="equipo equipo-local">
-                  {logoLocal && (
-                    <img
-                      className="equipo-logo"
-                      src={logoLocal}
-                      alt={`Escudo de ${nombreLocal}`}
-                    />
-                  )}
-
-                  <strong className="equipo-nombre">
-                    {nombreLocal}
-                  </strong>
-                </div>
-
-                <div className="resultado-marcador">
-                  <strong className="marcador">
-                    {tieneGoles
-                      ? `${partido.golesLocal} - ${partido.golesVisitante}`
-                      : "0 - 0"}
-                  </strong>
-
-                  <span
-                    className={`estado-partido ${
-                      partido.estadoReal === "en-curso"
-                        ? "estado-en-vivo"
-                        : ""
-                    }`}
-                  >
-                    {partido.estadoReal === "en-curso"
-                      ? "● En vivo"
-                      : "Finalizado"}
+            return (
+              <article
+                className={`resultado-card ${
+                  partido.estadoReal === "en-curso"
+                    ? "resultado-card-en-vivo"
+                    : ""
+                }`}
+                key={partido.id}
+              >
+                {/* CABECERA DEL PARTIDO */}
+                <div className="resultado-header">
+                  <span className="resultado-fecha">
+                    {formatearFecha(partido.fecha)}
                   </span>
+
+                  <span>Jornada {partido.jornada}</span>
                 </div>
 
-                <div className="equipo equipo-visitante">
-                  {logoVisitante && (
-                    <img
-                      className="equipo-logo"
-                      src={logoVisitante}
-                      alt={`Escudo de ${nombreVisitante}`}
-                    />
-                  )}
+                {/* PARTIDO */}
+                <div className="resultado-partido">
+                  {/* LOCAL */}
+                  <div className="equipo equipo-local">
+                    {logoLocal && (
+                      <img
+                        className="equipo-logo"
+                        src={logoLocal}
+                        alt={`Escudo de ${nombreLocal}`}
+                      />
+                    )}
 
-                  <strong className="equipo-nombre">
-                    {nombreVisitante}
-                  </strong>
+                    <strong className="equipo-nombre">{nombreLocal}</strong>
+                  </div>
+
+                  {/* MARCADOR */}
+                  <div className="resultado-marcador">
+                    <strong className="marcador">
+                      {tieneGoles
+                        ? `${partido.golesLocal} - ${partido.golesVisitante}`
+                        : "0 - 0"}
+                    </strong>
+
+                    <span
+                      className={`estado-partido ${
+                        partido.estadoReal === "en-curso"
+                          ? "estado-en-vivo"
+                          : ""
+                      }`}
+                    >
+                      {partido.estadoReal === "en-curso"
+                        ? "● En vivo"
+                        : "Finalizado"}
+                    </span>
+                  </div>
+
+                  {/* VISITANTE */}
+                  <div className="equipo equipo-visitante">
+                    {logoVisitante && (
+                      <img
+                        className="equipo-logo"
+                        src={logoVisitante}
+                        alt={`Escudo de ${nombreVisitante}`}
+                      />
+                    )}
+
+                    <strong className="equipo-nombre">{nombreVisitante}</strong>
+                  </div>
                 </div>
-              </div>
-            </article>
-          );
-        })}
+              </article>
+            );
+          })
+        ) : (
+          /* SIN RESULTADOS */
+          <div className="resultados-sin-partidos">
+            <h3>Aún no hay resultados</h3>
+
+            <p>
+              Los partidos de esta jornada todavía no se han jugado.
+              <br />
+              Cuando finalicen, aquí podrás ver sus resultados.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );

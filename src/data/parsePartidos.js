@@ -1,5 +1,9 @@
+import { partidos as calendario } from "./partidos";
+
 function toBool(v) {
-  if (v === undefined || v === null) return false;
+  if (v === undefined || v === null) {
+    return false;
+  }
 
   const s = String(v).trim().toUpperCase();
 
@@ -25,68 +29,17 @@ function toNumOrUndefined(v) {
   return Number.isNaN(n) ? undefined : n;
 }
 
-/*
- * ============================================================
- * NORMALIZAR FECHA
- * ============================================================
- *
- * Acepta:
- *
- * 2026-08-16
- * 2026-08-16T06:00:00.000Z
- *
- * Devuelve:
- *
- * 2026-08-16
- */
-
-function normalizarFecha(v) {
-  if (!v) return "";
-
-  const texto = String(v).trim();
-
-  if (!texto) return "";
-
-  // Si viene como ISO.
-  if (texto.includes("T")) {
-    return texto.split("T")[0];
-  }
-
-  // Si ya viene como YYYY-MM-DD.
-  if (/^\d{4}-\d{2}-\d{2}$/.test(texto)) {
-    return texto;
-  }
-
-  return texto;
-}
-
-/*
- * ============================================================
- * NORMALIZAR HORA
- * ============================================================
- *
- * Acepta:
- *
- * 15:00
- * 15:00:00
- * 1899-12-30T15:00:00.000Z
- *
- * Devuelve:
- *
- * 15:00
- */
-
 function normalizarHora(v) {
-  if (!v) return "";
+  if (!v) {
+    return "";
+  }
 
   const texto = String(v).trim();
 
-  if (!texto) return "";
+  if (!texto) {
+    return "";
+  }
 
-  /*
-   * Si Apps Script devuelve una fecha ISO,
-   * buscamos la parte de la hora.
-   */
   if (texto.includes("T")) {
     const hora = texto.split("T")[1];
 
@@ -95,16 +48,10 @@ function normalizarHora(v) {
     }
   }
 
-  /*
-   * Si ya viene como HH:mm:ss.
-   */
   if (/^\d{2}:\d{2}:\d{2}/.test(texto)) {
     return texto.substring(0, 5);
   }
 
-  /*
-   * Si ya viene como HH:mm.
-   */
   if (/^\d{2}:\d{2}$/.test(texto)) {
     return texto;
   }
@@ -115,7 +62,7 @@ function normalizarHora(v) {
 export function parsePartidos(rawPartidos, rawGoles) {
   /*
    * ============================================================
-   * AGRUPAR GOLES POR PARTIDO
+   * 1. AGRUPAR GOLES
    * ============================================================
    */
 
@@ -159,84 +106,183 @@ export function parsePartidos(rawPartidos, rawGoles) {
 
   /*
    * ============================================================
-   * CREAR PARTIDOS
+   * 2. CREAR MAPA DE DATOS DE GOOGLE SHEETS
    * ============================================================
    */
 
-  return (rawPartidos || [])
-    .filter(
-      (p) =>
-        p.id !== undefined &&
-        p.id !== ""
-    )
-    .map((p) => {
-      const id = Number(p.id);
+  const datosSheets = {};
+
+  for (const p of rawPartidos || []) {
+    const id = Number(p.id);
+
+    if (Number.isNaN(id)) {
+      continue;
+    }
+
+    datosSheets[id] = p;
+  }
+
+  /*
+   * ============================================================
+   * 3. PARTIMOS DEL CALENDARIO LOCAL
+   * ============================================================
+   *
+   * partidos.js es la fuente del calendario:
+   *
+   * - fecha
+   * - jornada
+   * - local
+   * - visitante
+   * - hora
+   *
+   * Google Sheets solamente actualiza:
+   *
+   * - golesLocal
+   * - golesVisitante
+   * - walkover
+   * - goles
+   */
+
+  return calendario
+    .map((partidoBase) => {
+      const datos = datosSheets[partidoBase.id] || {};
 
       const goles =
-        golesPorPartido[id] || {
+        golesPorPartido[partidoBase.id] || {
           local: [],
           visitante: [],
         };
 
-      const golesLocal =
-        goles.local.length;
+      /*
+       * ========================================================
+       * MARCADOR
+       * ========================================================
+       */
 
-      const golesVisitante =
-        goles.visitante.length;
+      const tieneMarcadorLocal =
+        datos.golesLocal !== undefined &&
+        datos.golesLocal !== null &&
+        String(datos.golesLocal).trim() !== "";
 
-      const partido = {
-        id,
+      const tieneMarcadorVisitante =
+        datos.golesVisitante !== undefined &&
+        datos.golesVisitante !== null &&
+        String(datos.golesVisitante).trim() !== "";
 
-        fecha: normalizarFecha(
-          p.fecha
-        ),
+      /*
+       * Si Sheets tiene marcador, usamos Sheets.
+       *
+       * Si no tiene marcador, conservamos el de partidos.js
+       * solamente para partidos que ya tenían resultado.
+       */
 
-        jornada: Number(
-          p.jornada
-        ),
+      let golesLocal = partidoBase.golesLocal;
+      let golesVisitante = partidoBase.golesVisitante;
 
-        local: p.local,
+      if (tieneMarcadorLocal) {
+        golesLocal = Number(datos.golesLocal);
+      }
 
-        golesLocal,
+      if (tieneMarcadorVisitante) {
+        golesVisitante = Number(datos.golesVisitante);
+      }
 
-        golesLocalDetalle:
-          goles.local,
+      /*
+       * ========================================================
+       * DETALLE DE GOLES
+       * ========================================================
+       */
 
-        visitante:
-          p.visitante,
+      let golesLocalDetalle =
+        goles.local.length > 0
+          ? goles.local
+          : partidoBase.golesLocalDetalle || [];
 
-        golesVisitante,
+      let golesVisitanteDetalle =
+        goles.visitante.length > 0
+          ? goles.visitante
+          : partidoBase.golesVisitanteDetalle || [];
 
-        golesVisitanteDetalle:
-          goles.visitante,
+      /*
+       * ========================================================
+       * WALKOVER
+       * ========================================================
+       */
 
-        estado: String(
-          p.estado || ""
-        )
-          .trim()
-          .toLowerCase(),
-      };
+      const walkover = toBool(datos.walkover)
+        ? true
+        : partidoBase.walkover || false;
+
+      /*
+       * ========================================================
+       * HORA
+       * ========================================================
+       *
+       * La hora principal viene de partidos.js.
+       *
+       * Si algún día quieres modificar una hora desde Sheets,
+       * también lo permitimos.
+       */
+
+      let hora = partidoBase.hora || "";
 
       if (
-        p.hora !== undefined &&
-        p.hora !== null &&
-        String(p.hora).trim() !== ""
+        datos.hora !== undefined &&
+        datos.hora !== null &&
+        String(datos.hora).trim() !== ""
       ) {
-        partido.hora =
-          normalizarHora(
-            p.hora
-          );
+        hora = normalizarHora(datos.hora);
+      }
+
+      /*
+       * ========================================================
+       * ESTADO
+       * ========================================================
+       *
+       * NO lo calculamos aquí.
+       *
+       * obtenerEstadoPartido() será quien determine:
+       *
+       * proximo
+       * en-curso
+       * finalizado
+       */
+
+      const partido = {
+        ...partidoBase,
+
+        golesLocal,
+        golesVisitante,
+
+        golesLocalDetalle,
+        golesVisitanteDetalle,
+
+        hora,
+
+        walkover,
+      };
+
+      /*
+       * Si el partido no tiene marcador en Sheets y tampoco
+       * tenía marcador en partidos.js, dejamos los goles como
+       * undefined.
+       */
+
+      if (
+        !tieneMarcadorLocal &&
+        partidoBase.golesLocal === undefined
+      ) {
+        delete partido.golesLocal;
       }
 
       if (
-        toBool(p.walkover)
+        !tieneMarcadorVisitante &&
+        partidoBase.golesVisitante === undefined
       ) {
-        partido.walkover = true;
+        delete partido.golesVisitante;
       }
 
       return partido;
     })
-    .sort(
-      (a, b) => a.id - b.id
-    );
+    .sort((a, b) => a.id - b.id);
 }

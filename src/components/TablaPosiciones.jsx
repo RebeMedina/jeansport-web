@@ -38,7 +38,7 @@ function TablaPosiciones({ tabla }) {
 
         <tbody>
           {tabla.map((equipo, index) => {
-            const logo = obtenerLogo(equipo.nombre);
+            const logo = obtenerLogo(equipo.equipo);
             const posicion = index + 1;
 
             return (
@@ -64,11 +64,17 @@ function TablaPosiciones({ tabla }) {
                 </td>
 
                 <td>{equipo.jugados}</td>
+
                 <td>{equipo.ganados}</td>
+
                 <td>{equipo.empatados}</td>
+
                 <td>{equipo.perdidos}</td>
+
                 <td>{equipo.golesFavor}</td>
+
                 <td>{equipo.golesContra}</td>
+
                 <td>{equipo.diferenciaGoles}</td>
 
                 <td className="puntos">
